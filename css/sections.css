@@ -1,0 +1,245 @@
+/* ============================================================
+   SmartGPA — css/sections.css
+   Section-specific layouts (Dashboard, Analytics, Prediction, etc.)
+   ============================================================ */
+
+/* ── 1. DASHBOARD & SETUP ── */
+.welcome-banner {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius);
+    padding: 40px;
+    color: white;
+    box-shadow: 0 10px 25px rgba(37,99,235,0.2);
+    /* UI upgrade: Max-width changed from 600px to 520px for better alignment */
+    max-width: 520px;
+    margin: 40px auto;
+}
+
+.welcome-banner h2 { font-size: 1.8rem; margin-bottom: 8px; }
+.welcome-banner p { opacity: 0.9; margin-bottom: 24px; font-size: 0.95rem; }
+
+/* UI upgrade: inputs widened from 380px to 440px */
+.setup-form { display: flex; flex-direction: column; gap: 16px; max-width: 440px; }
+
+.content-row { display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 24px; }
+
+/* Dashboard Stats */
+.stats-row {
+    display: grid;
+    /* UI upgrade: Default 2x2 grid instead of cramped 4 cols */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+}
+
+.stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+}
+
+.stat-info { display: flex; flex-direction: column; }
+.stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+.stat-val { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.stat-sub { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+.stat-progress { height: 6px; background: var(--border); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.stat-progress div { height: 100%; background: var(--secondary); border-radius: 4px; transition: width 0.8s ease; }
+
+/* Goal Tracker Widget */
+.goal-tracker-widget {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex; flex-direction: column; gap: 12px;
+}
+
+.gt-header { display: flex; justify-content: space-between; align-items: center; }
+.gt-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
+.gt-tags { display: flex; gap: 12px; align-items: center; font-size: 0.85rem; font-weight: 600; }
+
+.gt-track { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; position: relative; }
+.gt-fill { height: 100%; border-radius: 5px; transition: width 1s ease, background 1s ease; }
+
+.gt-footer { font-size: 0.8rem; color: var(--text-secondary); display: flex; justify-content: space-between; }
+.gt-message { font-weight: 500; }
+.gt-achieved .gt-message { color: var(--secondary); font-weight: 700; }
+
+/* ── 2. SEMESTERS FULL GRID ── */
+.semesters-full-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+
+.semester-card {
+    border-left: 4px solid var(--primary);
+    position: relative;
+}
+.semester-card.class-first { border-left-color: var(--secondary); }
+.semester-card.class-upper { border-left-color: var(--primary); }
+.semester-card.class-lower { border-left-color: var(--accent); }
+.semester-card.class-pass  { border-left-color: var(--text-muted); }
+.semester-card.class-fail  { border-left-color: var(--danger); }
+
+.sem-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.sem-card-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+.sem-card-actions { display: flex; gap: 6px; }
+.sem-card-gpa { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 4px; line-height: 1; }
+.sem-card-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+.sem-card-credits { display: flex; gap: 8px; }
+.credit-pill { flex: 1; background: var(--bg-page); border-radius: 8px; padding: 8px; text-align: center; }
+.credit-pill .val { display: block; font-weight: 700; font-size: 1.1rem; color: var(--text-primary); }
+.credit-pill .lbl { display: block; font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+
+.empty-state-full { grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 4rem; margin-bottom: 16px; }
+
+/* ── 3. ANALYTICS ── */
+.analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.wide-card { grid-column: 1 / -1; }
+
+.chart-container { position: relative; height: 300px; width: 100%; } /* UI upgrade: increased height to 300px */
+.chart-container canvas { max-width: 100%; }
+.chart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; height: 200px; color: var(--text-muted); text-align: center; }
+.chart-empty span { font-size: 3rem; }
+
+.doughnut-container { position: relative; height: 220px; display: flex; align-items: center; justify-content: center; }
+.doughnut-center { position: absolute; text-align: center; pointer-events: none; }
+.doughnut-center span { display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
+.doughnut-center small { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.performance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.perf-item { display: flex; align-items: flex-start; gap: 12px; background: var(--bg-page); border-radius: var(--radius-sm); padding: 14px; transition: transform var(--transition); }
+.perf-item:hover { transform: scale(1.02); }
+.perf-icon { font-size: 1.8rem; flex-shrink: 0; }
+.perf-info { display: flex; flex-direction: column; gap: 2px; }
+.perf-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); font-weight: 600; }
+.perf-val { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+.perf-sub { font-size: 0.78rem; color: var(--text-secondary); }
+
+/* ── 4. PREDICTION ENGINE ── */
+.pred-engine-grid { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; } /* UI upgrade: 320px col */
+.pred-config-col  { display: flex; flex-direction: column; gap: 14px; }
+.pred-results-col { display: flex; flex-direction: column; gap: 14px; }
+
+.target-class-group { display: flex; flex-direction: column; gap: 8px; }
+.target-cls-btn {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    border-radius: var(--radius-sm); border: 2px solid var(--border);
+    background: var(--bg-page); cursor: pointer; text-align: left;
+    transition: all var(--transition); position: relative; overflow: hidden;
+}
+.target-cls-btn::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; transition: background var(--transition); }
+.target-cls-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(3px); }
+.target-cls-btn.active { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.target-cls-btn.active::before { background: var(--primary); }
+
+.target-cls-btn[data-badge="badge-first"].active  { border-color:#059669; background:var(--secondary-light); }
+.target-cls-btn[data-badge="badge-first"].active::before { background:#059669; }
+.target-cls-btn[data-badge="badge-upper"].active  { border-color:var(--primary); background:var(--primary-light); }
+.target-cls-btn[data-badge="badge-upper"].active::before { background:var(--primary); }
+.target-cls-btn[data-badge="badge-lower"].active  { border-color:#d97706; background:var(--accent-light); }
+.target-cls-btn[data-badge="badge-lower"].active::before { background:#d97706; }
+
+.tcb-icon { font-size: 1.4rem; flex-shrink: 0; }
+.tcb-name { flex: 1; font-size: 0.92rem; font-weight: 700; color: var(--text-primary); }
+.tcb-min { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; background: var(--bg-card); padding: 3px 8px; border-radius: var(--radius-full); border: 1px solid var(--border); }
+
+.current-standing { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+.standing-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+.standing-row span { color: var(--text-secondary); }
+.standing-row strong { color: var(--text-primary); font-weight: 700; }
+
+.pred-verdict-banner { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border: 2px solid; animation: fadeUp 0.35s ease; }
+.verdict-can { background: var(--secondary-light); border-color: #6ee7b7; }
+.verdict-cannot { background: var(--accent-light); border-color: #fcd34d; }
+.verdict-done { background: var(--secondary-light); border-color: var(--secondary); }
+.verdict-icon { font-size: 2rem; flex-shrink: 0; }
+.verdict-content { flex: 1; }
+.verdict-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+.verdict-sub { font-size: 0.82rem; color: var(--text-secondary); }
+.verdict-gpa-pill { font-size: 1.4rem; font-weight: 800; color: var(--primary); background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-full); padding: 6px 16px; white-space: nowrap; flex-shrink: 0; }
+.hidden { display: none !important; }
+
+.pred-empty-state { padding: 60px 30px; text-align: center; color: var(--text-muted); }
+.pred-empty-state span { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+
+.pred-result-block { animation: fadeUp 0.4s ease; }
+.pred-block-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.pred-block-icon { font-size: 1.8rem; }
+.pred-block-title { font-size: 1rem; font-weight: 700; }
+
+.pred-gpa-required-box { border-radius: var(--radius); padding: 24px 40px; text-align: center; border: 2px solid; min-width: 220px; }
+.box-achievable { background: var(--secondary-light); border-color: #10b981; }
+.pgrb-value { font-size: 3.2rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 8px; letter-spacing: -1px; }
+.box-achievable .pgrb-value { color: #059669; }
+
+.roadmap-step { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-page); }
+.step-past { opacity: 0.7; }
+.step-next { border-color: var(--primary); background: var(--primary-light); }
+.step-achieved { border-color: #10b981; background: var(--secondary-light); }
+.rs-number { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+.step-next .rs-number { background: var(--primary); color: white; }
+.step-achieved .rs-number { background: #10b981; color: white; }
+.rs-info { flex: 1; }
+.rs-sem-name { font-weight: 700; font-size: 0.95rem; color: var(--text-primary); }
+.rs-sem-note { font-size: 0.8rem; color: var(--text-secondary); }
+.rs-gpa-tag { font-weight: 800; font-size: 1.1rem; color: var(--primary); background: var(--bg-card); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
+.step-achieved .rs-gpa-tag { color: #059669; border-color: #10b981; }
+
+/* ── 5. ROADMAP SECTION ── */
+.roadmap-container { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
+.roadmap-progress { display: flex; justify-content: space-between; align-items: center; }
+.roadmap-progress h4 { font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.completed-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.completed-chip {
+    display: flex; align-items: center; gap: 8px; padding: 8px 14px;
+    background: var(--secondary-light); border: 1px solid #6ee7b7;
+    border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 600; color: #065f46;
+}
+.completed-chip .chip-gpa { background: white; padding: 2px 8px; border-radius: 12px; color: #059669; font-size: 0.75rem; border: 1px solid #6ee7b7; }
+
+.roadmap-divider {
+    display: flex; align-items: center; text-align: center; color: var(--text-muted); margin: 10px 0;
+}
+.roadmap-divider::before, .roadmap-divider::after { content: ''; flex: 1; border-bottom: 1px dashed var(--border); }
+.roadmap-divider span { padding: 0 14px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+.upcoming-timeline { display: flex; flex-direction: column; gap: 10px; }
+.roadmap-timeline-step {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; background: var(--bg-page); border: 1px dashed var(--border);
+    border-radius: var(--radius-sm); transition: all var(--transition);
+}
+.roadmap-timeline-step.active-step {
+    border: 2px solid var(--primary); background: var(--primary-light);
+    transform: scale(1.02); box-shadow: var(--shadow-sm);
+}
+.rts-name { font-weight: 700; color: var(--text-primary); }
+.rts-status { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); background: var(--bg-card); padding: 4px 10px; border-radius: 6px; }
+.active-step .rts-status { color: var(--primary); background: white; }
+
+/* ── 6. GPA CALCULATOR ── */
+.gpa-calc-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .gpa-calc-grid { grid-template-columns: 1fr; } }
+
+.calc-result-card { position: sticky; top: 90px; text-align: center; }
+.calc-gpa-display {
+    font-size: 4rem; font-weight: 800; color: var(--primary);
+    line-height: 1; margin: 20px 0 10px; letter-spacing: -1px;
+}
+.calc-stats-row { display: flex; justify-content: space-around; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+.calc-stat-box .val { display: block; font-size: 1.4rem; font-weight: 800; color: var(--text-primary); }
+.calc-stat-box .lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+
+.calc-progress { height: 8px; background: var(--border); border-radius: var(--radius-full); margin: 20px 0; overflow: hidden; }
+.calc-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #60a5fa); border-radius: var(--radius-full); transition: width 0.5s ease; }

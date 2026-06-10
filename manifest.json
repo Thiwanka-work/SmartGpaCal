@@ -1,0 +1,21 @@
+{
+  "name": "SmartGPA - Academic Portal",
+  "short_name": "SmartGPA",
+  "description": "Calculate your university CGPA, predict future GPA requirements, and track your academic progress easily.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/512px-Google_Drive_icon_%282020%29.svg.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/512px-Google_Drive_icon_%282020%29.svg.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

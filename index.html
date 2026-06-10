@@ -4,12 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartGPA | University Academic Management System</title>
-    <meta name="description"
-        content="Professional university CGPA calculator with credit tracking, GPA prediction, and performance analytics.">
+    <meta name="google-site-verification" content="yWozeo7StvKiuApowC9itVB_ADNS6C8Ll0xhucq3rms" />
+    <!-- SEO Basics -->
+    <title>SmartGPA | University GPA Calculator & Academic Tracker</title>
+    <meta name="description" content="Calculate your university CGPA, predict future GPA requirements, and track your academic progress easily with SmartGPA.">
+    <meta name="keywords" content="GPA calculator, CGPA calculator, university GPA, academic tracker, GPA predictor, Sri Lanka university GPA">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smartgpa.app/">
+    <meta property="og:title" content="SmartGPA | University GPA Calculator & Academic Tracker">
+    <meta property="og:description" content="Calculate your university CGPA, predict future GPA requirements, and track your academic progress easily with SmartGPA.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://smartgpa.app/">
+    <meta property="twitter:title" content="SmartGPA | University GPA Calculator & Academic Tracker">
+    <meta property="twitter:description" content="Calculate your university CGPA, predict future GPA requirements, and track your academic progress easily with SmartGPA.">
+    
+    <!-- PWA & Mobile Optimization -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/192px-Google_Drive_icon_%282020%29.svg.png">
+    
     <!-- Chart.js CDN for line chart analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 </head>
@@ -147,85 +176,74 @@
             </div>
 
             <!-- Main Dashboard Grid (hidden until profile setup) -->
-            <div class="dashboard-grid" id="dashboardGrid" style="display:none;">
-
-                <!-- Row 1: Stats Cards -->
+            <div id="dashboardGrid" style="display:none;">
+                <!-- Stats Row -->
                 <div class="stats-row">
-                    <!-- CGPA Card -->
-                    <div class="stat-card cgpa-card">
-                        <div class="stat-card-header">
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background:var(--secondary-light); color:var(--secondary);">📈</div>
+                        <div class="stat-info">
                             <span class="stat-label">Current CGPA</span>
-                            <span class="stat-icon">📊</span>
+                            <span class="stat-val" id="cgpaValue">0.00</span>
+                            <span class="stat-sub classification-badge badge-nodata" id="classificationBadge">--</span>
                         </div>
-                        <div class="cgpa-display">
-                            <span class="cgpa-value" id="cgpaValue">0.00</span>
-                            <span class="cgpa-max">/ 4.00</span>
-                        </div>
-                        <div id="classificationBadge" class="classification-badge badge-nodata">Not Calculated</div>
-                        <div class="cgpa-ring-wrapper">
-                            <canvas id="cgpaRing" width="90" height="90"></canvas>
+                        <canvas id="cgpaRing" width="0" height="0" style="display:none;"></canvas>
+                    </div>
+
+                    <div class="card stat-card">
+                        <div class="stat-icon">🎓</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Credits Earned</span>
+                            <span class="stat-val"><span id="completedCreditsDisplay">0</span> <span
+                                    style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">/ <span
+                                        id="totalCreditsDisplay">0</span></span></span>
+                            <div class="stat-progress">
+                                <div id="creditProgressBar" style="width: 0%;"></div>
+                            </div>
+                            <span class="stat-sub"><span id="creditProgressPct">0%</span> Completed (<span
+                                    id="remainingCreditsDisplay">0</span> left)</span>
                         </div>
                     </div>
 
-                    <!-- Credits Card -->
-                    <div class="stat-card credits-card">
-                        <div class="stat-card-header">
-                            <span class="stat-label">Credit Progress</span>
-                            <span class="stat-icon">📚</span>
-                        </div>
-                        <div class="credits-numbers">
-                            <div class="credit-item">
-                                <span class="credit-val" id="completedCreditsDisplay">0</span>
-                                <span class="credit-lbl">Completed</span>
-                            </div>
-                            <div class="credit-divider">/</div>
-                            <div class="credit-item">
-                                <span class="credit-val" id="totalCreditsDisplay">--</span>
-                                <span class="credit-lbl">Total</span>
-                            </div>
-                        </div>
-                        <div class="progress-bar-wrapper">
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill" id="creditProgressBar" style="width:0%"></div>
-                            </div>
-                            <span class="progress-pct" id="creditProgressPct">0%</span>
-                        </div>
-                        <div class="remaining-label">Remaining: <strong id="remainingCreditsDisplay">--</strong> credits
-                        </div>
-                    </div>
-
-                    <!-- Semesters Card -->
-                    <div class="stat-card semesters-card">
-                        <div class="stat-card-header">
+                    <div class="card stat-card">
+                        <div class="stat-icon" style="background:var(--accent-light); color:var(--accent);">📅</div>
+                        <div class="stat-info">
                             <span class="stat-label">Semesters</span>
-                            <span class="stat-icon">🗓️</span>
-                        </div>
-                        <div class="big-number" id="semesterCountDisplay">0</div>
-                        <div class="stat-sub">semesters recorded</div>
-                        <div class="mini-stats">
-                            <div class="mini-stat-item">
-                                <span class="mini-label">Best GPA</span>
-                                <span class="mini-val" id="bestGpaDisplay">--</span>
-                            </div>
-                            <div class="mini-stat-item">
-                                <span class="mini-label">Lowest GPA</span>
-                                <span class="mini-val" id="lowestGpaDisplay">--</span>
-                            </div>
+                            <span class="stat-val" id="semesterCountDisplay">0</span>
+                            <span class="stat-sub">Best: <span id="bestGpaDisplay"
+                                    style="color:var(--secondary);font-weight:700;">--</span> | Lowest: <span
+                                    id="lowestGpaDisplay" style="color:var(--danger);font-weight:700;">--</span></span>
                         </div>
                     </div>
 
-                    <!-- Status Card -->
-                    <div class="stat-card status-card">
-                        <div class="stat-card-header">
+                    <div class="card stat-card">
+                        <div class="stat-icon" id="statusIconBig"
+                            style="background:var(--danger-light); color:var(--danger);">📋</div>
+                        <div class="stat-info">
                             <span class="stat-label">Academic Status</span>
-                            <span class="stat-icon">🏆</span>
+                            <span class="stat-val" id="statusText" style="font-size:1.1rem;">No data yet</span>
+                            <span class="stat-sub"><span id="trendArrow"
+                                    style="font-weight:bold;margin-right:4px;">→</span><span id="trendText">Add
+                                    semesters to see trend</span></span>
                         </div>
-                        <div class="status-icon-big" id="statusIconBig">📋</div>
-                        <div class="status-text" id="statusText">No data yet</div>
-                        <div class="trend-indicator" id="trendIndicator">
-                            <span class="trend-arrow" id="trendArrow">→</span>
-                            <span class="trend-text" id="trendText">Add semesters to see trend</span>
+                    </div>
+                </div>
+
+                <!-- Goal Tracker Widget -->
+                <div class="goal-tracker-widget" id="goalTrackerWidget" style="display: none;">
+                    <div class="gt-header">
+                        <h3>Target Goal Tracker</h3>
+                        <div class="gt-tags">
+                            <span id="gtCurrentClass">🏆 --</span>
+                            <span style="color:var(--text-muted);">→</span>
+                            <span id="gtTargetClass">🎯 --</span>
                         </div>
+                    </div>
+                    <div class="gt-track">
+                        <div class="gt-fill" id="gtProgressBar" style="width: 0%;"></div>
+                    </div>
+                    <div class="gt-footer">
+                        <span class="gt-message" id="gtMessage">Keep pushing forward!</span>
+                        <span style="font-weight: 700; color: var(--text-primary);">CGPA: <span id="gtCgpaValue">0.00</span></span>
                     </div>
                 </div>
 
@@ -869,7 +887,25 @@
         </svg>
     </button>
 
-    <script src="script.js"></script>
+    <!-- JS Modules -->
+    <script src="js/state.js"></script>
+    <script src="js/calculations.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/gpacalc.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('SW registered: ', registration);
+                }).catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>

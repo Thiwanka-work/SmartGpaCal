@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartGPA | University Academic Management System</title>
-    <meta name="description" content="Professional university CGPA calculator with credit tracking, GPA prediction, and performance analytics.">
+    <meta name="description"
+        content="Professional university CGPA calculator with credit tracking, GPA prediction, and performance analytics.">
     <!-- Chart.js CDN for line chart analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <!-- ===================== SIDEBAR NAVIGATION ===================== -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3ZM5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3ZM5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"
+                        fill="currentColor" />
+                </svg>
             </div>
             <div class="logo-text">
                 <span class="logo-name">SmartGPA</span>
@@ -26,35 +33,67 @@
 
         <nav class="sidebar-nav">
             <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
-                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor"/><rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor"/><rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor"/><rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor" />
+                </svg>
                 <span>Dashboard</span>
             </a>
             <a href="#" class="nav-item" data-section="semesters" id="nav-semesters">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"
+                        fill="currentColor" />
+                </svg>
                 <span>Semesters</span>
             </a>
             <a href="#" class="nav-item" data-section="analytics" id="nav-analytics">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 18.49L9.5 12.48L13.5 16.48L22 6.92L20.59 5.51L13.5 13.48L9.5 9.48L2 16.99L3.5 18.49Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M3.5 18.49L9.5 12.48L13.5 16.48L22 6.92L20.59 5.51L13.5 13.48L9.5 9.48L2 16.99L3.5 18.49Z"
+                        fill="currentColor" />
+                </svg>
                 <span>Analytics</span>
             </a>
             <a href="#" class="nav-item" data-section="prediction" id="nav-prediction">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z"
+                        fill="currentColor" />
+                </svg>
                 <span>Prediction</span>
             </a>
             <a href="#" class="nav-item" data-section="gpacalc" id="nav-gpacalc">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM13 17H7V15H13V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM13 17H7V15H13V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z"
+                        fill="currentColor" />
+                </svg>
                 <span>GPA Calculator</span>
             </a>
         </nav>
 
         <div class="sidebar-footer">
             <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
-                <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><path d="M12 7C9.24 7 7 9.24 7 12C7 14.76 9.24 17 12 17C14.76 17 17 14.76 17 12C17 9.24 14.76 7 12 7ZM2 13H4C4.55 13 5 12.55 5 12C5 11.45 4.55 11 4 11H2C1.45 11 1 11.45 1 12C1 12.55 1.45 13 2 13ZM20 13H22C22.55 13 23 12.55 23 12C23 11.45 22.55 11 22 11H20C19.45 11 19 11.45 19 12C19 12.55 19.45 13 20 13ZM11 2V4C11 4.55 11.45 5 12 5C12.55 5 13 4.55 13 4V2C13 1.45 12.55 1 12 1C11.45 1 11 1.45 11 2ZM11 20V22C11 22.55 11.45 23 12 23C12.55 23 13 22.55 13 22V20C13 19.45 12.55 19 12 19C11.45 19 11 19.45 11 20Z" fill="currentColor"/></svg>
-                <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C15.5 21 18.57 19.07 20.2 16.19C17.02 16.19 14.19 14.76 12.31 12.5C10.43 10.24 9.5 7.37 10.04 4.31C10.58 3.86 11.28 3.57 12 3.5C12 3.33 12 3.17 12 3Z" fill="currentColor"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 7C9.24 7 7 9.24 7 12C7 14.76 9.24 17 12 17C14.76 17 17 14.76 17 12C17 9.24 14.76 7 12 7ZM2 13H4C4.55 13 5 12.55 5 12C5 11.45 4.55 11 4 11H2C1.45 11 1 11.45 1 12C1 12.55 1.45 13 2 13ZM20 13H22C22.55 13 23 12.55 23 12C23 11.45 22.55 11 22 11H20C19.45 11 19 11.45 19 12C19 12.55 19.45 13 20 13ZM11 2V4C11 4.55 11.45 5 12 5C12.55 5 13 4.55 13 4V2C13 1.45 12.55 1 12 1C11.45 1 11 1.45 11 2ZM11 20V22C11 22.55 11.45 23 12 23C12.55 23 13 22.55 13 22V20C13 19.45 12.55 19 12 19C11.45 19 11 19.45 11 20Z"
+                        fill="currentColor" />
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C15.5 21 18.57 19.07 20.2 16.19C17.02 16.19 14.19 14.76 12.31 12.5C10.43 10.24 9.5 7.37 10.04 4.31C10.58 3.86 11.28 3.57 12 3.5C12 3.33 12 3.17 12 3Z"
+                        fill="currentColor" />
+                </svg>
                 <span>Dark Mode</span>
             </button>
             <button class="reset-btn" id="resetBtn">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z"
+                        fill="currentColor" />
+                </svg>
                 <span>Reset All</span>
             </button>
         </div>
@@ -75,7 +114,11 @@
                 <div class="student-info">
                     <span class="student-name" id="studentNameDisplay">My Academic Record</span>
                     <div class="student-avatar">
-                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+                                fill="currentColor" />
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -92,8 +135,13 @@
                 <h2>Welcome to SmartGPA</h2>
                 <p>Set up your academic profile to get started</p>
                 <div class="profile-setup">
-                    <input type="text" id="studentNameInput" placeholder="Your Name (e.g., John Doe)" maxlength="50">
-                    <input type="number" id="totalCreditsInput" placeholder="Total Program Credits (e.g., 120)" min="30" max="300" step="1">
+                    <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
+                    <input type="number" id="totalCreditsInput" placeholder="Total Program Credits" min="30" max="300"
+                        step="1">
+                    <input type="number" id="totalSemestersInput" placeholder="Total Program Semesters" min="1" max="20"
+                        step="1">
+                    <input type="number" id="completedSemestersInput" placeholder="Already Completed Semesters" min="0"
+                        max="20" step="1">
                     <button class="btn-primary" id="setupProfileBtn">Get Started →</button>
                 </div>
             </div>
@@ -142,7 +190,8 @@
                             </div>
                             <span class="progress-pct" id="creditProgressPct">0%</span>
                         </div>
-                        <div class="remaining-label">Remaining: <strong id="remainingCreditsDisplay">--</strong> credits</div>
+                        <div class="remaining-label">Remaining: <strong id="remainingCreditsDisplay">--</strong> credits
+                        </div>
                     </div>
 
                     <!-- Semesters Card -->
@@ -180,6 +229,27 @@
                     </div>
                 </div>
 
+                <!-- Row 1.5: Semester Roadmap -->
+                <div class="roadmap-row" style="margin-bottom: 20px;">
+                    <div class="card roadmap-card">
+                        <div class="card-header">
+                            <h3>Semester Roadmap</h3>
+                            <span class="card-badge" id="roadmapProgressBadge">0 of 0 Semesters</span>
+                        </div>
+                        <div class="roadmap-container" id="roadmapContainer">
+                            <div class="completed-sems-section" id="completedSemsSection" style="display: none;">
+                                <h4>Completed Semesters</h4>
+                                <div class="completed-chips" id="completedChips"></div>
+                            </div>
+                            <div class="roadmap-divider" id="roadmapDivider" style="display: none;"></div>
+                            <div class="upcoming-sems-section" id="upcomingSemsSection">
+                                <h4>Upcoming Semester Roadmap</h4>
+                                <div class="roadmap-timeline" id="upcomingTimeline"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Row 2: Quick Add + Recent Semesters Table -->
                 <div class="content-row">
                     <!-- Quick Add Semester Panel -->
@@ -204,7 +274,9 @@
                         </div>
                         <div class="form-error" id="formError"></div>
                         <button class="btn-primary btn-full" id="addSemesterBtn">
-                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
+                            </svg>
                             Add Semester
                         </button>
                     </div>
@@ -369,24 +441,30 @@
 
                     <!-- Target Class Selector -->
                     <div class="card pred-target-selector-card">
-                        <div class="card-header"><h3>🎯 Select Your Target</h3></div>
+                        <div class="card-header">
+                            <h3>🎯 Select Your Target</h3>
+                        </div>
                         <div class="target-class-group" id="targetClassGroup">
-                            <button class="target-cls-btn active" data-target="3.70" data-label="First Class" data-badge="badge-first">
+                            <button class="target-cls-btn active" data-target="3.70" data-label="First Class"
+                                data-badge="badge-first">
                                 <span class="tcb-icon">🏆</span>
                                 <span class="tcb-name">First Class</span>
                                 <span class="tcb-min">≥ 3.70 CGPA</span>
                             </button>
-                            <button class="target-cls-btn" data-target="3.30" data-label="Second Upper" data-badge="badge-upper">
+                            <button class="target-cls-btn" data-target="3.30" data-label="Second Upper"
+                                data-badge="badge-upper">
                                 <span class="tcb-icon">🥇</span>
                                 <span class="tcb-name">Second Upper</span>
                                 <span class="tcb-min">≥ 3.30 CGPA</span>
                             </button>
-                            <button class="target-cls-btn" data-target="3.00" data-label="Second Lower" data-badge="badge-lower">
+                            <button class="target-cls-btn" data-target="3.00" data-label="Second Lower"
+                                data-badge="badge-lower">
                                 <span class="tcb-icon">🥈</span>
                                 <span class="tcb-name">Second Lower</span>
                                 <span class="tcb-min">≥ 3.00 CGPA</span>
                             </button>
-                            <button class="target-cls-btn" data-target="2.00" data-label="General Pass" data-badge="badge-pass">
+                            <button class="target-cls-btn" data-target="2.00" data-label="General Pass"
+                                data-badge="badge-pass">
                                 <span class="tcb-icon">✅</span>
                                 <span class="tcb-name">General Pass</span>
                                 <span class="tcb-min">≥ 2.00 CGPA</span>
@@ -396,23 +474,31 @@
 
                     <!-- Credits Input -->
                     <div class="card">
-                        <div class="card-header"><h3>⚙️ Simulation Settings</h3></div>
+                        <div class="card-header">
+                            <h3>⚙️ Simulation Settings</h3>
+                        </div>
                         <div class="form-field">
                             <label for="predNextCredits">Credits Per Upcoming Semester</label>
                             <input type="number" id="predNextCredits" min="1" max="60" step="1" value="18">
                         </div>
                         <button class="btn-primary btn-full" id="runPredictionBtn">
-                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                                <path d="M8 5v14l11-7z" fill="currentColor" />
+                            </svg>
                             Run Prediction
                         </button>
 
                         <!-- Current Standing -->
                         <div class="current-standing">
                             <h4>Current Academic Standing</h4>
-                            <div class="standing-row"><span>Current CGPA</span><strong id="predCurrentCgpa">--</strong></div>
-                            <div class="standing-row"><span>Classification</span><strong id="predCurrentClass">--</strong></div>
-                            <div class="standing-row"><span>Completed Credits</span><strong id="predCompletedCredits">--</strong></div>
-                            <div class="standing-row"><span>Remaining Credits</span><strong id="predRemainingCredits">--</strong></div>
+                            <div class="standing-row"><span>Current CGPA</span><strong id="predCurrentCgpa">--</strong>
+                            </div>
+                            <div class="standing-row"><span>Classification</span><strong
+                                    id="predCurrentClass">--</strong></div>
+                            <div class="standing-row"><span>Completed Credits</span><strong
+                                    id="predCompletedCredits">--</strong></div>
+                            <div class="standing-row"><span>Remaining Credits</span><strong
+                                    id="predRemainingCredits">--</strong></div>
                         </div>
                     </div>
                 </div>
@@ -434,7 +520,8 @@
                     <div class="pred-empty-state" id="predEmptyState">
                         <span>🔮</span>
                         <h3>Select a target &amp; run prediction</h3>
-                        <p>Choose your desired classification above and click "Run Prediction" to see your personalised academic roadmap.</p>
+                        <p>Choose your desired classification above and click "Run Prediction" to see your personalised
+                            academic roadmap.</p>
                     </div>
 
                     <!-- One-Semester Result -->
@@ -473,15 +560,48 @@
 
             <!-- Classification Guide (bottom, full width) -->
             <div class="card class-guide-full" style="margin-top:18px;">
-                <div class="card-header"><h3>Classification Reference</h3></div>
-                <div class="class-guide-row">
-                    <div class="class-item first-class"><div class="class-range">≥ 3.70</div><div class="class-name">First Class</div><div class="class-bar"><div style="width:100%"></div></div></div>
-                    <div class="class-item second-upper"><div class="class-range">3.30 – 3.69</div><div class="class-name">Second Upper</div><div class="class-bar"><div style="width:82%"></div></div></div>
-                    <div class="class-item second-lower"><div class="class-range">3.00 – 3.29</div><div class="class-name">Second Lower</div><div class="class-bar"><div style="width:68%"></div></div></div>
-                    <div class="class-item general-pass"><div class="class-range">2.00 – 2.99</div><div class="class-name">General Pass</div><div class="class-bar"><div style="width:47%"></div></div></div>
-                    <div class="class-item fail"><div class="class-range">< 2.00</div><div class="class-name">Fail</div><div class="class-bar"><div style="width:18%"></div></div></div>
+                <div class="card-header">
+                    <h3>Classification Reference</h3>
                 </div>
-            </div>
+                <div class="class-guide-row">
+                    <div class="class-item first-class">
+                        <div class="class-range">≥ 3.70</div>
+                        <div class="class-name">First Class</div>
+                        <div class="class-bar">
+                            <div style="width:100%"></div>
+                        </div>
+                    </div>
+                    <div class="class-item second-upper">
+                        <div class="class-range">3.30 – 3.69</div>
+                        <div class="class-name">Second Upper</div>
+                        <div class="class-bar">
+                            <div style="width:82%"></div>
+                        </div>
+                    </div>
+                    <div class="class-item second-lower">
+                        <div class="class-range">3.00 – 3.29</div>
+                        <div class="class-name">Second Lower</div>
+                        <div class="class-bar">
+                            <div style="width:68%"></div>
+                        </div>
+                    </div>
+                    <div class="class-item general-pass">
+                        <div class="class-range">2.00 – 2.99</div>
+                        <div class="class-name">General Pass</div>
+                        <div class="class-bar">
+                            <div style="width:47%"></div>
+                        </div>
+                    </div>
+                    <div class="class-item fail">
+                        <div class="class-range">
+                            < 2.00</div>
+                                <div class="class-name">Fail</div>
+                                <div class="class-bar">
+                                    <div style="width:18%"></div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
 
         </section>
 
@@ -494,10 +614,14 @@
             <div class="section-header-row">
                 <div>
                     <h2>GPA Calculator</h2>
-                    <p class="section-sub">Enter your courses, grades &amp; credits to calculate your semester GPA instantly</p>
+                    <p class="section-sub">Enter your courses, grades &amp; credits to calculate your semester GPA
+                        instantly</p>
                 </div>
                 <button class="btn-primary" id="clearCalcBtn">
-                    <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" width="15" height="15">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                            fill="currentColor" />
+                    </svg>
                     Clear All
                 </button>
             </div>
@@ -522,25 +646,28 @@
                                 <label for="calcGrade">Grade</label>
                                 <select id="calcGrade">
                                     <option value="4.00" data-label="A+">A+ (4.00)</option>
-                                    <option value="4.00" data-label="A">A  (4.00)</option>
+                                    <option value="4.00" data-label="A">A (4.00)</option>
                                     <option value="3.75" data-label="A-">A- (3.75)</option>
                                     <option value="3.50" data-label="B+">B+ (3.50)</option>
-                                    <option value="3.00" data-label="B">B  (3.00)</option>
+                                    <option value="3.00" data-label="B">B (3.00)</option>
                                     <option value="2.75" data-label="B-">B- (2.75)</option>
                                     <option value="2.50" data-label="C+">C+ (2.50)</option>
-                                    <option value="2.00" data-label="C">C  (2.00)</option>
+                                    <option value="2.00" data-label="C">C (2.00)</option>
                                     <option value="1.75" data-label="C-">C- (1.75)</option>
                                     <option value="1.50" data-label="D+">D+ (1.50)</option>
-                                    <option value="1.00" data-label="D">D  (1.00)</option>
-                                    <option value="0.00" data-label="E">E  (0.00)</option>
+                                    <option value="1.00" data-label="D">D (1.00)</option>
+                                    <option value="0.00" data-label="E">E (0.00)</option>
                                 </select>
                             </div>
                             <div class="form-field">
                                 <label for="calcCredits">Credit Hours</label>
-                                <input type="number" id="calcCredits" placeholder="e.g. 3" min="1" max="6" step="1" value="3">
+                                <input type="number" id="calcCredits" placeholder="e.g. 3" min="1" max="6" step="1"
+                                    value="3">
                             </div>
                             <button class="btn-primary calc-add-btn" id="calcAddCourseBtn">
-                                <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                                    <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
+                                </svg>
                                 Add
                             </button>
                         </div>
@@ -588,7 +715,8 @@
                             <div class="calc-gpa-value" id="calcGpaValue">0.00</div>
                             <div class="calc-gpa-max">out of 4.00</div>
                         </div>
-                        <div id="calcBadge" class="classification-badge badge-nodata" style="margin-bottom:16px;">--</div>
+                        <div id="calcBadge" class="classification-badge badge-nodata" style="margin-bottom:16px;">--
+                        </div>
 
                         <!-- Mini summary -->
                         <div class="calc-summary">
@@ -625,21 +753,73 @@
                         </div>
                         <table class="grade-scale-table">
                             <thead>
-                                <tr><th>Grade</th><th>Points</th><th>Range</th></tr>
+                                <tr>
+                                    <th>Grade</th>
+                                    <th>Points</th>
+                                    <th>Range</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr><td><span class="grade-letter g-ap">A+</span></td><td>4.00</td><td>90–100</td></tr>
-                                <tr><td><span class="grade-letter g-a">A</span></td><td>4.00</td><td>85–89</td></tr>
-                                <tr><td><span class="grade-letter g-am">A-</span></td><td>3.75</td><td>80–84</td></tr>
-                                <tr><td><span class="grade-letter g-bp">B+</span></td><td>3.50</td><td>75–79</td></tr>
-                                <tr><td><span class="grade-letter g-b">B</span></td><td>3.00</td><td>70–74</td></tr>
-                                <tr><td><span class="grade-letter g-bm">B-</span></td><td>2.75</td><td>65–69</td></tr>
-                                <tr><td><span class="grade-letter g-cp">C+</span></td><td>2.50</td><td>60–64</td></tr>
-                                <tr><td><span class="grade-letter g-c">C</span></td><td>2.00</td><td>55–59</td></tr>
-                                <tr><td><span class="grade-letter g-cm">C-</span></td><td>1.75</td><td>50–54</td></tr>
-                                <tr><td><span class="grade-letter g-dp">D+</span></td><td>1.50</td><td>45–49</td></tr>
-                                <tr><td><span class="grade-letter g-d">D</span></td><td>1.00</td><td>40–44</td></tr>
-                                <tr><td><span class="grade-letter g-e">E</span></td><td>0.00</td><td>0–39</td></tr>
+                                <tr>
+                                    <td><span class="grade-letter g-ap">A+</span></td>
+                                    <td>4.00</td>
+                                    <td>90–100</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-a">A</span></td>
+                                    <td>4.00</td>
+                                    <td>85–89</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-am">A-</span></td>
+                                    <td>3.75</td>
+                                    <td>80–84</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-bp">B+</span></td>
+                                    <td>3.50</td>
+                                    <td>75–79</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-b">B</span></td>
+                                    <td>3.00</td>
+                                    <td>70–74</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-bm">B-</span></td>
+                                    <td>2.75</td>
+                                    <td>65–69</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-cp">C+</span></td>
+                                    <td>2.50</td>
+                                    <td>60–64</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-c">C</span></td>
+                                    <td>2.00</td>
+                                    <td>55–59</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-cm">C-</span></td>
+                                    <td>1.75</td>
+                                    <td>50–54</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-dp">D+</span></td>
+                                    <td>1.50</td>
+                                    <td>45–49</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-d">D</span></td>
+                                    <td>1.00</td>
+                                    <td>40–44</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="grade-letter g-e">E</span></td>
+                                    <td>0.00</td>
+                                    <td>0–39</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -682,9 +862,14 @@
 
     <!-- ===================== EXPORT / PDF BUTTON (Floating) ===================== -->
     <button class="fab-export" id="exportPdfBtn" title="Export CGPA Report as PDF">
-        <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z" fill="currentColor"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path
+                d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z"
+                fill="currentColor" />
+        </svg>
     </button>
 
     <script src="script.js"></script>
 </body>
+
 </html>

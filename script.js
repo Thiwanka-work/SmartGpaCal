@@ -13,6 +13,8 @@
 let appState = {
     studentName:   '',      // Student's name
     totalCredits:  0,       // Total program credits (e.g. 120)
+    totalSemesters: 8,      // Total semesters in program
+    completedSemesters: 0,  // Completed semesters
     semesters:     [],      // Array of semester objects
     profileSetup:  false    // Whether initial setup is done
 };
@@ -47,6 +49,8 @@ function loadFromStorage() {
     if (raw) {
         try {
             appState = JSON.parse(raw);
+            if (appState.totalSemesters === undefined) appState.totalSemesters = 8;
+            if (appState.completedSemesters === undefined) appState.completedSemesters = 0;
         } catch (e) {
             console.warn('Could not parse saved data, starting fresh.');
         }
@@ -65,7 +69,8 @@ function bindEvents() {
     });
 
     // ---- Mobile menu toggle ----
-    $('menuToggle').addEventListener('click', () => {
+    $('menuToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
         $('sidebar').classList.toggle('open');
     });
 
@@ -78,8 +83,8 @@ function bindEvents() {
     $('setupProfileBtn').addEventListener('click', handleProfileSetup);
 
     // Allow Enter key on profile setup
-    [$('studentNameInput'), $('totalCreditsInput')].forEach(el => {
-        el.addEventListener('keydown', e => { if (e.key === 'Enter') handleProfileSetup(); });
+    [$('studentNameInput'), $('totalCreditsInput'), $('totalSemestersInput'), $('completedSemestersInput')].forEach(el => {
+        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleProfileSetup(); });
     });
 
     // ---- Add Semester (Dashboard quick-add form) ----
@@ -155,8 +160,16 @@ function navigateTo(sectionId) {
 // ── 8. PROFILE SETUP ───────────────────────────────────────────
 
 function handleProfileSetup() {
-    const name    = $('studentNameInput').value.trim();
-    const credits = parseInt($('totalCreditsInput').value, 10);
+    const name     = $('studentNameInput').value.trim();
+    const credits  = parseInt($('totalCreditsInput').value, 10);
+    const totalSem = parseInt($('totalSemestersInput').value, 10);
+    const compSem  = parseInt($('completedSemestersInput').value, 10);
+
+    // Reset styles
+    $('studentNameInput').style.borderColor = '';
+    $('totalCreditsInput').style.borderColor = '';
+    $('totalSemestersInput').style.borderColor = '';
+    $('completedSemestersInput').style.borderColor = '';
 
     if (!name) {
         $('studentNameInput').style.borderColor = 'var(--danger)';
@@ -166,10 +179,20 @@ function handleProfileSetup() {
         $('totalCreditsInput').style.borderColor = 'var(--danger)';
         return;
     }
+    if (!totalSem || totalSem < 1 || totalSem > 20) {
+        $('totalSemestersInput').style.borderColor = 'var(--danger)';
+        return;
+    }
+    if (isNaN(compSem) || compSem < 0 || compSem > totalSem) {
+        $('completedSemestersInput').style.borderColor = 'var(--danger)';
+        return;
+    }
 
-    appState.studentName  = name;
-    appState.totalCredits = credits;
-    appState.profileSetup = true;
+    appState.studentName        = name;
+    appState.totalCredits       = credits;
+    appState.totalSemesters     = totalSem;
+    appState.completedSemesters = compSem;
+    appState.profileSetup       = true;
 
     saveToStorage();
     renderAll();
@@ -348,7 +371,103 @@ function renderAll() {
         renderSemesterCards();
         renderAnalyticsSummary();
         renderCgpaRing();
+        renderSemesterRoadmap();
         updatePredictionStanding();
+    }
+}
+
+/** Render visual semester roadmap, dividing completed from upcoming semesters */
+function renderSemesterRoadmap() {
+    const totalSems = appState.totalSemesters || 8;
+    const compSems = appState.completedSemesters || 0;
+    const recordedSems = appState.semesters;
+    
+    const lastCompletedIndex = Math.max(compSems, recordedSems.length);
+    
+    // Update progress badge
+    const badge = $('roadmapProgressBadge');
+    if (badge) {
+        badge.textContent = `${lastCompletedIndex} of ${totalSems} Semesters (${totalSems > 0 ? Math.min(100, Math.round((lastCompletedIndex / totalSems) * 100)) : 0}% Complete)`;
+    }
+    
+    const completedChipsDiv = $('completedChips');
+    const completedSection = $('completedSemsSection');
+    const roadmapDivider = $('roadmapDivider');
+    const upcomingTimeline = $('upcomingTimeline');
+    const upcomingSection = $('upcomingSemsSection');
+    
+    // 1. Render Completed Semesters Section
+    if (completedChipsDiv) {
+        completedChipsDiv.innerHTML = '';
+        if (lastCompletedIndex > 0) {
+            completedSection.style.display = '';
+            roadmapDivider.style.display = '';
+            
+            for (let i = 1; i <= lastCompletedIndex; i++) {
+                // Check if we have recorded data for this semester
+                const semData = recordedSems[i - 1];
+                let displayName = `Semester ${i}`;
+                let detailText = 'No record';
+                let hasGpa = false;
+                
+                if (semData) {
+                    displayName = semData.name;
+                    detailText = `${semData.gpa.toFixed(2)} GPA`;
+                    hasGpa = true;
+                }
+                
+                const chip = document.createElement('div');
+                chip.className = 'completed-chip';
+                chip.innerHTML = `
+                    <span class="icon">✅</span>
+                    <span class="chip-name">${escHtml(displayName)}</span>
+                    <span class="chip-gpa" style="${hasGpa ? '' : 'color:var(--text-muted); font-style:italic; border-color:var(--border);'}">${detailText}</span>
+                `;
+                completedChipsDiv.appendChild(chip);
+            }
+        } else {
+            completedSection.style.display = 'none';
+            roadmapDivider.style.display = 'none';
+        }
+    }
+    
+    // 2. Render Upcoming Semesters Section
+    if (upcomingTimeline) {
+        upcomingTimeline.innerHTML = '';
+        const upcomingCount = totalSems - lastCompletedIndex;
+        
+        if (upcomingCount > 0) {
+            upcomingSection.style.display = '';
+            
+            for (let i = lastCompletedIndex + 1; i <= totalSems; i++) {
+                const step = document.createElement('div');
+                const isNext = (i === lastCompletedIndex + 1);
+                step.className = `roadmap-timeline-step ${isNext ? 'active-step' : ''}`;
+                
+                step.innerHTML = `
+                    <div class="rts-name">Semester ${i}</div>
+                    <div class="rts-status">${isNext ? '🎯 Next Up' : '⏳ Pending'}</div>
+                `;
+                upcomingTimeline.appendChild(step);
+            }
+        } else {
+            // All semesters completed!
+            upcomingSection.style.display = 'none';
+            roadmapDivider.style.display = 'none'; // hide divider if no upcoming
+            
+            // If everything is completed, show a congratulatory state
+            const congMessage = document.createElement('div');
+            congMessage.className = 'pred-empty';
+            congMessage.style.padding = '20px';
+            congMessage.style.width = '100%';
+            congMessage.innerHTML = `
+                <div style="font-size: 2.5rem; margin-bottom: 8px;">🎓</div>
+                <h4 style="color:#059669; font-weight:700;">Congratulations!</h4>
+                <p style="font-size:0.85rem; color:var(--text-secondary);">You have completed all semesters of your program.</p>
+            `;
+            upcomingTimeline.appendChild(congMessage);
+            upcomingSection.style.display = '';
+        }
     }
 }
 
@@ -848,12 +967,26 @@ function renderPrediction() {
     const activeBtn  = document.querySelector('.target-cls-btn.active');
     const targetName = activeBtn ? activeBtn.dataset.label : "Target Class";
 
+    // Dynamic semester offset logic
+    const startSemOffset = Math.max(appState.completedSemesters || 0, appState.semesters.length);
+    const remainingSemestersInProgram = Math.max(0, (appState.totalSemesters || 8) - startSemOffset);
+
+    if (remainingSemestersInProgram === 0) {
+        banner.className = 'pred-verdict-banner verdict-done';
+        $('verdictIcon').textContent = '🎓';
+        $('verdictTitle').textContent = 'Program Completed';
+        $('verdictSub').textContent = `No upcoming semesters remaining in your program.`;
+        $('verdictGpaPill').textContent = `Finished`;
+        banner.classList.remove('hidden');
+        return;
+    }
+
     // Calculate needed for 1 semester
     // needed = (target * (completed + nextCredits) - cgpa * completed) / nextCredits
     const needed1Sem = (targetCGPA * (completed + nextCredits) - cgpa * completed) / nextCredits;
 
     // Even if cgpa >= targetCGPA, we just show the 1-semester block to maintain standing!
-    if (needed1Sem <= 4.00) {
+    if (needed1Sem <= 4.00 && remainingSemestersInProgram >= 1) {
         let requiredGpa = Math.max(0, needed1Sem); // Can't be negative
         
         // Show 1 semester block
@@ -867,15 +1000,15 @@ function renderPrediction() {
         $('verdictGpaPill').textContent = `Need ${requiredGpa.toFixed(2)}`;
         
         b1sem.classList.remove('hidden');
-        $('pred1SemTitle').textContent = 'Next Semester Goal';
+        $('pred1SemTitle').textContent = `Semester ${startSemOffset + 1} Goal`;
         $('pred1SemSub').textContent = `Based on taking ${nextCredits} credits`;
         
         const gpaBox = $('pred1SemBox');
         gpaBox.className = 'pred-gpa-required-box box-achievable';
         $('pred1SemGpa').textContent = requiredGpa.toFixed(2);
         $('pred1SemNote').textContent = (cgpa >= targetCGPA)
-            ? `Score at least this GPA next semester to stay in ${targetName}.`
-            : `Score this GPA next semester to hit ${targetCGPA.toFixed(2)} CGPA.`;
+            ? `Score at least this GPA in Semester ${startSemOffset + 1} to stay in ${targetName}.`
+            : `Score this GPA in Semester ${startSemOffset + 1} to hit ${targetCGPA.toFixed(2)} CGPA.`;
             
         banner.classList.remove('hidden');
     } else {
@@ -892,8 +1025,8 @@ function renderPrediction() {
         let targetSems = 0;
         let balancedGPA = 0;
         
-        // Find the fastest path (minimum semesters needed)
-        for (let sems = 2; sems <= 8; sems++) {
+        // Find the fastest path (minimum semesters needed) within remaining program semesters
+        for (let sems = 2; sems <= remainingSemestersInProgram; sems++) {
             let totalFutureCredits = sems * nextCredits;
             let neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
             
@@ -932,11 +1065,13 @@ function renderPrediction() {
                 // Ensure the final step visually shows exactly the target to avoid tiny float rounding issues
                 const displayCGPA = isLast ? Math.max(targetCGPA, simCGPA) : simCGPA;
                 
+                const semNumber = startSemOffset + i;
+                
                 roadmapHTML += `
                     <div class="roadmap-step ${isLast ? 'step-achieved' : 'step-next'}">
-                        <div class="rs-number">${i}</div>
+                        <div class="rs-number">${semNumber}</div>
                         <div class="rs-info">
-                            <div class="rs-sem-name">Future Semester ${i}</div>
+                            <div class="rs-sem-name">Semester ${semNumber}</div>
                             <div class="rs-sem-note">Score ${balancedGPA.toFixed(2)} (${nextCredits} cr.)</div>
                         </div>
                         <div class="rs-gpa-tag">CGPA ${displayCGPA.toFixed(2)}</div>
@@ -947,16 +1082,28 @@ function renderPrediction() {
             $('predRoadmapNote').innerHTML = `💡 <strong>Analysis:</strong> By balancing your effort to hit exactly <strong>${balancedGPA.toFixed(2)}</strong> each semester, your CGPA will steadily climb to your goal.`;
         } else {
             $('predMultiSub').textContent = `Mathematical Limit Reached`;
-            roadmapHTML = `
-                <div class="pred-empty" style="text-align:center; padding: 20px; border-radius:8px; border:1px solid var(--border);">
-                    <div style="font-size: 2.5rem; margin-bottom:10px;">📉</div>
-                    <p style="color:var(--danger); font-weight:600;">Mathematically impossible.</p>
-                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">
-                        Even with perfect 4.00 GPAs for the next 8 semesters (${8 * nextCredits} credits), 
-                        you cannot pull your CGPA up to ${targetCGPA.toFixed(2)}.
-                    </p>
-                </div>
-            `;
+            if (remainingSemestersInProgram < 2) {
+                roadmapHTML = `
+                    <div class="pred-empty" style="text-align:center; padding: 20px; border-radius:8px; border:1px solid var(--border);">
+                        <div style="font-size: 2.5rem; margin-bottom:10px;">📉</div>
+                        <p style="color:var(--danger); font-weight:600;">Not enough semesters remaining.</p>
+                        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">
+                            You only have ${remainingSemestersInProgram} semester remaining, but you need multiple semesters at a higher GPA to reach ${targetCGPA.toFixed(2)}.
+                        </p>
+                    </div>
+                `;
+            } else {
+                roadmapHTML = `
+                    <div class="pred-empty" style="text-align:center; padding: 20px; border-radius:8px; border:1px solid var(--border);">
+                        <div style="font-size: 2.5rem; margin-bottom:10px;">📉</div>
+                        <p style="color:var(--danger); font-weight:600;">Mathematically impossible.</p>
+                        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">
+                            Even with perfect 4.00 GPAs for the next ${remainingSemestersInProgram} remaining semesters (${remainingSemestersInProgram * nextCredits} credits), 
+                            you cannot pull your CGPA up to ${targetCGPA.toFixed(2)}.
+                        </p>
+                    </div>
+                `;
+            }
             $('predRoadmapNote').textContent = "💡 Tip: Focus on the next immediate classification level instead of this one.";
         }
         rmapDiv.innerHTML = roadmapHTML;
@@ -990,7 +1137,7 @@ function toggleTheme() {
 function handleReset() {
     if (!confirm('⚠️ Reset ALL data? This will permanently erase your academic record.')) return;
     localStorage.removeItem('smartGpa_v2');
-    appState = { studentName: '', totalCredits: 0, semesters: [], profileSetup: false };
+    appState = { studentName: '', totalCredits: 0, totalSemesters: 8, completedSemesters: 0, semesters: [], profileSetup: false };
 
     // Clear charts
     if (gpaLineChart)   { gpaLineChart.destroy();   gpaLineChart   = null; }
@@ -999,6 +1146,8 @@ function handleReset() {
     // Reset profile form
     $('studentNameInput').value   = '';
     $('totalCreditsInput').value  = '';
+    $('totalSemestersInput').value = '8';
+    $('completedSemestersInput').value = '0';
     $('studentNameDisplay').textContent = 'My Academic Record';
 
     renderAll();
@@ -1341,6 +1490,11 @@ window.navigateTo = function(sectionId) {
     // Override page title for gpacalc since original titles map didn't include it
     if (sectionId === 'gpacalc') {
         $('pageTitle').textContent = 'GPA Calculator';
+    }
+    // Auto-close sidebar on navigation (useful for mobile)
+    const sidebar = $('sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('open');
     }
 };
 

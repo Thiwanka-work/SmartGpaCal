@@ -2202,8 +2202,7 @@ body {
     }
 
     .calc-input-row {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto auto;
+        grid-template-columns: 1fr;
     }
 
     .calc-input-row .form-field:first-child {
@@ -2214,6 +2213,10 @@ body {
         grid-column: 1 / -1;
         width: 100%;
         justify-content: center;
+    }
+
+    .sem-table {
+        min-width: 100%;
     }
 
     /* Analytics */

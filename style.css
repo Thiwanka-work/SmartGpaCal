@@ -1,6 +1,6 @@
 /* ============================================================
    SmartGPA - University Academic Management System
-   style.css - Complete Stylesheet
+   style.css - Complete Stylesheet (Mobile-First Redesign)
    ============================================================ */
 
 /* ── 1. CSS Custom Properties (Design Tokens) ── */
@@ -43,7 +43,8 @@
 
     /* Layout */
     --sidebar-width: 240px;
-    --topbar-height: 64px;
+    --topbar-height: 60px;
+    --bottom-nav-height: 68px;
     --radius: 12px;
     --radius-sm: 8px;
     --radius-full: 9999px;
@@ -89,7 +90,7 @@ body {
     transition: background var(--transition), color var(--transition);
 }
 
-/* ── 3. Sidebar ── */
+/* ── 3. Sidebar (Desktop Only) ── */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--bg-sidebar);
@@ -100,7 +101,7 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 200;
     transition: transform var(--transition);
     box-shadow: 2px 0 20px rgba(0,0,0,0.15);
 }
@@ -233,11 +234,11 @@ body {
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    padding: 0 28px;
-    gap: 16px;
+    padding: 0 24px;
+    gap: 12px;
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 150;
     box-shadow: var(--shadow-sm);
     transition: background var(--transition), border-color var(--transition);
 }
@@ -249,8 +250,12 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 4px;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition);
 }
+
+.menu-toggle:hover { background: var(--bg-page); }
 
 .menu-toggle span {
     display: block;
@@ -261,7 +266,39 @@ body {
     transition: var(--transition);
 }
 
-.topbar-left { flex: 1; }
+/* Mobile topbar logo */
+.topbar-logo-mobile {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon-sm {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.logo-icon-sm svg { width: 16px; height: 16px; }
+
+.logo-mobile-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.topbar-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
 .page-title {
     font-size: 1.2rem;
@@ -269,37 +306,118 @@ body {
     color: var(--text-primary);
 }
 
-.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+/* Mobile theme button in topbar */
+.topbar-theme-btn {
+    display: none;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-page);
+    color: var(--text-secondary);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.topbar-theme-btn:hover { background: var(--primary-light); color: var(--primary); }
 
 .student-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .student-name {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-primary);
 }
 
 .student-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     background: var(--primary-light);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--primary);
+    flex-shrink: 0;
 }
 
-.student-avatar svg { width: 20px; height: 20px; }
+.student-avatar svg { width: 18px; height: 18px; }
 
-/* ── 6. Sections ── */
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 190;
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.visible { display: block; }
+
+/* ── 6. Section Page Headers ── */
+.section-page-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 18px 22px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
+}
+
+.section-page-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.section-page-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+
+.section-page-sub {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.btn-page-action {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.accent-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 60%, var(--secondary) 100%);
+    border: none;
+}
+
+.accent-header .section-page-title,
+.accent-header .section-page-sub {
+    color: white;
+}
+
+.accent-header .section-page-sub { opacity: 0.85; }
+
+/* ── 7. Sections ── */
 .section {
     display: none;
-    padding: 28px;
+    padding: 24px;
     flex: 1;
     animation: fadeUp 0.3s ease forwards;
 }
@@ -311,28 +429,7 @@ body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-.section-header-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.section-header-row h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.section-sub {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-/* ── 7. Welcome Banner ── */
+/* ── 8. Welcome Banner ── */
 .welcome-banner {
     background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 50%, var(--secondary) 100%);
     border-radius: var(--radius);
@@ -341,7 +438,7 @@ body {
     color: white;
     box-shadow: 0 8px 32px rgba(37,99,235,0.3);
     max-width: 600px;
-    margin: 40px auto;
+    margin: 20px auto;
 }
 
 .welcome-icon { font-size: 3.5rem; margin-bottom: 16px; display: block; }
@@ -367,13 +464,13 @@ body {
 }
 
 .profile-setup input {
-    padding: 13px 16px;
+    padding: 14px 16px;
     border-radius: var(--radius-sm);
     border: 2px solid rgba(255,255,255,0.3);
     background: rgba(255,255,255,0.15);
     color: white;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 16px; /* Prevent iOS auto-zoom */
     outline: none;
     transition: border-color var(--transition);
 }
@@ -381,18 +478,18 @@ body {
 .profile-setup input::placeholder { color: rgba(255,255,255,0.6); }
 .profile-setup input:focus { border-color: rgba(255,255,255,0.7); }
 
-/* ── 8. Stats Cards Row ── */
+/* ── 9. Stats Cards Row ── */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
+    gap: 16px;
     margin-bottom: 20px;
 }
 
 .stat-card {
     background: var(--bg-card);
     border-radius: var(--radius);
-    padding: 22px 20px;
+    padding: 20px;
     box-shadow: var(--shadow-card);
     border: 1px solid var(--border);
     position: relative;
@@ -413,14 +510,14 @@ body {
 }
 
 .stat-label {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     color: var(--text-secondary);
 }
 
-.stat-icon { font-size: 1.4rem; }
+.stat-icon { font-size: 1.3rem; }
 
 /* CGPA Card */
 .cgpa-card { border-top: 4px solid var(--primary); }
@@ -433,7 +530,7 @@ body {
 }
 
 .cgpa-value {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     font-weight: 800;
     color: var(--primary);
     line-height: 1;
@@ -448,9 +545,9 @@ body {
 
 .cgpa-ring-wrapper {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
-    opacity: 0.85;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.8;
 }
 
 /* Credits Card */
@@ -467,14 +564,14 @@ body {
 
 .credit-val {
     display: block;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--secondary);
     line-height: 1.1;
 }
 
 .credit-lbl {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -517,7 +614,7 @@ body {
 }
 
 .remaining-label {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
@@ -525,7 +622,7 @@ body {
 .semesters-card { border-top: 4px solid var(--accent); }
 
 .big-number {
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: 800;
     color: var(--accent);
     line-height: 1;
@@ -533,12 +630,12 @@ body {
 }
 
 .stat-sub {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     margin-bottom: 14px;
 }
 
-.mini-stats { display: flex; gap: 12px; }
+.mini-stats { display: flex; gap: 10px; }
 
 .mini-stat-item {
     flex: 1;
@@ -550,7 +647,7 @@ body {
 
 .mini-label {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--text-muted);
     margin-bottom: 2px;
     text-transform: uppercase;
@@ -567,10 +664,10 @@ body {
 /* Status Card */
 .status-card { border-top: 4px solid var(--purple); }
 
-.status-icon-big { font-size: 2.5rem; margin-bottom: 8px; }
+.status-icon-big { font-size: 2.2rem; margin-bottom: 6px; }
 
 .status-text {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 12px;
@@ -591,11 +688,11 @@ body {
 }
 
 .trend-text {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
 }
 
-/* ── 9. Classification Badge ── */
+/* ── 10. Classification Badge ── */
 .classification-badge {
     display: inline-block;
     padding: 5px 14px;
@@ -614,20 +711,13 @@ body {
 .badge-fail     { background: var(--danger-light);    color: var(--danger); }
 .badge-nodata   { background: var(--border);          color: var(--text-muted); }
 
-/* ── 10. Content Row ── */
-.content-row {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 18px;
-}
-
 /* ── 11. Card Component ── */
 .card {
     background: var(--bg-card);
     border-radius: var(--radius);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
-    padding: 22px;
+    padding: 20px;
     transition: background var(--transition), border-color var(--transition);
 }
 
@@ -635,7 +725,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .card-header h3 {
@@ -645,22 +737,16 @@ body {
 }
 
 .card-badge {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
     background: var(--primary-light);
     color: var(--primary);
     padding: 4px 10px;
     border-radius: var(--radius-full);
+    white-space: nowrap;
 }
 
 /* ── 12. Form Fields ── */
-.form-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 14px;
-}
-
 .form-field {
     display: flex;
     flex-direction: column;
@@ -668,10 +754,8 @@ body {
     margin-bottom: 14px;
 }
 
-.form-grid .form-field { margin-bottom: 0; }
-
 .form-field label {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
@@ -679,38 +763,42 @@ body {
 }
 
 .form-field input,
+.form-field select,
 .modal-body input {
-    padding: 11px 14px;
+    padding: 12px 14px;
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     background: var(--bg-input);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 0.92rem;
+    font-size: 16px; /* CRITICAL: Prevents iOS auto-zoom on focus */
     outline: none;
     transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    width: 100%;
 }
 
 .form-field input:focus,
+.form-field select:focus,
 .modal-body input:focus {
     border-color: var(--border-focus);
     box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
     background: var(--bg-card);
 }
 
-.form-field input.is-invalid { border-color: var(--danger); }
+.form-field input.is-invalid,
+.form-field select.is-invalid { border-color: var(--danger); }
 
 .form-error {
     font-size: 0.82rem;
     color: var(--danger);
-    min-height: 20px;
+    min-height: 18px;
     margin-bottom: 8px;
     animation: fadeUp 0.2s ease;
 }
 
 /* ── 13. Buttons ── */
 .btn-primary {
-    padding: 11px 20px;
+    padding: 12px 20px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     border: none;
@@ -724,6 +812,7 @@ body {
     align-items: center;
     gap: 8px;
     box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -754,16 +843,20 @@ body {
 
 .btn-full { width: 100%; justify-content: center; }
 
+.btn-large { padding: 14px 20px; font-size: 1rem; }
+
 /* ── 14. Semesters Table ── */
 .table-wrapper {
     overflow-x: auto;
     border-radius: var(--radius-sm);
+    -webkit-overflow-scrolling: touch;
 }
 
 .sem-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.88rem;
+    font-size: 0.87rem;
+    min-width: 480px;
 }
 
 .sem-table thead tr {
@@ -774,7 +867,7 @@ body {
     padding: 10px 14px;
     text-align: left;
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--text-secondary);
@@ -783,7 +876,7 @@ body {
 }
 
 .sem-table td {
-    padding: 13px 14px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--border);
     color: var(--text-primary);
     vertical-align: middle;
@@ -797,7 +890,7 @@ body {
 
 .gpa-cell {
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.98rem;
 }
 
 .gpa-cell.gpa-first    { color: #059669; }
@@ -820,7 +913,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: all var(--transition);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .btn-icon:hover { transform: scale(1.1); }
@@ -840,13 +933,13 @@ body {
 }
 
 .empty-state span { font-size: 2rem; }
-.empty-state p { font-size: 0.88rem; max-width: 280px; }
+.empty-state p { font-size: 0.87rem; max-width: 280px; }
 
 /* ── 15. Semesters Full Grid (Management View) ── */
 .semesters-full-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
 }
 
 .semester-card {
@@ -875,7 +968,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .sem-card-name {
@@ -887,7 +980,7 @@ body {
 .sem-card-actions { display: flex; gap: 6px; }
 
 .sem-card-gpa {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--primary);
     margin-bottom: 4px;
@@ -933,7 +1026,7 @@ body {
 .empty-state-full {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 80px 20px;
+    padding: 70px 20px;
     color: var(--text-muted);
 }
 
@@ -945,14 +1038,14 @@ body {
 .analytics-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 16px;
 }
 
 .wide-card { grid-column: 1 / -1; }
 
 .chart-container {
     position: relative;
-    height: 260px;
+    height: 250px;
     width: 100%;
 }
 
@@ -974,7 +1067,7 @@ body {
 
 .doughnut-container {
     position: relative;
-    height: 220px;
+    height: 210px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -994,7 +1087,7 @@ body {
 }
 
 .doughnut-center small {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1004,27 +1097,27 @@ body {
 .performance-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
 }
 
 .perf-item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
     background: var(--bg-page);
     border-radius: var(--radius-sm);
-    padding: 14px;
+    padding: 12px;
     transition: transform var(--transition);
 }
 
 .perf-item:hover { transform: scale(1.02); }
 
-.perf-icon { font-size: 1.8rem; flex-shrink: 0; }
+.perf-icon { font-size: 1.6rem; flex-shrink: 0; }
 
 .perf-info { display: flex; flex-direction: column; gap: 2px; }
 
 .perf-label {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.4px;
     color: var(--text-muted);
@@ -1032,34 +1125,184 @@ body {
 }
 
 .perf-val {
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
 .perf-sub {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--text-secondary);
 }
 
-/* ── 17. Prediction Section ── */
-.prediction-grid {
+/* ── 17. ADD GPA Section ── */
+.addgpa-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
     gap: 18px;
+    align-items: start;
 }
 
-.classification-guide-card {
-    grid-row: 1 / 3;
-    grid-column: 3 / 4;
+.addgpa-form-card { }
+
+.addgpa-form-body { }
+
+.addgpa-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
 
-.prediction-config-card { grid-column: 1 / 2; }
-.prediction-results-card { grid-column: 2 / 3; }
+.addgpa-cgpa-preview { }
 
-.prediction-grid {
-    grid-template-columns: 280px 1fr 260px;
+.addgpa-cgpa-big {
+    text-align: center;
+    margin: 8px 0 12px;
+}
+
+.addgpa-cgpa-value {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    letter-spacing: -2px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.addgpa-cgpa-max {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.addgpa-sem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.addgpa-sem-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg-page);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+    font-size: 0.87rem;
+}
+
+.addgpa-sem-item .sem-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.addgpa-sem-item .sem-gpa {
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.addgpa-sem-item .sem-credits {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.addgpa-empty-hint {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-muted);
+}
+
+.addgpa-empty-hint span { font-size: 2rem; display: block; margin-bottom: 8px; }
+.addgpa-empty-hint p { font-size: 0.85rem; }
+
+/* ── 18. Prediction Section ── */
+.pred-engine-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.pred-config-col  { display: flex; flex-direction: column; gap: 14px; }
+.pred-results-col { display: flex; flex-direction: column; gap: 14px; }
+
+.target-class-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.target-cls-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border);
+    background: var(--bg-page);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.target-cls-btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background var(--transition);
+}
+
+.target-cls-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateX(3px);
+}
+
+.target-cls-btn.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.target-cls-btn.active::before { background: var(--primary); }
+
+.target-cls-btn[data-badge="badge-first"].active  { border-color:#059669; background:var(--secondary-light); box-shadow:0 0 0 3px rgba(16,185,129,0.1); }
+.target-cls-btn[data-badge="badge-first"].active::before { background:#059669; }
+.target-cls-btn[data-badge="badge-upper"].active  { border-color:var(--primary); background:var(--primary-light); }
+.target-cls-btn[data-badge="badge-upper"].active::before { background:var(--primary); }
+.target-cls-btn[data-badge="badge-lower"].active  { border-color:#d97706; background:var(--accent-light); box-shadow:0 0 0 3px rgba(245,158,11,0.1); }
+.target-cls-btn[data-badge="badge-lower"].active::before { background:#d97706; }
+.target-cls-btn[data-badge="badge-pass"].active   { border-color:#64748b; background:#f1f5f9; box-shadow:0 0 0 3px rgba(100,116,139,0.1); }
+.target-cls-btn[data-badge="badge-pass"].active::before  { background:#64748b; }
+
+.tcb-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+.tcb-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tcb-min {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    background: var(--bg-card);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    white-space: nowrap;
 }
 
 .current-standing {
@@ -1069,7 +1312,7 @@ body {
 }
 
 .current-standing h4 {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--text-muted);
@@ -1082,98 +1325,263 @@ body {
     align-items: center;
     padding: 7px 0;
     border-bottom: 1px solid var(--border);
-    font-size: 0.88rem;
+    font-size: 0.87rem;
 }
 
 .standing-row span { color: var(--text-secondary); }
 .standing-row strong { color: var(--text-primary); font-weight: 700; }
 
-/* Prediction Results */
-.pred-empty {
+/* Verdict Banner */
+.pred-verdict-banner {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    height: 200px;
-    color: var(--text-muted);
-    text-align: center;
-}
-
-.pred-empty span { font-size: 3rem; }
-.pred-empty p { font-size: 0.88rem; max-width: 260px; }
-
-.pred-results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 14px;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    border: 2px solid;
+    animation: fadeUp 0.35s ease;
+    flex-wrap: wrap;
 }
 
-.pred-target-card {
-    border-radius: var(--radius-sm);
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-}
-
-.pred-target-card.target-first {
+.pred-verdict-banner.verdict-can {
     background: var(--secondary-light);
-    border: 1px solid #6ee7b7;
+    border-color: #6ee7b7;
 }
 
-.pred-target-card.target-upper {
-    background: var(--primary-light);
-    border: 1px solid #93c5fd;
+.pred-verdict-banner.verdict-cannot {
+    background: var(--accent-light);
+    border-color: #fcd34d;
 }
 
-.pred-target-card.target-impossible {
-    background: var(--danger-light);
-    border: 1px solid #fca5a5;
-}
-
-.pred-target-card.target-achieved {
+.pred-verdict-banner.verdict-done {
     background: var(--secondary-light);
-    border: 2px solid var(--secondary);
+    border-color: var(--secondary);
 }
 
-.pred-class-name {
-    font-size: 0.78rem;
+.verdict-icon { font-size: 2rem; flex-shrink: 0; }
+
+.verdict-content { flex: 1; min-width: 0; }
+
+.verdict-title {
+    font-size: 1rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-    opacity: 0.75;
+    color: var(--text-primary);
+    margin-bottom: 2px;
 }
 
-.pred-gpa-needed {
-    font-size: 2rem;
+.verdict-sub {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.verdict-gpa-pill {
+    font-size: 1.3rem;
     font-weight: 800;
-    line-height: 1;
+    color: var(--primary);
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-full);
+    padding: 5px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Empty state */
+.pred-empty-state {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 50px 30px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.pred-empty-state span { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+.pred-empty-state h3 { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px; }
+.pred-empty-state p  { font-size: 0.88rem; max-width: 300px; margin: 0 auto; }
+
+/* Result blocks */
+.pred-result-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    animation: fadeUp 0.4s ease;
+    box-shadow: var(--shadow-card);
+}
+
+.pred-block-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.pred-block-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+.pred-block-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 4px;
 }
 
-.pred-target-card.target-first  .pred-gpa-needed { color: #059669; }
-.pred-target-card.target-upper  .pred-gpa-needed { color: var(--primary); }
-.pred-target-card.target-impossible .pred-gpa-needed { color: var(--danger); }
-.pred-target-card.target-achieved .pred-gpa-needed { color: #059669; }
-
-.pred-description {
+.pred-block-sub {
     font-size: 0.82rem;
-    opacity: 0.8;
+    color: var(--text-secondary);
 }
 
-.pred-warning {
-    margin-top: 14px;
-    padding: 12px;
-    background: var(--accent-light);
-    border: 1px solid #fcd34d;
+.pred-one-sem-result { display: flex; justify-content: center; }
+
+.pred-gpa-required-box {
+    border-radius: var(--radius);
+    padding: 24px 40px;
+    text-align: center;
+    border: 2px solid;
+    background: var(--primary-light);
+    border-color: var(--primary);
+    min-width: 200px;
+}
+
+.pred-gpa-required-box.box-achievable {
+    background: var(--secondary-light);
+    border-color: #10b981;
+}
+
+.pred-gpa-required-box.box-impossible {
+    background: var(--danger-light);
+    border-color: var(--danger);
+}
+
+.pgrb-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.pgrb-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.pred-gpa-required-box.box-achievable .pgrb-value { color: #059669; }
+.pred-gpa-required-box.box-impossible .pgrb-value { color: var(--danger); }
+
+.pgrb-note {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.pred-roadmap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.roadmap-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
     border-radius: var(--radius-sm);
-    font-size: 0.84rem;
-    color: #92400e;
+    background: var(--bg-page);
+    border-left: 4px solid var(--border);
+    transition: transform var(--transition);
 }
 
-/* Classification Guide */
-.class-guide { display: flex; flex-direction: column; gap: 12px; }
+.roadmap-step:hover { transform: translateX(3px); }
+
+.roadmap-step.step-past      { border-left-color: var(--text-muted); opacity: 0.65; }
+.roadmap-step.step-next      { border-left-color: var(--primary);   background: var(--primary-light); }
+.roadmap-step.step-future    { border-left-color: var(--secondary); }
+.roadmap-step.step-achieved  { border-left-color: var(--secondary); background: var(--secondary-light); }
+
+.rs-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--border);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.step-past     .rs-number { background: var(--border);          color: var(--text-muted); }
+.step-next     .rs-number { background: var(--primary);         color: #fff; }
+.step-future   .rs-number { background: var(--secondary-light); color: #059669; }
+.step-achieved .rs-number { background: var(--secondary);       color: #fff; }
+
+.rs-info { flex: 1; min-width: 0; }
+
+.rs-sem-name {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.rs-sem-note {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+}
+
+.rs-gpa-tag {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--bg-card);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.step-past     .rs-gpa-tag { color: var(--text-muted); border-color: var(--border); }
+.step-future   .rs-gpa-tag { color: #059669;           border-color: #10b981; }
+.step-achieved .rs-gpa-tag { color: #059669;           border-color: #10b981; }
+
+.pred-roadmap-note {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    background: var(--bg-page);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+}
+
+.pred-achieved {
+    text-align: center;
+    padding: 40px 30px;
+    background: var(--secondary-light) !important;
+    border-color: var(--secondary) !important;
+}
+
+.achieved-icon  { font-size: 3.5rem; margin-bottom: 10px; }
+.achieved-title { font-size: 1.4rem; font-weight: 800; color: #059669; margin-bottom: 8px; }
+.achieved-sub   { font-size: 0.9rem; color: var(--text-secondary); max-width: 320px; margin: 0 auto; }
+
+/* ── 19. Classification Guide ── */
+.class-guide-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
 
 .class-item {
     padding: 12px 14px;
@@ -1182,14 +1590,14 @@ body {
 }
 
 .class-range {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--text-muted);
     margin-bottom: 2px;
 }
 
 .class-name {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 6px;
@@ -1214,13 +1622,15 @@ body {
 .general-pass   .class-bar div { background: linear-gradient(90deg, #94a3b8, #cbd5e1); }
 .fail           .class-bar div { background: linear-gradient(90deg, var(--danger), #f87171); }
 
-/* ── 18. Modal ── */
+.class-guide-full .class-item { padding: 10px 12px; }
+
+/* ── 20. Modal ── */
 .modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.55);
     backdrop-filter: blur(4px);
-    z-index: 200;
+    z-index: 300;
     display: none;
     align-items: center;
     justify-content: center;
@@ -1290,446 +1700,7 @@ body {
     border-top: 1px solid var(--border);
 }
 
-/* ── 19. Floating Export Button ── */
-.fab-export {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 20px rgba(37,99,235,0.4);
-    transition: all var(--transition);
-    z-index: 90;
-}
-
-.fab-export:hover {
-    transform: translateY(-3px) scale(1.08);
-    box-shadow: 0 10px 28px rgba(37,99,235,0.5);
-}
-
-/* ── 20. Responsive Breakpoints ── */
-@media (max-width: 1100px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .prediction-grid { grid-template-columns: 1fr 1fr; }
-    .classification-guide-card { grid-column: 1 / 3; grid-row: auto; }
-}
-
-@media (max-width: 900px) {
-    :root { --sidebar-width: 0px; }
-    .sidebar { transform: translateX(-100%); width: 240px; }
-    .sidebar.open { transform: translateX(0); }
-    .main-content { margin-left: 0; }
-    .menu-toggle { display: flex; }
-    .content-row { grid-template-columns: 1fr; }
-    .analytics-grid { grid-template-columns: 1fr; }
-    .wide-card { grid-column: auto; }
-    .performance-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 640px) {
-    .section { padding: 16px; }
-    .stats-row { grid-template-columns: 1fr 1fr; gap: 14px; }
-    .topbar { padding: 0 16px; }
-    .prediction-grid { grid-template-columns: 1fr; }
-    .prediction-config-card,
-    .prediction-results-card,
-    .classification-guide-card { grid-column: auto; grid-row: auto; }
-    .performance-grid { grid-template-columns: 1fr; }
-    .welcome-banner { padding: 32px 20px; }
-    .fab-export { bottom: 16px; right: 16px; }
-    .semesters-full-grid { grid-template-columns: 1fr; }
-
-    /* Prevent iOS Safari auto-zoom on inputs (requires font-size >= 16px) */
-    .form-field input,
-    .modal-body input,
-    #calcGrade,
-    .profile-setup input {
-        font-size: 16px !important;
-    }
-
-    /* GPA + Credits side-by-side so all fields stay above keyboard */
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-    .form-grid .form-field:first-child {
-        grid-column: 1 / -1;
-    }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PREDICTION ENGINE STYLES
-   ═══════════════════════════════════════════════════════════════ */
-
-/* ── Main grid: left config col + right results col ── */
-.pred-engine-grid {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 18px;
-    align-items: start;
-}
-
-.pred-config-col  { display: flex; flex-direction: column; gap: 14px; }
-.pred-results-col { display: flex; flex-direction: column; gap: 14px; }
-
-/* ── Target Class Selector Buttons ── */
-.target-class-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.target-cls-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: var(--radius-sm);
-    border: 2px solid var(--border);
-    background: var(--bg-page);
-    cursor: pointer;
-    font-family: inherit;
-    text-align: left;
-    transition: all var(--transition);
-    position: relative;
-    overflow: hidden;
-}
-
-.target-cls-btn::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: transparent;
-    transition: background var(--transition);
-}
-
-.target-cls-btn:hover {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    transform: translateX(3px);
-}
-
-.target-cls-btn.active {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-}
-
-.target-cls-btn.active::before { background: var(--primary); }
-
-/* Colour variants for each class */
-.target-cls-btn[data-badge="badge-first"].active  { border-color:#059669; background:var(--secondary-light); box-shadow:0 0 0 3px rgba(16,185,129,0.1); }
-.target-cls-btn[data-badge="badge-first"].active::before { background:#059669; }
-.target-cls-btn[data-badge="badge-upper"].active  { border-color:var(--primary); background:var(--primary-light); }
-.target-cls-btn[data-badge="badge-upper"].active::before { background:var(--primary); }
-.target-cls-btn[data-badge="badge-lower"].active  { border-color:#d97706; background:var(--accent-light); box-shadow:0 0 0 3px rgba(245,158,11,0.1); }
-.target-cls-btn[data-badge="badge-lower"].active::before { background:#d97706; }
-.target-cls-btn[data-badge="badge-pass"].active   { border-color:#64748b; background:#f1f5f9; box-shadow:0 0 0 3px rgba(100,116,139,0.1); }
-.target-cls-btn[data-badge="badge-pass"].active::before  { background:#64748b; }
-
-.tcb-icon { font-size: 1.4rem; flex-shrink: 0; }
-
-.tcb-name {
-    flex: 1;
-    font-size: 0.92rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.tcb-min {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    background: var(--bg-card);
-    padding: 3px 8px;
-    border-radius: var(--radius-full);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-}
-
-/* ── Verdict Banner (top of results) ── */
-.pred-verdict-banner {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    border: 2px solid;
-    animation: fadeUp 0.35s ease;
-}
-
-.pred-verdict-banner.verdict-can {
-    background: var(--secondary-light);
-    border-color: #6ee7b7;
-}
-
-.pred-verdict-banner.verdict-cannot {
-    background: var(--accent-light);
-    border-color: #fcd34d;
-}
-
-.pred-verdict-banner.verdict-done {
-    background: var(--secondary-light);
-    border-color: var(--secondary);
-}
-
-.verdict-icon { font-size: 2rem; flex-shrink: 0; }
-
-.verdict-content { flex: 1; }
-
-.verdict-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 2px;
-}
-
-.verdict-sub {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-}
-
-.verdict-gpa-pill {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--primary);
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: var(--radius-full);
-    padding: 6px 16px;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-/* ── Empty state ── */
-.pred-empty-state {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 60px 30px;
-    text-align: center;
-    color: var(--text-muted);
-}
-
-.pred-empty-state span { font-size: 3.5rem; display: block; margin-bottom: 12px; }
-.pred-empty-state h3 { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px; }
-.pred-empty-state p  { font-size: 0.88rem; max-width: 300px; margin: 0 auto; }
-
-/* ── Result blocks (shared wrapper) ── */
-.pred-result-block {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    animation: fadeUp 0.4s ease;
-    box-shadow: var(--shadow-card);
-}
-
-.pred-block-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-}
-
-.pred-block-icon { font-size: 1.8rem; flex-shrink: 0; }
-
-.pred-block-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.pred-block-sub {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-}
-
-/* ── One-semester result box ── */
-.pred-one-sem-result { display: flex; justify-content: center; }
-
-.pred-gpa-required-box {
-    border-radius: var(--radius);
-    padding: 24px 40px;
-    text-align: center;
-    border: 2px solid;
-    background: var(--primary-light);
-    border-color: var(--primary);
-    min-width: 220px;
-}
-
-.pred-gpa-required-box.box-achievable {
-    background: var(--secondary-light);
-    border-color: #10b981;
-}
-
-.pred-gpa-required-box.box-impossible {
-    background: var(--danger-light);
-    border-color: var(--danger);
-}
-
-.pgrb-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.pgrb-value {
-    font-size: 3.2rem;
-    font-weight: 800;
-    color: var(--primary);
-    line-height: 1;
-    margin-bottom: 8px;
-    letter-spacing: -1px;
-}
-
-.pred-gpa-required-box.box-achievable .pgrb-value { color: #059669; }
-.pred-gpa-required-box.box-impossible .pgrb-value { color: var(--danger); }
-
-.pgrb-note {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-}
-
-/* ── Multi-semester Roadmap ── */
-.pred-roadmap {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-
-.roadmap-step {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 14px;
-    border-radius: var(--radius-sm);
-    background: var(--bg-page);
-    border-left: 4px solid var(--border);
-    transition: transform var(--transition);
-}
-
-.roadmap-step:hover { transform: translateX(3px); }
-
-.roadmap-step.step-past      { border-left-color: var(--text-muted); opacity: 0.65; }
-.roadmap-step.step-next      { border-left-color: var(--primary);   background: var(--primary-light); }
-.roadmap-step.step-future    { border-left-color: var(--secondary); }
-.roadmap-step.step-achieved  { border-left-color: var(--secondary); background: var(--secondary-light); }
-
-.rs-number {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.78rem;
-    font-weight: 700;
-    background: var(--border);
-    color: var(--text-secondary);
-    flex-shrink: 0;
-}
-
-.step-past     .rs-number { background: var(--border);          color: var(--text-muted);   }
-.step-next     .rs-number { background: var(--primary);         color: #fff;               }
-.step-future   .rs-number { background: var(--secondary-light); color: #059669;            }
-.step-achieved .rs-number { background: var(--secondary);       color: #fff;               }
-
-.rs-info { flex: 1; }
-
-.rs-sem-name {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 2px;
-}
-
-.rs-sem-note {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-}
-
-.rs-gpa-tag {
-    font-size: 1rem;
-    font-weight: 800;
-    color: var(--primary);
-    background: var(--bg-card);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    border: 1.5px solid var(--primary);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.step-past     .rs-gpa-tag { color: var(--text-muted); border-color: var(--border); }
-.step-future   .rs-gpa-tag { color: #059669;           border-color: #10b981;       }
-.step-achieved .rs-gpa-tag { color: #059669;           border-color: #10b981;       }
-
-.pred-roadmap-note {
-    font-size: 0.84rem;
-    color: var(--text-secondary);
-    background: var(--bg-page);
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
-}
-
-/* ── Already Achieved State ── */
-.pred-achieved {
-    text-align: center;
-    padding: 40px 30px;
-    background: var(--secondary-light) !important;
-    border-color: var(--secondary) !important;
-}
-
-.achieved-icon  { font-size: 3.5rem; margin-bottom: 10px; }
-.achieved-title { font-size: 1.4rem; font-weight: 800; color: #059669; margin-bottom: 8px; }
-.achieved-sub   { font-size: 0.9rem; color: var(--text-secondary); max-width: 320px; margin: 0 auto; }
-
-/* ── Horizontal Classification Guide (bottom) ── */
-.class-guide-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-}
-
-.class-guide-full .class-item { padding: 10px 12px; }
-
-/* ── Responsive ── */
-@media (max-width: 900px) {
-    .pred-engine-grid { grid-template-columns: 1fr; }
-    .class-guide-row  { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 580px) {
-    .class-guide-row { grid-template-columns: 1fr 1fr; }
-    .pred-gpa-required-box { padding: 18px 24px; min-width: auto; }
-    .verdict-gpa-pill { font-size: 1.1rem; padding: 5px 12px; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   GPA CALCULATOR SECTION STYLES
-   ═══════════════════════════════════════════════════════════════ */
-
-/* ── Layout: 2 columns (table left, result right) ── */
+/* ── 21. GPA Calculator Section ── */
 .gpacalc-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -1740,10 +1711,9 @@ body {
 .gpacalc-left  { display: flex; flex-direction: column; gap: 18px; }
 .gpacalc-right { display: flex; flex-direction: column; gap: 18px; position: sticky; top: calc(var(--topbar-height) + 12px); }
 
-/* ── Input Row inside course-entry card ── */
 .calc-input-row {
     display: grid;
-    grid-template-columns: 1fr 140px 120px auto;
+    grid-template-columns: 1fr 140px 110px auto;
     gap: 12px;
     align-items: end;
     margin-bottom: 6px;
@@ -1751,16 +1721,15 @@ body {
 
 .calc-input-row .form-field { margin-bottom: 0; }
 
-/* Select element styled to match inputs */
 #calcGrade {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 14px;
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     background: var(--bg-input);
     color: var(--text-primary);
     font-family: inherit;
-    font-size: 0.92rem;
+    font-size: 16px; /* Prevent iOS auto-zoom */
     outline: none;
     cursor: pointer;
     transition: border-color var(--transition), box-shadow var(--transition);
@@ -1768,6 +1737,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
+    background-color: var(--bg-input);
 }
 
 #calcGrade:focus {
@@ -1777,11 +1747,10 @@ body {
 
 .calc-add-btn {
     white-space: nowrap;
-    height: 42px;
+    height: 44px;
     padding: 0 18px;
 }
 
-/* ── Result Card ── */
 .calc-result-card {
     background: linear-gradient(160deg, var(--bg-card) 0%, var(--primary-light) 100%);
     border-top: 4px solid var(--primary);
@@ -1792,11 +1761,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 16px 0 8px;
+    margin: 14px 0 8px;
 }
 
 .calc-gpa-value {
-    font-size: 3.8rem;
+    font-size: 3.6rem;
     font-weight: 800;
     color: var(--primary);
     line-height: 1;
@@ -1810,7 +1779,6 @@ body {
     margin-top: 4px;
 }
 
-/* Summary rows inside result card */
 .calc-summary {
     background: var(--bg-page);
     border-radius: var(--radius-sm);
@@ -1824,7 +1792,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 6px 0;
-    font-size: 0.87rem;
+    font-size: 0.86rem;
     border-bottom: 1px solid var(--border);
 }
 
@@ -1832,10 +1800,7 @@ body {
 .calc-sum-row span  { color: var(--text-secondary); }
 .calc-sum-row strong { color: var(--text-primary); font-weight: 700; }
 
-/* GPA Progress Bar inside result card */
-.calc-gpa-bar-wrapper {
-    margin-bottom: 6px;
-}
+.calc-gpa-bar-wrapper { margin-bottom: 6px; }
 
 .calc-gpa-bar-track {
     height: 10px;
@@ -1860,9 +1825,6 @@ body {
     margin-bottom: 4px;
 }
 
-/* ── Grade Scale Table ── */
-.calc-scale-card { }
-
 .grade-scale-table {
     width: 100%;
     border-collapse: collapse;
@@ -1872,7 +1834,7 @@ body {
 .grade-scale-table th {
     padding: 7px 10px;
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--text-muted);
@@ -1884,13 +1846,12 @@ body {
     padding: 6px 10px;
     border-bottom: 1px solid var(--border);
     color: var(--text-primary);
-    font-size: 0.85rem;
+    font-size: 0.84rem;
 }
 
 .grade-scale-table tr:last-child td { border-bottom: none; }
 .grade-scale-table tr:hover td { background: var(--bg-page); }
 
-/* Grade Letter Badges */
 .grade-letter {
     display: inline-block;
     padding: 2px 8px;
@@ -1912,40 +1873,7 @@ body {
 .g-d   { background: #fee2e2; color: #b91c1c; }
 .g-e   { background: #fde8e8; color: #991b1b; }
 
-/* ── Responsive: stack on mobile ── */
-@media (max-width: 900px) {
-    .gpacalc-layout {
-        grid-template-columns: 1fr;
-    }
-    .gpacalc-right {
-        position: static;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-    }
-}
-
-@media (max-width: 580px) {
-    .calc-input-row {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto auto;
-    }
-    .calc-input-row .form-field:first-child {
-        grid-column: 1 / -1;
-    }
-    .calc-add-btn {
-        grid-column: 1 / -1;
-        width: 100%;
-        justify-content: center;
-    }
-    .gpacalc-right {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   SEMESTER ROADMAP COMPONENT STYLES
-   ═══════════════════════════════════════════════════════════════ */
+/* ── 22. Semester Roadmap Component ── */
 .roadmap-container {
     display: flex;
     flex-direction: column;
@@ -1962,7 +1890,7 @@ body {
 
 .completed-sems-section h4,
 .upcoming-sems-section h4 {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     color: var(--text-secondary);
@@ -1984,7 +1912,7 @@ body {
     border: 1.5px solid rgba(16,185,129,0.15);
     padding: 6px 12px;
     border-radius: var(--radius-full);
-    font-size: 0.85rem;
+    font-size: 0.83rem;
     font-weight: 600;
     transition: transform var(--transition);
 }
@@ -1994,19 +1922,14 @@ body {
     color: #34d399;
 }
 
-.completed-chip:hover {
-    transform: translateY(-1px);
-}
-
-.completed-chip .icon {
-    font-size: 0.9rem;
-}
+.completed-chip:hover { transform: translateY(-1px); }
+.completed-chip .icon { font-size: 0.9rem; }
 
 .completed-chip .chip-gpa {
     background: var(--bg-card);
     padding: 2px 6px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     border: 1px solid rgba(16,185,129,0.3);
 }
 
@@ -2018,31 +1941,25 @@ body {
 
 .roadmap-timeline {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     overflow-x: auto;
     padding: 8px 4px;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+    -webkit-overflow-scrolling: touch;
 }
 
-.roadmap-timeline::-webkit-scrollbar {
-    height: 6px;
-}
-.roadmap-timeline::-webkit-scrollbar-track {
-    background: transparent;
-}
-.roadmap-timeline::-webkit-scrollbar-thumb {
-    background-color: var(--border);
-    border-radius: var(--radius-full);
-}
+.roadmap-timeline::-webkit-scrollbar { height: 6px; }
+.roadmap-timeline::-webkit-scrollbar-track { background: transparent; }
+.roadmap-timeline::-webkit-scrollbar-thumb { background-color: var(--border); border-radius: var(--radius-full); }
 
 .roadmap-timeline-step {
     flex: 1;
-    min-width: 145px;
+    min-width: 130px;
     background: var(--bg-card);
     border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px 12px;
+    padding: 12px 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -2065,24 +1982,291 @@ body {
 }
 
 .rts-name {
-    font-size: 0.88rem;
+    font-size: 0.87rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
 .rts-status {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     color: var(--text-secondary);
 }
 
 .rts-gpa {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--primary);
 }
 
-@media (max-width: 480px) {
-    .student-name {
-        display: none;
+/* ── 23. Floating Export Button ── */
+.fab-export {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+    transition: all var(--transition);
+    z-index: 90;
+}
+
+.fab-export:hover {
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 10px 28px rgba(37,99,235,0.5);
+}
+
+/* ── 24. Mobile Bottom Navigation ── */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-nav-height);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    z-index: 180;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mbn-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    padding: 8px 4px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all var(--transition);
+    border-radius: var(--radius-sm);
+    min-width: 0;
+}
+
+.mbn-item svg {
+    transition: transform var(--transition), color var(--transition);
+    flex-shrink: 0;
+}
+
+.mbn-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.mbn-item.active {
+    color: var(--primary);
+}
+
+.mbn-item.active svg {
+    transform: translateY(-2px);
+}
+
+/* Special "Add GPA" center button */
+.mbn-addgpa {
+    color: var(--primary);
+    margin-top: -10px;
+}
+
+.mbn-add-circle {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), #4f46e5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.45);
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.mbn-addgpa.active .mbn-add-circle,
+.mbn-addgpa:hover .mbn-add-circle {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(37,99,235,0.55);
+}
+
+/* hidden utility */
+.hidden { display: none !important; }
+
+/* ── 25. Responsive Breakpoints ── */
+
+/* Large screens: 4-col stats */
+@media (max-width: 1200px) {
+    .analytics-grid { grid-template-columns: 1fr; }
+    .wide-card { grid-column: auto; }
+}
+
+@media (max-width: 1100px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .pred-engine-grid { grid-template-columns: 1fr 1fr; }
+    .addgpa-layout { grid-template-columns: 1fr; }
+}
+
+/* Tablet: hide sidebar, show hamburger */
+@media (max-width: 900px) {
+    :root { --sidebar-width: 0px; }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 240px;
+        z-index: 200;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .main-content { margin-left: 0; }
+    .menu-toggle { display: flex; }
+
+    .topbar-logo-mobile { display: flex; }
+    .page-title { display: none; }
+
+    .topbar-theme-btn { display: flex; }
+
+    .pred-engine-grid { grid-template-columns: 1fr; }
+    .class-guide-row  { grid-template-columns: repeat(3, 1fr); }
+    .gpacalc-layout { grid-template-columns: 1fr; }
+    .gpacalc-right {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    .analytics-grid { grid-template-columns: 1fr; }
+    .performance-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Mobile: show bottom nav, stack everything */
+@media (max-width: 640px) {
+    .section { padding: 14px 14px 90px; }
+    .topbar { padding: 0 14px; }
+
+    /* Show mobile bottom nav */
+    .mobile-bottom-nav { display: flex; }
+
+    /* Hide desktop FAB and sidebar reset/theme since we have topbar buttons */
+    .fab-export { bottom: calc(var(--bottom-nav-height) + 12px); right: 14px; width: 44px; height: 44px; }
+
+    /* Stats: 2-column grid */
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* Section page headers */
+    .section-page-header {
+        padding: 14px 16px;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .section-page-icon { font-size: 1.6rem; }
+    .section-page-title { font-size: 1.2rem; }
+    .section-page-sub { font-size: 0.82rem; }
+
+    .btn-page-action {
+        width: 100%;
+        justify-content: center;
+        flex-basis: 100%;
+    }
+
+    /* Add GPA page */
+    .addgpa-layout { grid-template-columns: 1fr; }
+    .addgpa-two-col { grid-template-columns: 1fr 1fr; }
+    .addgpa-cgpa-value { font-size: 3.2rem; }
+
+    /* GPA Calculator */
+    .gpacalc-layout { grid-template-columns: 1fr; }
+    .gpacalc-right {
+        position: static;
+        grid-template-columns: 1fr;
+    }
+
+    .calc-input-row {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .calc-input-row .form-field:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .calc-add-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Analytics */
+    .analytics-grid { grid-template-columns: 1fr; }
+    .wide-card { grid-column: auto; }
+    .performance-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Prediction */
+    .pred-engine-grid { grid-template-columns: 1fr; }
+    .class-guide-row { grid-template-columns: 1fr 1fr; }
+
+    /* Semester cards */
+    .semesters-full-grid { grid-template-columns: 1fr; }
+
+    /* Welcome banner */
+    .welcome-banner { padding: 30px 20px; margin: 10px auto; }
+    .welcome-banner h2 { font-size: 1.4rem; }
+
+    /* Classification guide */
+    .class-guide-row { grid-template-columns: 1fr 1fr; }
+
+    /* Roadmap */
+    .roadmap-timeline-step { min-width: 110px; }
+
+    /* Prediction box */
+    .pred-gpa-required-box { padding: 18px 20px; min-width: auto; }
+    .verdict-gpa-pill { font-size: 1rem; padding: 4px 10px; }
+
+    /* CGPA ring smaller on mobile */
+    .cgpa-ring-wrapper { display: none; }
+
+    /* Student name hidden, just avatar */
+    .student-name { display: none; }
+}
+
+@media (max-width: 400px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .addgpa-two-col { grid-template-columns: 1fr; }
+    .performance-grid { grid-template-columns: 1fr; }
+    .class-guide-row { grid-template-columns: 1fr; }
+    .section { padding: 12px 12px 90px; }
+}
+
+/* iOS safe area support */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .mobile-bottom-nav {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 4px);
+        height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    }
+
+    @media (max-width: 640px) {
+        .section {
+            padding-bottom: calc(90px + env(safe-area-inset-bottom));
+        }
     }
 }

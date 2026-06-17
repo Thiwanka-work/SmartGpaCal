@@ -1,58 +1,49 @@
 /* ============================================================
    SmartGPA - University Academic Management System
-   script.js - Complete Application Logic
+   script.js - Complete Application Logic (Mobile-First Redesign)
    ============================================================ */
 
 'use strict';
 
 // ── 1. APPLICATION STATE ──────────────────────────────────────
-/**
- * Single source of truth for all app data.
- * Saved to / loaded from localStorage automatically.
- */
 let appState = {
-    studentName:   '',      // Student's name
-    totalCredits:  0,       // Total program credits (e.g. 120)
-    totalSemesters: 8,      // Total semesters in program
-    completedSemesters: 0,  // Completed semesters
-    semesters:     [],      // Array of semester objects
-    profileSetup:  false,   // Whether initial setup is done
-    calcCourses:   []       // GPA Calculator courses (persisted)
+    studentName:        '',
+    totalCredits:       0,
+    totalSemesters:     8,
+    completedSemesters: 0,
+    semesters:          [],
+    profileSetup:       false,
+    calcCourses:        []
 };
 
-// Each semester object looks like:
-// { id, name, gpa, credits }
-
 // ── 2. CHART INSTANCES ─────────────────────────────────────────
-let gpaLineChart    = null;
-let creditDoughnut  = null;
+let gpaLineChart   = null;
+let creditDoughnut = null;
 
 // ── 3. DOM REFERENCES ──────────────────────────────────────────
 const $ = id => document.getElementById(id);
 
 // ── 4. INITIALIZATION ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    loadFromStorage();   // Restore data from localStorage
-    bindEvents();        // Attach all event listeners
-    renderAll();         // Paint the full UI
+    loadFromStorage();
+    bindEvents();
+    renderAll();
 });
 
 // ── 5. LOCALSTORAGE PERSISTENCE ────────────────────────────────
 
-/** Save current appState to localStorage */
 function saveToStorage() {
     localStorage.setItem('smartGpa_v2', JSON.stringify(appState));
 }
 
-/** Load appState from localStorage (if it exists) */
 function loadFromStorage() {
     const raw = localStorage.getItem('smartGpa_v2');
     if (raw) {
         try {
             appState = JSON.parse(raw);
-            if (appState.totalSemesters === undefined) appState.totalSemesters = 8;
+            if (appState.totalSemesters === undefined)     appState.totalSemesters = 8;
             if (appState.completedSemesters === undefined) appState.completedSemesters = 0;
-            if (!Array.isArray(appState.calcCourses)) appState.calcCourses = [];
+            if (!Array.isArray(appState.calcCourses))      appState.calcCourses = [];
         } catch (e) {
             console.warn('Could not parse saved data, starting fresh.');
         }
@@ -62,7 +53,7 @@ function loadFromStorage() {
 // ── 6. EVENT BINDING ───────────────────────────────────────────
 
 function bindEvents() {
-    // ---- Sidebar Navigation ----
+    // ---- Desktop Sidebar Navigation ----
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', e => {
             e.preventDefault();
@@ -70,36 +61,51 @@ function bindEvents() {
         });
     });
 
-    // ---- Mobile menu toggle ----
-    $('menuToggle').addEventListener('click', (e) => {
-        e.stopPropagation();
-        $('sidebar').classList.toggle('open');
+    // ---- Mobile Bottom Navigation ----
+    document.querySelectorAll('.mbn-item').forEach(item => {
+        item.addEventListener('click', e => {
+            e.preventDefault();
+            navigateTo(item.dataset.section);
+        });
     });
 
-    // Close sidebar when clicking outside on mobile
-    $('mainContent').addEventListener('click', () => {
+    // ---- Mobile hamburger menu toggle ----
+    $('menuToggle').addEventListener('click', e => {
+        e.stopPropagation();
+        const sidebar = $('sidebar');
+        const overlay = $('sidebarOverlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('visible');
+    });
+
+    // Close sidebar when clicking overlay
+    $('sidebarOverlay').addEventListener('click', () => {
         $('sidebar').classList.remove('open');
+        $('sidebarOverlay').classList.remove('visible');
     });
 
     // ---- Profile Setup ----
     $('setupProfileBtn').addEventListener('click', handleProfileSetup);
 
-    // Allow Enter key on profile setup
     [$('studentNameInput'), $('totalCreditsInput'), $('totalSemestersInput'), $('completedSemestersInput')].forEach(el => {
         if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleProfileSetup(); });
     });
 
-    // ---- Add Semester (Dashboard quick-add form) ----
+    // ---- Add Semester (Add GPA page) ----
     $('addSemesterBtn').addEventListener('click', handleAddSemester);
     [$('semName'), $('semGpa'), $('semCredits')].forEach(el => {
+        if (!el) return;
         el.addEventListener('keydown', e => { if (e.key === 'Enter') handleAddSemester(); });
         el.addEventListener('input', () => el.classList.remove('is-invalid'));
+        // Scroll into view on focus (mobile keyboard fix)
+        el.addEventListener('focus', () => {
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+        });
     });
 
-    // ---- Add Semester button in Semesters tab ----
+    // ---- Add Semester button in Semesters management tab ----
     $('addSemBtn2').addEventListener('click', () => {
-        navigateTo('dashboard');
-        // Slight delay so navigation completes, then focus
+        navigateTo('addgpa');
         setTimeout(() => $('semName').focus(), 200);
     });
 
@@ -111,8 +117,9 @@ function bindEvents() {
         if (e.target === $('editModal')) closeModal();
     });
 
-    // ---- Dark Mode Toggle ----
+    // ---- Theme Toggles (sidebar + mobile topbar) ----
     $('themeToggle').addEventListener('click', toggleTheme);
+    $('themeToggleMobile').addEventListener('click', toggleTheme);
 
     // ---- Reset All ----
     $('resetBtn').addEventListener('click', handleReset);
@@ -128,51 +135,54 @@ function bindEvents() {
 
     // ---- GPA Calculator events ----
     bindCalcEvents();
-
-    // ---- Mobile: scroll focused inputs into view above keyboard ----
-    [$('semName'), $('semGpa'), $('semCredits')].forEach(el => {
-        if (el) el.addEventListener('focus', () => {
-            setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-        });
-    });
 }
 
 // ── 7. NAVIGATION ──────────────────────────────────────────────
 
-/** Switch visible section and update nav highlight */
 function navigateTo(sectionId) {
     // Hide all sections
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    // Show target
+
+    // Show target section
     const target = $(`section-${sectionId}`);
     if (target) target.classList.add('active');
 
-    // Update sidebar active state
+    // Update desktop sidebar nav
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const activeNav = $(`nav-${sectionId}`);
     if (activeNav) activeNav.classList.add('active');
 
-    // Update page title in topbar
+    // Update mobile bottom nav
+    document.querySelectorAll('.mbn-item').forEach(n => n.classList.remove('active'));
+    const activeMbn = $(`mbn-${sectionId}`);
+    if (activeMbn) activeMbn.classList.add('active');
+
+    // Update topbar page title
     const titles = {
         dashboard:  'Dashboard',
-        semesters:  'Semester Management',
-        analytics:  'Performance Analytics',
-        prediction: 'GPA Prediction Engine',
+        addgpa:     'Add GPA',
+        semesters:  'Semesters',
+        analytics:  'Analytics',
+        prediction: 'Prediction',
         gpacalc:    'GPA Calculator'
     };
     $('pageTitle').textContent = titles[sectionId] || 'Dashboard';
-    // Close sidebar on mobile after navigation
+
+    // Close mobile sidebar
     $('sidebar').classList.remove('open');
+    $('sidebarOverlay').classList.remove('visible');
 
-    // Refresh chart if navigating to analytics
-    if (sectionId === 'analytics') {
-        renderCharts();
-    }
+    // Refresh charts if navigating to analytics
+    if (sectionId === 'analytics') renderCharts();
 
-    // Refresh prediction standing if navigating there
-    if (sectionId === 'prediction') {
-        updatePredictionStanding();
-    }
+    // Refresh prediction standing
+    if (sectionId === 'prediction') updatePredictionStanding();
+
+    // Refresh Add GPA preview
+    if (sectionId === 'addgpa') renderAddGpaPreview();
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ── 8. PROFILE SETUP ───────────────────────────────────────────
@@ -184,9 +194,9 @@ function handleProfileSetup() {
     const compSem  = parseInt($('completedSemestersInput').value, 10);
 
     // Reset styles
-    $('studentNameInput').style.borderColor = '';
-    $('totalCreditsInput').style.borderColor = '';
-    $('totalSemestersInput').style.borderColor = '';
+    $('studentNameInput').style.borderColor        = '';
+    $('totalCreditsInput').style.borderColor       = '';
+    $('totalSemestersInput').style.borderColor     = '';
     $('completedSemestersInput').style.borderColor = '';
 
     if (!name) {
@@ -214,90 +224,93 @@ function handleProfileSetup() {
 
     saveToStorage();
     renderAll();
+
+    // After setup, navigate to Add GPA for quick first entry
+    setTimeout(() => navigateTo('addgpa'), 300);
 }
 
 // ── 9. SEMESTER CRUD ───────────────────────────────────────────
 
-/** Validate and add a new semester from the quick-add form */
 function handleAddSemester() {
     const nameEl    = $('semName');
     const gpaEl     = $('semGpa');
     const creditsEl = $('semCredits');
+    const errEl     = $('formError');
 
     const name    = nameEl.value.trim();
     const gpa     = parseFloat(gpaEl.value);
     const credits = parseInt(creditsEl.value, 10);
 
     // Clear previous errors
-    $('formError').textContent = '';
+    errEl.textContent = '';
     [nameEl, gpaEl, creditsEl].forEach(el => el.classList.remove('is-invalid'));
 
-    // Validate
     let hasError = false;
 
-    if (!name) {
-        nameEl.classList.add('is-invalid');
-        hasError = true;
-    }
-    if (isNaN(gpa) || gpa < 0 || gpa > 4) {
-        gpaEl.classList.add('is-invalid');
-        hasError = true;
-    }
-    if (isNaN(credits) || credits < 1 || credits > 60) {
-        creditsEl.classList.add('is-invalid');
-        hasError = true;
-    }
+    if (!name) { nameEl.classList.add('is-invalid'); hasError = true; }
+    if (isNaN(gpa) || gpa < 0 || gpa > 4) { gpaEl.classList.add('is-invalid'); hasError = true; }
+    if (isNaN(credits) || credits < 1 || credits > 60) { creditsEl.classList.add('is-invalid'); hasError = true; }
 
     if (hasError) {
-        $('formError').textContent = 'Please fill all fields correctly. GPA: 0–4, Credits: 1–60.';
+        errEl.textContent = 'Please fill all fields correctly. GPA: 0–4, Credits: 1–60.';
         return;
     }
 
-    // Build semester object
     const semester = {
-        id:        Date.now(),       // Unique ID
-        semNumber: appState.semesters.length + 1,  // Position for roadmap
-        name:      name,
-        gpa:       gpa,
-        credits:   credits
+        id:        Date.now(),
+        semNumber: appState.semesters.length + 1,
+        name,
+        gpa,
+        credits
     };
 
     appState.semesters.push(semester);
     saveToStorage();
 
-    // Clear form
+    // Clear form & prep for next entry
     nameEl.value    = '';
     gpaEl.value     = '';
     creditsEl.value = '';
     nameEl.focus();
 
-    // Auto-increment semester name for next entry
     const nextNum = appState.semesters.length + 1;
     nameEl.placeholder = `e.g. Semester ${nextNum}`;
 
     renderAll();
+
+    // Show a quick success flash
+    showAddSuccessFlash(semester.name, gpa);
 }
 
-/** Open edit modal for a given semester by ID */
+function showAddSuccessFlash(name, gpa) {
+    // Brief visual feedback that the semester was added
+    const btn = $('addSemesterBtn');
+    const origText = btn.innerHTML;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg> Added!`;
+    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.style.background = '';
+    }, 1800);
+}
+
 function openEditModal(id) {
     const sem = appState.semesters.find(s => s.id === id);
     if (!sem) return;
 
-    $('editSemId').value     = sem.id;
-    $('editSemName').value   = sem.name;
-    $('editSemGpa').value    = sem.gpa;
+    $('editSemId').value      = sem.id;
+    $('editSemName').value    = sem.name;
+    $('editSemGpa').value     = sem.gpa;
     $('editSemCredits').value = sem.credits;
     $('editFormError').textContent = '';
 
     $('editModal').classList.add('open');
 }
 
-/** Close edit modal */
 function closeModal() {
     $('editModal').classList.remove('open');
 }
 
-/** Save edits from modal */
 function handleSaveEdit() {
     const id      = parseInt($('editSemId').value, 10);
     const name    = $('editSemName').value.trim();
@@ -321,7 +334,6 @@ function handleSaveEdit() {
     }
 }
 
-/** Delete a semester by ID (with confirmation) */
 function deleteSemester(id) {
     const sem = appState.semesters.find(s => s.id === id);
     if (!sem) return;
@@ -334,10 +346,6 @@ function deleteSemester(id) {
 
 // ── 10. CALCULATIONS ───────────────────────────────────────────
 
-/**
- * Calculates credit-weighted CGPA.
- * Formula: CGPA = Σ(GPA × Credits) / Σ(Credits)
- */
 function calcCGPA() {
     const sems = appState.semesters;
     if (sems.length === 0) return 0;
@@ -346,25 +354,18 @@ function calcCGPA() {
     return totalCredits > 0 ? totalWeighted / totalCredits : 0;
 }
 
-/** Returns total credits completed across all semesters */
 function calcCompletedCredits() {
     return appState.semesters.reduce((acc, s) => acc + s.credits, 0);
 }
 
-/**
- * Classify a GPA value into its academic class label and badge class.
- */
 function classifyGpa(gpa) {
-    if (gpa >= 3.7) return { label: 'First Class',    badge: 'badge-first', icon: '🏆', cardClass: 'class-first',  color: '#059669' };
-    if (gpa >= 3.3) return { label: 'Second Upper',   badge: 'badge-upper', icon: '🥇', cardClass: 'class-upper',  color: '#2563eb' };
-    if (gpa >= 3.0) return { label: 'Second Lower',   badge: 'badge-lower', icon: '🥈', cardClass: 'class-lower',  color: '#d97706' };
-    if (gpa >= 2.0) return { label: 'General Pass',   badge: 'badge-pass',  icon: '✅', cardClass: 'class-pass',   color: '#64748b' };
-    return             { label: 'Fail',               badge: 'badge-fail',  icon: '❌', cardClass: 'class-fail',   color: '#ef4444' };
+    if (gpa >= 3.7) return { label: 'First Class',  badge: 'badge-first', icon: '🏆', cardClass: 'class-first', color: '#059669' };
+    if (gpa >= 3.3) return { label: 'Second Upper',  badge: 'badge-upper', icon: '🥇', cardClass: 'class-upper', color: '#2563eb' };
+    if (gpa >= 3.0) return { label: 'Second Lower',  badge: 'badge-lower', icon: '🥈', cardClass: 'class-lower', color: '#d97706' };
+    if (gpa >= 2.0) return { label: 'General Pass',  badge: 'badge-pass',  icon: '✅', cardClass: 'class-pass',  color: '#64748b' };
+    return             { label: 'Fail',              badge: 'badge-fail',  icon: '❌', cardClass: 'class-fail',  color: '#ef4444' };
 }
 
-/**
- * Get color for GPA cell in table
- */
 function getGpaTableClass(gpa) {
     if (gpa >= 3.7) return 'gpa-first';
     if (gpa >= 3.3) return 'gpa-upper';
@@ -375,15 +376,13 @@ function getGpaTableClass(gpa) {
 
 // ── 11. MASTER RENDER FUNCTION ─────────────────────────────────
 
-/** Call after any state change — refreshes all UI panels */
 function renderAll() {
     if (!appState.profileSetup) {
-        // Show welcome, hide dashboard
-        $('welcomeBanner').style.display = '';
-        $('dashboardGrid').style.display = 'none';
+        $('welcomeBanner').style.display  = '';
+        $('dashboardGrid').style.display  = 'none';
     } else {
-        $('welcomeBanner').style.display = 'none';
-        $('dashboardGrid').style.display = '';
+        $('welcomeBanner').style.display  = 'none';
+        $('dashboardGrid').style.display  = '';
         $('studentNameDisplay').textContent = appState.studentName;
 
         renderStatCards();
@@ -392,130 +391,93 @@ function renderAll() {
         renderAnalyticsSummary();
         renderCgpaRing();
         renderSemesterRoadmap();
+        renderAddGpaPreview();
         updatePredictionStanding();
     }
 }
 
-/** Render visual semester roadmap, dividing completed from upcoming semesters */
-function renderSemesterRoadmap() {
-    const totalSems = appState.totalSemesters || 8;
-    const compSems = appState.completedSemesters || 0;
-    const recordedSems = appState.semesters;
-    
-    const lastCompletedIndex = Math.max(compSems, recordedSems.length);
-    
-    // Update progress badge
-    const badge = $('roadmapProgressBadge');
-    if (badge) {
-        badge.textContent = `${lastCompletedIndex} of ${totalSems} Semesters (${totalSems > 0 ? Math.min(100, Math.round((lastCompletedIndex / totalSems) * 100)) : 0}% Complete)`;
+// ── 12. ADD GPA PAGE PREVIEW ───────────────────────────────────
+
+function renderAddGpaPreview() {
+    if (!appState.profileSetup) return;
+
+    const sems  = appState.semesters;
+    const cgpa  = calcCGPA();
+    const cls   = classifyGpa(cgpa);
+
+    // Update CGPA big display
+    const cgpaEl = $('addgpaCgpaValue');
+    if (cgpaEl) {
+        cgpaEl.textContent = sems.length > 0 ? cgpa.toFixed(2) : '0.00';
+        cgpaEl.style.color = sems.length > 0 ? cls.color : 'var(--primary)';
     }
-    
-    const completedChipsDiv = $('completedChips');
-    const completedSection = $('completedSemsSection');
-    const roadmapDivider = $('roadmapDivider');
-    const upcomingTimeline = $('upcomingTimeline');
-    const upcomingSection = $('upcomingSemsSection');
-    
-    // 1. Render Completed Semesters Section
-    if (completedChipsDiv) {
-        completedChipsDiv.innerHTML = '';
-        if (lastCompletedIndex > 0) {
-            completedSection.style.display = '';
-            roadmapDivider.style.display = '';
-            
-            for (let i = 1; i <= lastCompletedIndex; i++) {
-                // Check if we have recorded data for this semester (match by semNumber, not array index)
-                const semData = recordedSems.find(s => s.semNumber === i) || recordedSems[i - 1];
-                let displayName = `Semester ${i}`;
-                let detailText = 'No record';
-                let hasGpa = false;
-                
-                if (semData) {
-                    displayName = semData.name;
-                    detailText = `${semData.gpa.toFixed(2)} GPA`;
-                    hasGpa = true;
-                }
-                
-                const chip = document.createElement('div');
-                chip.className = 'completed-chip';
-                chip.innerHTML = `
-                    <span class="icon">✅</span>
-                    <span class="chip-name">${escHtml(displayName)}</span>
-                    <span class="chip-gpa" style="${hasGpa ? '' : 'color:var(--text-muted); font-style:italic; border-color:var(--border);'}">${detailText}</span>
-                `;
-                completedChipsDiv.appendChild(chip);
-            }
-        } else {
-            completedSection.style.display = 'none';
-            roadmapDivider.style.display = 'none';
-        }
+
+    // Badge
+    const badgeEl = $('addgpaBadge');
+    if (badgeEl) {
+        badgeEl.textContent = sems.length > 0 ? `${cls.icon} ${cls.label}` : 'Not Calculated';
+        badgeEl.className   = `classification-badge ${sems.length > 0 ? cls.badge : 'badge-nodata'}`;
     }
-    
-    // 2. Render Upcoming Semesters Section
-    if (upcomingTimeline) {
-        upcomingTimeline.innerHTML = '';
-        const upcomingCount = totalSems - lastCompletedIndex;
-        
-        if (upcomingCount > 0) {
-            upcomingSection.style.display = '';
-            
-            for (let i = lastCompletedIndex + 1; i <= totalSems; i++) {
-                const step = document.createElement('div');
-                const isNext = (i === lastCompletedIndex + 1);
-                step.className = `roadmap-timeline-step ${isNext ? 'active-step' : ''}`;
-                
-                step.innerHTML = `
-                    <div class="rts-name">Semester ${i}</div>
-                    <div class="rts-status">${isNext ? '🎯 Next Up' : '⏳ Pending'}</div>
-                `;
-                upcomingTimeline.appendChild(step);
-            }
-        } else {
-            // All semesters completed!
-            upcomingSection.style.display = 'none';
-            roadmapDivider.style.display = 'none'; // hide divider if no upcoming
-            
-            // If everything is completed, show a congratulatory state
-            const congMessage = document.createElement('div');
-            congMessage.className = 'pred-empty';
-            congMessage.style.padding = '20px';
-            congMessage.style.width = '100%';
-            congMessage.innerHTML = `
-                <div style="font-size: 2.5rem; margin-bottom: 8px;">🎓</div>
-                <h4 style="color:#059669; font-weight:700;">Congratulations!</h4>
-                <p style="font-size:0.85rem; color:var(--text-secondary);">You have completed all semesters of your program.</p>
-            `;
-            upcomingTimeline.appendChild(congMessage);
-            upcomingSection.style.display = '';
-        }
+
+    // Semester count
+    const countEl = $('addgpaSemCount');
+    if (countEl) {
+        countEl.textContent = `${sems.length} semester${sems.length !== 1 ? 's' : ''}`;
     }
+
+    // Semester list
+    const listEl = $('addgpaSemList');
+    if (!listEl) return;
+
+    if (sems.length === 0) {
+        listEl.innerHTML = `
+            <div class="addgpa-empty-hint">
+                <span>📋</span>
+                <p>Add your first semester above to see CGPA calculation</p>
+            </div>`;
+        return;
+    }
+
+    // Show semesters newest-first in the list
+    const reversed = [...sems].reverse();
+    listEl.innerHTML = reversed.map((sem, idx) => {
+        const semCls = classifyGpa(sem.gpa);
+        const borderColor = semCls.color;
+        return `
+            <div class="addgpa-sem-item" style="border-left-color:${borderColor};">
+                <span class="sem-name">${escHtml(sem.name)}</span>
+                <span class="sem-credits">${sem.credits} cr.</span>
+                <span class="sem-gpa" style="color:${borderColor};">${sem.gpa.toFixed(2)}</span>
+                <button class="btn-icon delete" title="Delete" onclick="deleteSemester(${sem.id})" style="margin-left:4px;">🗑️</button>
+            </div>`;
+    }).join('');
 }
 
-// ── 12. STAT CARDS RENDERING ───────────────────────────────────
+// ── 13. STAT CARDS RENDERING ───────────────────────────────────
 
 function renderStatCards() {
-    const cgpa        = calcCGPA();
-    const completed   = calcCompletedCredits();
-    const total       = appState.totalCredits;
-    const remaining   = Math.max(0, total - completed);
-    const pct         = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
-    const sems        = appState.semesters;
-    const cls         = classifyGpa(cgpa);
+    const cgpa      = calcCGPA();
+    const completed = calcCompletedCredits();
+    const total     = appState.totalCredits;
+    const remaining = Math.max(0, total - completed);
+    const pct       = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
+    const sems      = appState.semesters;
+    const cls       = classifyGpa(cgpa);
 
-    // -- CGPA Card --
+    // CGPA Card
     $('cgpaValue').textContent = sems.length > 0 ? cgpa.toFixed(2) : '0.00';
     const badge = $('classificationBadge');
     badge.textContent = sems.length > 0 ? cls.label : 'Not Calculated';
     badge.className   = `classification-badge ${sems.length > 0 ? cls.badge : 'badge-nodata'}`;
 
-    // -- Credits Card --
+    // Credits Card
     $('completedCreditsDisplay').textContent = completed;
     $('totalCreditsDisplay').textContent     = total;
     $('remainingCreditsDisplay').textContent = remaining;
     $('creditProgressBar').style.width       = pct.toFixed(1) + '%';
     $('creditProgressPct').textContent       = pct.toFixed(0) + '%';
 
-    // -- Semesters Count Card --
+    // Semesters Count Card
     $('semesterCountDisplay').textContent = sems.length;
     if (sems.length > 0) {
         const best   = sems.reduce((p, c) => c.gpa > p.gpa ? c : p);
@@ -527,16 +489,15 @@ function renderStatCards() {
         $('lowestGpaDisplay').textContent = '--';
     }
 
-    // -- Status Card --
+    // Status Card
     if (sems.length > 0) {
         $('statusIconBig').textContent = cls.icon;
         $('statusText').textContent    = cls.label;
 
-        // Trend: compare last 2 semesters
         if (sems.length >= 2) {
-            const last  = sems[sems.length - 1].gpa;
-            const prev  = sems[sems.length - 2].gpa;
-            const diff  = (last - prev).toFixed(2);
+            const last = sems[sems.length - 1].gpa;
+            const prev = sems[sems.length - 2].gpa;
+            const diff = (last - prev).toFixed(2);
             if (last > prev) {
                 $('trendArrow').textContent = '↑';
                 $('trendArrow').style.color = '#10b981';
@@ -564,16 +525,12 @@ function renderStatCards() {
     }
 }
 
-// ── 13. CGPA RING CHART (Canvas) ───────────────────────────────
+// ── 14. CGPA RING CHART (Canvas) ───────────────────────────────
 
-/**
- * Draws a small arc/ring chart on the CGPA card
- * showing progress from 0 to 4.0
- */
 function renderCgpaRing() {
     const canvas = $('cgpaRing');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx  = canvas.getContext('2d');
     const cgpa = calcCGPA();
     const pct  = cgpa / 4.0;
 
@@ -586,7 +543,6 @@ function renderCgpaRing() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Track
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, 2 * Math.PI);
     ctx.strokeStyle = getComputedStyle(document.documentElement)
@@ -594,7 +550,6 @@ function renderCgpaRing() {
     ctx.lineWidth = lw;
     ctx.stroke();
 
-    // Fill arc
     if (pct > 0) {
         const cls = classifyGpa(cgpa);
         ctx.beginPath();
@@ -606,17 +561,15 @@ function renderCgpaRing() {
     }
 }
 
-// ── 14. SEMESTER TABLE (Dashboard) ─────────────────────────────
+// ── 15. SEMESTER TABLE (Dashboard) ─────────────────────────────
 
 function renderSemesterTable() {
-    const tbody     = $('semTableBody');
-    const emptyRow  = $('emptyTableRow');
-    const sems      = appState.semesters;
+    const tbody    = $('semTableBody');
+    const emptyRow = $('emptyTableRow');
+    const sems     = appState.semesters;
 
-    // Update badge
     $('semCountBadge').textContent = `${sems.length} entr${sems.length === 1 ? 'y' : 'ies'}`;
 
-    // Remove existing data rows (keep empty-row template)
     tbody.querySelectorAll('tr:not(#emptyTableRow)').forEach(r => r.remove());
 
     if (sems.length === 0) {
@@ -643,7 +596,7 @@ function renderSemesterTable() {
     });
 }
 
-// ── 15. SEMESTER CARDS (Management Section) ─────────────────────
+// ── 16. SEMESTER CARDS (Management Section) ─────────────────────
 
 function renderSemesterCards() {
     const grid = $('semestersGrid');
@@ -656,7 +609,7 @@ function renderSemesterCards() {
             <div class="empty-state-full">
                 <div class="empty-icon">📚</div>
                 <h3>No Semesters Yet</h3>
-                <p>Add your first semester from the Dashboard to begin tracking.</p>
+                <p>Add your first semester from the <strong>Add GPA</strong> page to begin tracking.</p>
             </div>`;
         return;
     }
@@ -689,7 +642,7 @@ function renderSemesterCards() {
     });
 }
 
-// ── 16. ANALYTICS SUMMARY ──────────────────────────────────────
+// ── 17. ANALYTICS SUMMARY ──────────────────────────────────────
 
 function renderAnalyticsSummary() {
     const sems = appState.semesters;
@@ -704,10 +657,10 @@ function renderAnalyticsSummary() {
         return;
     }
 
-    const best   = sems.reduce((p, c) => c.gpa > p.gpa ? c : p);
-    const weak   = sems.reduce((p, c) => c.gpa < p.gpa ? c : p);
-    const cgpa   = calcCGPA();
-    const cls    = classifyGpa(cgpa);
+    const best  = sems.reduce((p, c) => c.gpa > p.gpa ? c : p);
+    const weak  = sems.reduce((p, c) => c.gpa < p.gpa ? c : p);
+    const cgpa  = calcCGPA();
+    const cls   = classifyGpa(cgpa);
 
     $('bestSemName').textContent  = best.name;
     $('bestSemGpa').textContent   = `GPA: ${best.gpa.toFixed(2)}`;
@@ -716,7 +669,6 @@ function renderAnalyticsSummary() {
     $('perfCgpa').textContent     = cgpa.toFixed(2);
     $('perfClass').textContent    = `Classification: ${cls.label}`;
 
-    // Trend: compare last semester to first
     if (sems.length >= 2) {
         const first = sems[0].gpa;
         const last  = sems[sems.length - 1].gpa;
@@ -740,7 +692,94 @@ function renderAnalyticsSummary() {
     }
 }
 
-// ── 17. CHARTS ─────────────────────────────────────────────────
+// ── 18. SEMESTER ROADMAP ───────────────────────────────────────
+
+function renderSemesterRoadmap() {
+    const totalSems      = appState.totalSemesters || 8;
+    const compSems       = appState.completedSemesters || 0;
+    const recordedSems   = appState.semesters;
+    const lastCompletedIndex = Math.max(compSems, recordedSems.length);
+
+    const badge = $('roadmapProgressBadge');
+    if (badge) {
+        const pct = totalSems > 0 ? Math.min(100, Math.round((lastCompletedIndex / totalSems) * 100)) : 0;
+        badge.textContent = `${lastCompletedIndex} of ${totalSems} Semesters (${pct}% Complete)`;
+    }
+
+    const completedChipsDiv  = $('completedChips');
+    const completedSection   = $('completedSemsSection');
+    const roadmapDivider     = $('roadmapDivider');
+    const upcomingTimeline   = $('upcomingTimeline');
+    const upcomingSection    = $('upcomingSemsSection');
+
+    // Completed semesters chips
+    if (completedChipsDiv) {
+        completedChipsDiv.innerHTML = '';
+        if (lastCompletedIndex > 0) {
+            completedSection.style.display = '';
+            roadmapDivider.style.display   = '';
+
+            for (let i = 1; i <= lastCompletedIndex; i++) {
+                const semData = recordedSems.find(s => s.semNumber === i) || recordedSems[i - 1];
+                let displayName = `Semester ${i}`;
+                let detailText  = 'No record';
+                let hasGpa      = false;
+
+                if (semData) {
+                    displayName = semData.name;
+                    detailText  = `${semData.gpa.toFixed(2)} GPA`;
+                    hasGpa      = true;
+                }
+
+                const chip = document.createElement('div');
+                chip.className = 'completed-chip';
+                chip.innerHTML = `
+                    <span class="icon">✅</span>
+                    <span class="chip-name">${escHtml(displayName)}</span>
+                    <span class="chip-gpa" style="${hasGpa ? '' : 'color:var(--text-muted);font-style:italic;border-color:var(--border);'}">${detailText}</span>`;
+                completedChipsDiv.appendChild(chip);
+            }
+        } else {
+            completedSection.style.display = 'none';
+            roadmapDivider.style.display   = 'none';
+        }
+    }
+
+    // Upcoming semesters timeline
+    if (upcomingTimeline) {
+        upcomingTimeline.innerHTML = '';
+        const upcomingCount = totalSems - lastCompletedIndex;
+
+        if (upcomingCount > 0) {
+            upcomingSection.style.display = '';
+
+            for (let i = lastCompletedIndex + 1; i <= totalSems; i++) {
+                const step   = document.createElement('div');
+                const isNext = (i === lastCompletedIndex + 1);
+                step.className = `roadmap-timeline-step ${isNext ? 'active-step' : ''}`;
+                step.innerHTML = `
+                    <div class="rts-name">Semester ${i}</div>
+                    <div class="rts-status">${isNext ? '🎯 Next Up' : '⏳ Pending'}</div>`;
+                upcomingTimeline.appendChild(step);
+            }
+        } else {
+            upcomingSection.style.display = 'none';
+            roadmapDivider.style.display  = 'none';
+
+            const congMessage = document.createElement('div');
+            congMessage.className = 'pred-empty';
+            congMessage.style.cssText = 'padding:20px; width:100%;';
+            congMessage.innerHTML = `
+                <div style="font-size:2.5rem;margin-bottom:8px;">🎓</div>
+                <h4 style="color:#059669;font-weight:700;">Congratulations!</h4>
+                <p style="font-size:0.85rem;color:var(--text-secondary);">You have completed all semesters of your program.</p>`;
+            upcomingTimeline.appendChild(congMessage);
+            upcomingSection.style.display = '';
+        }
+    }
+}
+
+// ── 19. CHARTS ─────────────────────────────────────────────────
 
 function renderCharts() {
     renderGpaLineChart();
@@ -764,16 +803,14 @@ function renderGpaLineChart() {
     const labels = sems.map(s => s.name);
     const data   = sems.map(s => s.gpa);
 
-    // Compute CGPA running line
-    let runningSum     = 0;
-    let runningCredits = 0;
+    let runningSum = 0, runningCredits = 0;
     const cgpaLine = sems.map(s => {
         runningSum     += s.gpa * s.credits;
         runningCredits += s.credits;
         return parseFloat((runningSum / runningCredits).toFixed(2));
     });
 
-    const isDark = document.documentElement.dataset.theme === 'dark';
+    const isDark    = document.documentElement.dataset.theme === 'dark';
     const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
     const tickColor = isDark ? '#64748b' : '#94a3b8';
 
@@ -837,12 +874,7 @@ function renderGpaLineChart() {
             scales: {
                 y: {
                     min: 0, max: 4.0,
-                    ticks: {
-                        color: tickColor,
-                        font: { size: 11 },
-                        stepSize: 0.5,
-                        callback: v => v.toFixed(1)
-                    },
+                    ticks: { color: tickColor, font: { size: 11 }, stepSize: 0.5, callback: v => v.toFixed(1) },
                     grid: { color: gridColor }
                 },
                 x: {
@@ -855,11 +887,11 @@ function renderGpaLineChart() {
 }
 
 function renderCreditDoughnut() {
-    const completed  = calcCompletedCredits();
-    const total      = appState.totalCredits;
-    const remaining  = Math.max(0, total - completed);
-    const pct        = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
-    const canvas     = $('creditDoughnut');
+    const completed = calcCompletedCredits();
+    const total     = appState.totalCredits;
+    const remaining = Math.max(0, total - completed);
+    const pct       = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
+    const canvas    = $('creditDoughnut');
 
     $('doughnutPct').textContent = `${pct.toFixed(0)}%`;
 
@@ -886,12 +918,7 @@ function renderCreditDoughnut() {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: {
-                        color: isDark ? '#94a3b8' : '#64748b',
-                        font: { size: 12, family: 'Inter' },
-                        usePointStyle: true,
-                        padding: 16
-                    }
+                    labels: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 12, family: 'Inter' }, usePointStyle: true, padding: 16 }
                 },
                 tooltip: {
                     callbacks: {
@@ -903,11 +930,10 @@ function renderCreditDoughnut() {
     });
 }
 
-// ── 18. PREDICTION ENGINE ──────────────────────────────────────
+// ── 20. PREDICTION ENGINE ──────────────────────────────────────
 
-let predictionTarget = 3.70; // Default First Class
+let predictionTarget = 3.70;
 
-// Prediction events are bound in bindEvents() via DOMContentLoaded — see bindPredictionEvents()
 function bindPredictionEvents() {
     const btns = document.querySelectorAll('.target-cls-btn');
     btns.forEach(btn => {
@@ -920,9 +946,7 @@ function bindPredictionEvents() {
     });
 
     const nextCreditsEl = $('predNextCredits');
-    if (nextCreditsEl) {
-        nextCreditsEl.addEventListener('input', resetPredictionUI);
-    }
+    if (nextCreditsEl) nextCreditsEl.addEventListener('input', resetPredictionUI);
 }
 
 function resetPredictionUI() {
@@ -939,11 +963,9 @@ function updatePredictionStanding() {
     const cls       = classifyGpa(cgpa);
 
     $('predCurrentCgpa').textContent      = appState.semesters.length > 0 ? cgpa.toFixed(2) : '--';
-    
     const classEl = $('predCurrentClass');
     classEl.textContent = appState.semesters.length > 0 ? cls.label : '--';
     classEl.style.color = appState.semesters.length > 0 ? cls.color : 'inherit';
-    
     $('predCompletedCredits').textContent = completed + ' cr.';
     $('predRemainingCredits').textContent = remaining > 0 ? remaining + ' cr.' : '0 cr.';
 }
@@ -957,106 +979,95 @@ function renderPrediction() {
     }
     $('predNextCredits').classList.remove('is-invalid');
 
-    const cgpa        = calcCGPA();
-    const completed   = calcCompletedCredits();
-    
+    const cgpa      = calcCGPA();
+    const completed = calcCompletedCredits();
+
     $('predEmptyState').style.display = 'none';
 
     if (appState.semesters.length === 0) {
-        alert("Please add at least one semester before running a prediction.");
+        alert('Please add at least one semester before running a prediction.');
         resetPredictionUI();
         return;
     }
 
-    // Hide all blocks initially
     const banner = $('predVerdictBanner');
     const b1sem  = $('pred1SemBlock');
     const bMulti = $('predMultiBlock');
-    
+
     banner.classList.add('hidden');
     b1sem.classList.add('hidden');
     bMulti.classList.add('hidden');
 
     const targetCGPA = predictionTarget;
     const activeBtn  = document.querySelector('.target-cls-btn.active');
-    const targetName = activeBtn ? activeBtn.dataset.label : "Target Class";
+    const targetName = activeBtn ? activeBtn.dataset.label : 'Target Class';
 
-    // Dynamic semester offset logic
-    const startSemOffset = Math.max(appState.completedSemesters || 0, appState.semesters.length);
+    const startSemOffset             = Math.max(appState.completedSemesters || 0, appState.semesters.length);
     const remainingSemestersInProgram = Math.max(0, (appState.totalSemesters || 8) - startSemOffset);
 
     if (remainingSemestersInProgram === 0) {
         banner.className = 'pred-verdict-banner verdict-done';
-        $('verdictIcon').textContent = '🎓';
+        $('verdictIcon').textContent  = '🎓';
         $('verdictTitle').textContent = 'Program Completed';
-        $('verdictSub').textContent = `No upcoming semesters remaining in your program.`;
-        $('verdictGpaPill').textContent = `Finished`;
+        $('verdictSub').textContent   = 'No upcoming semesters remaining in your program.';
+        $('verdictGpaPill').textContent = 'Finished';
         banner.classList.remove('hidden');
         return;
     }
 
-    // Calculate needed for 1 semester
-    // needed = (target * (completed + nextCredits) - cgpa * completed) / nextCredits
     const needed1Sem = (targetCGPA * (completed + nextCredits) - cgpa * completed) / nextCredits;
 
-    // Even if cgpa >= targetCGPA, we just show the 1-semester block to maintain standing!
     if (needed1Sem <= 4.00 && remainingSemestersInProgram >= 1) {
-        let requiredGpa = Math.max(0, needed1Sem); // Can't be negative
-        
-        // Show 1 semester block
+        const requiredGpa = Math.max(0, needed1Sem);
+
         banner.className = 'pred-verdict-banner verdict-can';
-        $('verdictIcon').textContent = (cgpa >= targetCGPA) ? '🛡️' : '🚀';
-        $('verdictTitle').textContent = (cgpa >= targetCGPA) ? 'Maintain Your Standing' : 'Highly Achievable';
-        $('verdictSub').textContent = (cgpa >= targetCGPA) 
-            ? `You are currently above ${targetName}.` 
+        $('verdictIcon').textContent  = cgpa >= targetCGPA ? '🛡️' : '🚀';
+        $('verdictTitle').textContent = cgpa >= targetCGPA ? 'Maintain Your Standing' : 'Highly Achievable';
+        $('verdictSub').textContent   = cgpa >= targetCGPA
+            ? `You are currently above ${targetName}.`
             : `You can reach ${targetName} next semester!`;
-            
         $('verdictGpaPill').textContent = `Need ${requiredGpa.toFixed(2)}`;
-        
+
         b1sem.classList.remove('hidden');
         $('pred1SemTitle').textContent = `Semester ${startSemOffset + 1} Goal`;
-        $('pred1SemSub').textContent = `Based on taking ${nextCredits} credits`;
-        
+        $('pred1SemSub').textContent   = `Based on taking ${nextCredits} credits`;
+
         const gpaBox = $('pred1SemBox');
         gpaBox.className = 'pred-gpa-required-box box-achievable';
         $('pred1SemGpa').textContent = requiredGpa.toFixed(2);
-        $('pred1SemNote').textContent = (cgpa >= targetCGPA)
+        $('pred1SemNote').textContent = cgpa >= targetCGPA
             ? `Score at least this GPA in Semester ${startSemOffset + 1} to stay in ${targetName}.`
             : `Score this GPA in Semester ${startSemOffset + 1} to hit ${targetCGPA.toFixed(2)} CGPA.`;
-            
+
         banner.classList.remove('hidden');
     } else {
-        // Multi-semester projection
         banner.className = 'pred-verdict-banner verdict-cannot';
-        $('verdictIcon').textContent = '📈';
+        $('verdictIcon').textContent  = '📈';
         $('verdictTitle').textContent = 'Long-term Goal';
-        $('verdictSub').textContent = `Cannot be reached in just one semester.`;
-        $('verdictGpaPill').textContent = `Multi-Sem Plan`;
-        
+        $('verdictSub').textContent   = 'Cannot be reached in just one semester.';
+        $('verdictGpaPill').textContent = 'Multi-Sem Plan';
+
         bMulti.classList.remove('hidden');
-        
+
         let roadmapHTML = '';
-        let targetSems = 0;
+        let targetSems  = 0;
         let balancedGPA = 0;
-        
-        // Find the fastest path (minimum semesters needed) within remaining program semesters
+
         for (let sems = 2; sems <= remainingSemestersInProgram; sems++) {
-            let totalFutureCredits = sems * nextCredits;
-            let neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
-            
+            const totalFutureCredits = sems * nextCredits;
+            const neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
             if (neededAverage <= 4.00) {
-                targetSems = sems;
+                targetSems  = sems;
                 balancedGPA = Math.max(0, neededAverage);
                 break;
             }
         }
-        
+
         const rmapDiv = $('predRoadmap');
-        
+
         if (targetSems > 0) {
             $('predMultiSub').textContent = `Balanced Plan: Average ${balancedGPA.toFixed(2)} GPA over the next ${targetSems} semesters to reach ${targetName}.`;
-            
-            // Generate step-by-step balanced roadmap
+
             roadmapHTML += `
                 <div class="roadmap-step step-past">
                     <div class="rs-number">!</div>
@@ -1065,22 +1076,17 @@ function renderPrediction() {
                         <div class="rs-sem-note">${completed} credits completed</div>
                     </div>
                     <div class="rs-gpa-tag">${cgpa.toFixed(2)} CGPA</div>
-                </div>
-            `;
-            
-            let simCGPA = cgpa;
-            let simCompleted = completed;
-            
+                </div>`;
+
+            let simCGPA = cgpa, simCompleted = completed;
+
             for (let i = 1; i <= targetSems; i++) {
                 simCompleted += nextCredits;
                 simCGPA = (simCGPA * (simCompleted - nextCredits) + balancedGPA * nextCredits) / simCompleted;
-                
-                const isLast = (i === targetSems);
-                // Ensure the final step visually shows exactly the target to avoid tiny float rounding issues
+                const isLast     = (i === targetSems);
                 const displayCGPA = isLast ? Math.max(targetCGPA, simCGPA) : simCGPA;
-                
-                const semNumber = startSemOffset + i;
-                
+                const semNumber  = startSemOffset + i;
+
                 roadmapHTML += `
                     <div class="roadmap-step ${isLast ? 'step-achieved' : 'step-next'}">
                         <div class="rs-number">${semNumber}</div>
@@ -1089,63 +1095,44 @@ function renderPrediction() {
                             <div class="rs-sem-note">Score ${balancedGPA.toFixed(2)} (${nextCredits} cr.)</div>
                         </div>
                         <div class="rs-gpa-tag">CGPA ${displayCGPA.toFixed(2)}</div>
-                    </div>
-                `;
+                    </div>`;
             }
-            
+
             $('predRoadmapNote').innerHTML = `💡 <strong>Analysis:</strong> By balancing your effort to hit exactly <strong>${balancedGPA.toFixed(2)}</strong> each semester, your CGPA will steadily climb to your goal.`;
         } else {
-            $('predMultiSub').textContent = `Mathematical Limit Reached`;
-            if (remainingSemestersInProgram < 2) {
-                roadmapHTML = `
-                    <div class="pred-empty" style="text-align:center; padding: 20px; border-radius:8px; border:1px solid var(--border);">
-                        <div style="font-size: 2.5rem; margin-bottom:10px;">📉</div>
-                        <p style="color:var(--danger); font-weight:600;">Not enough semesters remaining.</p>
-                        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">
-                            You only have ${remainingSemestersInProgram} semester remaining, but you need multiple semesters at a higher GPA to reach ${targetCGPA.toFixed(2)}.
-                        </p>
-                    </div>
-                `;
-            } else {
-                roadmapHTML = `
-                    <div class="pred-empty" style="text-align:center; padding: 20px; border-radius:8px; border:1px solid var(--border);">
-                        <div style="font-size: 2.5rem; margin-bottom:10px;">📉</div>
-                        <p style="color:var(--danger); font-weight:600;">Mathematically impossible.</p>
-                        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">
-                            Even with perfect 4.00 GPAs for the next ${remainingSemestersInProgram} remaining semesters (${remainingSemestersInProgram * nextCredits} credits), 
-                            you cannot pull your CGPA up to ${targetCGPA.toFixed(2)}.
-                        </p>
-                    </div>
-                `;
-            }
-            $('predRoadmapNote').textContent = "💡 Tip: Focus on the next immediate classification level instead of this one.";
+            $('predMultiSub').textContent = 'Mathematical Limit Reached';
+            roadmapHTML = `
+                <div class="pred-empty" style="text-align:center;padding:20px;border-radius:8px;border:1px solid var(--border);">
+                    <div style="font-size:2.5rem;margin-bottom:10px;">📉</div>
+                    <p style="color:var(--danger);font-weight:600;">Mathematically impossible with remaining semesters.</p>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:5px;">
+                        Even with perfect 4.00 GPAs for all ${remainingSemestersInProgram} remaining semesters,
+                        you cannot reach ${targetCGPA.toFixed(2)} CGPA.
+                    </p>
+                </div>`;
+            $('predRoadmapNote').textContent = '💡 Tip: Focus on the next immediate classification level instead.';
         }
+
         rmapDiv.innerHTML = roadmapHTML;
         banner.classList.remove('hidden');
     }
 }
 
-// ── 19. THEME TOGGLE ───────────────────────────────────────────
+// ── 21. THEME TOGGLE ───────────────────────────────────────────
 
 function toggleTheme() {
     const html    = document.documentElement;
     const current = html.dataset.theme;
     html.dataset.theme = current === 'dark' ? 'light' : 'dark';
-
-    // Persist theme choice
     localStorage.setItem('smartGpa_theme', html.dataset.theme);
-
-    // Update button label
     updateThemeLabel();
-
-    // Redraw charts with new colors
     renderCharts();
     renderCgpaRing();
 }
 
 function updateThemeLabel() {
     const isDark = document.documentElement.dataset.theme === 'dark';
-    const span = document.querySelector('.theme-toggle span');
+    const span   = document.querySelector('.theme-toggle span');
     if (span) span.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 }
 
@@ -1153,27 +1140,27 @@ function updateThemeLabel() {
 (function loadTheme() {
     const saved = localStorage.getItem('smartGpa_theme');
     if (saved) document.documentElement.dataset.theme = saved;
-    // Set label after DOM ready
     document.addEventListener('DOMContentLoaded', updateThemeLabel);
 })();
 
-// ── 20. RESET ──────────────────────────────────────────────────
+// ── 22. RESET ──────────────────────────────────────────────────
 
 function handleReset() {
     if (!confirm('⚠️ Reset ALL data? This will permanently erase your academic record.')) return;
     localStorage.removeItem('smartGpa_v2');
-    appState = { studentName: '', totalCredits: 0, totalSemesters: 8, completedSemesters: 0, semesters: [], profileSetup: false, calcCourses: [] };
+    appState = {
+        studentName: '', totalCredits: 0, totalSemesters: 8,
+        completedSemesters: 0, semesters: [], profileSetup: false, calcCourses: []
+    };
     renderCalcTable();
     renderCalcResult();
 
-    // Clear charts
     if (gpaLineChart)   { gpaLineChart.destroy();   gpaLineChart   = null; }
     if (creditDoughnut) { creditDoughnut.destroy(); creditDoughnut = null; }
 
-    // Reset profile form
-    $('studentNameInput').value   = '';
-    $('totalCreditsInput').value  = '';
-    $('totalSemestersInput').value = '8';
+    $('studentNameInput').value        = '';
+    $('totalCreditsInput').value       = '';
+    $('totalSemestersInput').value     = '8';
     $('completedSemestersInput').value = '0';
     $('studentNameDisplay').textContent = 'My Academic Record';
 
@@ -1181,12 +1168,8 @@ function handleReset() {
     navigateTo('dashboard');
 }
 
-// ── 21. PDF EXPORT ─────────────────────────────────────────────
+// ── 23. PDF EXPORT ─────────────────────────────────────────────
 
-/**
- * Generates a simple printable CGPA report using window.print().
- * Opens a new tab with a formatted HTML report.
- */
 function exportReport() {
     const cgpa      = calcCGPA();
     const completed = calcCompletedCredits();
@@ -1194,7 +1177,7 @@ function exportReport() {
     const remaining = Math.max(0, total - completed);
     const cls       = classifyGpa(cgpa);
     const sems      = appState.semesters;
-    const date      = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    const date      = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     let tableRows = sems.map((s, i) => {
         const c = classifyGpa(s.gpa);
@@ -1223,15 +1206,12 @@ function exportReport() {
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th { background: #f0f4ff; padding: 10px 14px; text-align: left; font-size: 0.75rem; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; }
         td { padding: 11px 14px; border-bottom: 1px solid #e2e8f0; }
-        .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: #dbeafe; color: #2563eb; }
         .footer { margin-top: 28px; color: #94a3b8; font-size: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 16px; }
         @media print { body { margin: 0; } }
     </style>
     </head><body>
     <h1>🎓 CGPA Academic Report</h1>
-    <div class="sub">
-        Student: <strong>${escHtml(appState.studentName)}</strong> &nbsp;|&nbsp; Generated: ${date}
-    </div>
+    <div class="sub">Student: <strong>${escHtml(appState.studentName)}</strong> &nbsp;|&nbsp; Generated: ${date}</div>
     <div class="summary">
         <div class="box"><span class="val">${sems.length > 0 ? cgpa.toFixed(2) : '--'}</span><span class="lbl">Current CGPA</span></div>
         <div class="box"><span class="val">${cls.label}</span><span class="lbl">Classification</span></div>
@@ -1255,9 +1235,8 @@ function exportReport() {
     }
 }
 
-// ── 22. UTILITY HELPERS ────────────────────────────────────────
+// ── 24. UTILITY HELPERS ────────────────────────────────────────
 
-/** Safely escape HTML to prevent XSS */
 function escHtml(str) {
     return String(str)
         .replace(/&/g, '&amp;')
@@ -1266,33 +1245,42 @@ function escHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
-// ── 23. GLOBAL SCOPE (for inline onclick in HTML) ──────────────
-// These need to be accessible from HTML onclick attributes
+// ── 25. GLOBAL SCOPE (for inline onclick in HTML) ──────────────
 window.openEditModal  = openEditModal;
 window.deleteSemester = deleteSemester;
 
 // ══════════════════════════════════════════════════════════════════
-// ── 24. NORMAL GPA CALCULATOR ─────────────────────────────────────
-// Standalone semester GPA calculator using grade letter + credits.
-// Completely independent of the CGPA tracker above.
+// ── 26. NORMAL GPA CALCULATOR ─────────────────────────────────────
 // ══════════════════════════════════════════════════════════════════
 
-/**
- * GPA Calculator courses — now stored in appState.calcCourses for persistence.
- * Convenience alias so existing code works unchanged.
- */
 Object.defineProperty(window, 'calcCourses', {
     get: () => appState.calcCourses,
     set: (v) => { appState.calcCourses = v; }
 });
 
-// ── 24a. Bind GPA Calculator Events ───────────────────────────────
+// ── 26a. Bind GPA Calculator Events ──────────────────────────────
 
+function bindCalcEvents() {
+    const addBtn   = $('calcAddCourseBtn');
+    const clearBtn = $('clearCalcBtn');
 
+    if (addBtn)   addBtn.addEventListener('click', handleCalcAddCourse);
+    if (clearBtn) clearBtn.addEventListener('click', handleCalcClear);
 
-// ── 24b. Grade label map (value → letter) ─────────────────────────
+    // Enter key support in inputs
+    [$('calcCourseName'), $('calcCredits')].forEach(el => {
+        if (el) el.addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleCalcAddCourse();
+        });
+    });
 
-/** Returns the CSS class for the grade letter badge */
+    // Render initial state
+    renderCalcTable();
+    renderCalcResult();
+}
+
+// ── 26b. Grade label map ──────────────────────────────────────────
+
 function gradeToClass(gradeLabel) {
     const map = {
         'A+': 'g-ap', 'A': 'g-a', 'A-': 'g-am',
@@ -1304,7 +1292,7 @@ function gradeToClass(gradeLabel) {
     return map[gradeLabel] || 'g-e';
 }
 
-// ── 24c. Add Course Handler ────────────────────────────────────────
+// ── 26c. Add Course Handler ────────────────────────────────────────
 
 function handleCalcAddCourse() {
     const nameEl    = $('calcCourseName');
@@ -1316,21 +1304,13 @@ function handleCalcAddCourse() {
     const gradePts = parseFloat(gradeEl.value);
     const credits  = parseInt(creditsEl.value, 10);
 
-    // Reset
     errEl.textContent = '';
     nameEl.classList.remove('is-invalid');
     creditsEl.classList.remove('is-invalid');
 
     let hasErr = false;
-
-    if (!name) {
-        nameEl.classList.add('is-invalid');
-        hasErr = true;
-    }
-    if (isNaN(credits) || credits < 1 || credits > 6) {
-        creditsEl.classList.add('is-invalid');
-        hasErr = true;
-    }
+    if (!name)                                        { nameEl.classList.add('is-invalid');    hasErr = true; }
+    if (isNaN(credits) || credits < 1 || credits > 6) { creditsEl.classList.add('is-invalid'); hasErr = true; }
 
     if (hasErr) {
         errEl.textContent = 'Course name is required and credits must be between 1 and 6.';
@@ -1340,17 +1320,15 @@ function handleCalcAddCourse() {
     const selectedOption = gradeEl.options[gradeEl.selectedIndex];
     const gradeLabel = selectedOption.dataset.label || selectedOption.text.split(' ')[0];
 
-    // Push to list
     appState.calcCourses.push({
-        id:         Date.now(),
-        name:       name,
-        gradePts:   gradePts,
-        gradeLabel: gradeLabel,
-        credits:    credits
+        id: Date.now(),
+        name,
+        gradePts,
+        gradeLabel,
+        credits
     });
     saveToStorage();
 
-    // Clear name field, reset credits to 3, keep grade selection
     nameEl.value    = '';
     creditsEl.value = 3;
     nameEl.focus();
@@ -1359,7 +1337,18 @@ function handleCalcAddCourse() {
     renderCalcResult();
 }
 
-// ── 24d. Remove a course from the calculator ──────────────────────
+// ── 26d. Clear all courses ────────────────────────────────────────
+
+function handleCalcClear() {
+    if (appState.calcCourses.length === 0) return;
+    if (!confirm('Clear all courses from the GPA Calculator?')) return;
+    appState.calcCourses = [];
+    saveToStorage();
+    renderCalcTable();
+    renderCalcResult();
+}
+
+// ── 26e. Remove a course ──────────────────────────────────────────
 
 function calcDeleteCourse(id) {
     appState.calcCourses = appState.calcCourses.filter(c => c.id !== id);
@@ -1368,16 +1357,15 @@ function calcDeleteCourse(id) {
     renderCalcResult();
 }
 
-// Expose to global for inline onclick
 window.calcDeleteCourse = calcDeleteCourse;
 
-// ── 24e. Render the courses table ─────────────────────────────────
+// ── 26f. Render the courses table ─────────────────────────────────
 
 function renderCalcTable() {
     const tbody    = $('calcTableBody');
     const emptyRow = $('calcEmptyRow');
+    if (!tbody) return;
 
-    // Remove existing data rows (keep empty-row)
     tbody.querySelectorAll('tr:not(#calcEmptyRow)').forEach(r => r.remove());
 
     if (calcCourses.length === 0) {
@@ -1391,7 +1379,6 @@ function renderCalcTable() {
         const qualityPts = (c.gradePts * c.credits).toFixed(2);
         const badgeCls   = gradeToClass(c.gradeLabel);
         const tr         = document.createElement('tr');
-
         tr.innerHTML = `
             <td style="color:var(--text-muted);font-weight:600;">${idx + 1}</td>
             <td style="font-weight:600;">${escHtml(c.name)}</td>
@@ -1400,72 +1387,54 @@ function renderCalcTable() {
             <td>${c.credits} cr.</td>
             <td style="font-weight:700;color:var(--primary);">${qualityPts}</td>
             <td>
-                <button class="btn-icon delete" title="Remove course"
-                    onclick="calcDeleteCourse(${c.id})">🗑️</button>
+                <button class="btn-icon delete" title="Remove course" onclick="calcDeleteCourse(${c.id})">🗑️</button>
             </td>`;
-
         tbody.appendChild(tr);
     });
 }
 
-// ── 24f. Render the live GPA result panel ─────────────────────────
+// ── 26g. Render the live GPA result panel ─────────────────────────
 
 function renderCalcResult() {
     const courses = calcCourses;
     const count   = courses.length;
 
-    // Update course count badge
-    $('calcCourseCount').textContent = `${count} course${count !== 1 ? 's' : ''}`;
+    $('calcCourseCount').textContent  = `${count} course${count !== 1 ? 's' : ''}`;
     $('calcCoursesAdded').textContent = count;
 
     if (count === 0) {
-        // Reset result card to default state
-        $('calcGpaValue').textContent    = '0.00';
-        $('calcGpaValue').style.color    = 'var(--primary)';
+        $('calcGpaValue').textContent     = '0.00';
+        $('calcGpaValue').style.color     = 'var(--primary)';
         $('calcTotalCredits').textContent = '0';
         $('calcTotalQP').textContent      = '0.00';
-        $('calcGpaBarFill').style.width  = '0%';
-
+        $('calcGpaBarFill').style.width   = '0%';
         const badge = $('calcBadge');
         badge.textContent = '--';
         badge.className   = 'classification-badge badge-nodata';
         return;
     }
 
-    // ── Calculation ──
-    // GPA = Σ(grade_points × credits) / Σ(credits)
-    const totalCredits  = courses.reduce((acc, c) => acc + c.credits, 0);
-    const totalQP       = courses.reduce((acc, c) => acc + (c.gradePts * c.credits), 0);
-    const gpa           = totalCredits > 0 ? totalQP / totalCredits : 0;
+    const totalCredits = courses.reduce((acc, c) => acc + c.credits, 0);
+    const totalQP      = courses.reduce((acc, c) => acc + (c.gradePts * c.credits), 0);
+    const gpa          = totalCredits > 0 ? totalQP / totalCredits : 0;
+    const cls          = classifyGpa(gpa);
+    const gpaEl        = $('calcGpaValue');
 
-    // Get classification
-    const cls = classifyGpa(gpa);
-
-    // ── Update DOM ──
-    const gpaEl = $('calcGpaValue');
-
-    // Animate the number change with a brief scale pop
     gpaEl.style.transform  = 'scale(0.85)';
     gpaEl.style.transition = 'transform 0.15s ease';
 
     setTimeout(() => {
-        gpaEl.textContent          = gpa.toFixed(2);
-        gpaEl.style.color          = cls.color;
-        gpaEl.style.transform      = 'scale(1)';
-        gpaEl.style.transition     = 'transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275), color 0.3s ease';
+        gpaEl.textContent      = gpa.toFixed(2);
+        gpaEl.style.color      = cls.color;
+        gpaEl.style.transform  = 'scale(1)';
+        gpaEl.style.transition = 'transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275), color 0.3s ease';
     }, 100);
 
     $('calcTotalCredits').textContent = totalCredits;
     $('calcTotalQP').textContent      = totalQP.toFixed(2);
+    $('calcGpaBarFill').style.width   = ((gpa / 4.0) * 100).toFixed(1) + '%';
 
-    // Progress bar: scale 0–4 → 0–100%
-    const pct = (gpa / 4.0) * 100;
-    $('calcGpaBarFill').style.width = pct.toFixed(1) + '%';
-
-    // Classification badge
     const badge = $('calcBadge');
     badge.textContent = `${cls.icon}  ${cls.label}`;
     badge.className   = `classification-badge ${cls.badge}`;
 }
-
-// Navigation fully handled in original navigateTo() above.

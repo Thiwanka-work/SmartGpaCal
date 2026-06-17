@@ -668,6 +668,8 @@ body {
     margin-bottom: 14px;
 }
 
+.form-grid .form-field { margin-bottom: 0; }
+
 .form-field label {
     font-size: 0.82rem;
     font-weight: 600;
@@ -1334,7 +1336,7 @@ body {
 
 @media (max-width: 640px) {
     .section { padding: 16px; }
-    .stats-row { grid-template-columns: 1fr; gap: 14px; }
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 14px; }
     .topbar { padding: 0 16px; }
     .prediction-grid { grid-template-columns: 1fr; }
     .prediction-config-card,
@@ -1344,6 +1346,24 @@ body {
     .welcome-banner { padding: 32px 20px; }
     .fab-export { bottom: 16px; right: 16px; }
     .semesters-full-grid { grid-template-columns: 1fr; }
+
+    /* Prevent iOS Safari auto-zoom on inputs (requires font-size >= 16px) */
+    .form-field input,
+    .modal-body input,
+    #calcGrade,
+    .profile-setup input {
+        font-size: 16px !important;
+    }
+
+    /* GPA + Credits side-by-side so all fields stay above keyboard */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .form-grid .form-field:first-child {
+        grid-column: 1 / -1;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1901,6 +1921,7 @@ body {
         position: static;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 18px;
     }
 }
 

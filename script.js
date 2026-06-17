@@ -16,7 +16,8 @@ let appState = {
     totalSemesters: 8,      // Total semesters in program
     completedSemesters: 0,  // Completed semesters
     semesters:     [],      // Array of semester objects
-    profileSetup:  false    // Whether initial setup is done
+    profileSetup:  false,   // Whether initial setup is done
+    calcCourses:   []       // GPA Calculator courses (persisted)
 };
 
 // Each semester object looks like:
@@ -51,6 +52,7 @@ function loadFromStorage() {
             appState = JSON.parse(raw);
             if (appState.totalSemesters === undefined) appState.totalSemesters = 8;
             if (appState.completedSemesters === undefined) appState.completedSemesters = 0;
+            if (!Array.isArray(appState.calcCourses)) appState.calcCourses = [];
         } catch (e) {
             console.warn('Could not parse saved data, starting fresh.');
         }
@@ -120,6 +122,19 @@ function bindEvents() {
 
     // ---- Export PDF ----
     $('exportPdfBtn').addEventListener('click', exportReport);
+
+    // ---- Prediction target buttons ----
+    bindPredictionEvents();
+
+    // ---- GPA Calculator events ----
+    bindCalcEvents();
+
+    // ---- Mobile: scroll focused inputs into view above keyboard ----
+    [$('semName'), $('semGpa'), $('semCredits')].forEach(el => {
+        if (el) el.addEventListener('focus', () => {
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+        });
+    });
 }
 
 // ── 7. NAVIGATION ──────────────────────────────────────────────
@@ -142,9 +157,12 @@ function navigateTo(sectionId) {
         dashboard:  'Dashboard',
         semesters:  'Semester Management',
         analytics:  'Performance Analytics',
-        prediction: 'GPA Prediction Engine'
+        prediction: 'GPA Prediction Engine',
+        gpacalc:    'GPA Calculator'
     };
     $('pageTitle').textContent = titles[sectionId] || 'Dashboard';
+    // Close sidebar on mobile after navigation
+    $('sidebar').classList.remove('open');
 
     // Refresh chart if navigating to analytics
     if (sectionId === 'analytics') {
@@ -237,10 +255,11 @@ function handleAddSemester() {
 
     // Build semester object
     const semester = {
-        id:      Date.now(),       // Unique ID
-        name:    name,
-        gpa:     gpa,
-        credits: credits
+        id:        Date.now(),       // Unique ID
+        semNumber: appState.semesters.length + 1,  // Position for roadmap
+        name:      name,
+        gpa:       gpa,
+        credits:   credits
     };
 
     appState.semesters.push(semester);
@@ -287,14 +306,15 @@ function handleSaveEdit() {
 
     $('editFormError').textContent = '';
 
-    if (!name || isNaN(gpa) || gpa < 0 || gpa > 4 || isNaN(credits) || credits < 1) {
-        $('editFormError').textContent = 'Please fill all fields correctly. GPA: 0–4.';
+    if (!name || isNaN(gpa) || gpa < 0 || gpa > 4 || isNaN(credits) || credits < 1 || credits > 60) {
+        $('editFormError').textContent = 'Please fill all fields correctly. GPA: 0–4, Credits: 1–60.';
         return;
     }
 
     const idx = appState.semesters.findIndex(s => s.id === id);
     if (idx !== -1) {
-        appState.semesters[idx] = { id, name, gpa, credits };
+        const semNumber = appState.semesters[idx].semNumber || (idx + 1);
+        appState.semesters[idx] = { id, semNumber, name, gpa, credits };
         saveToStorage();
         closeModal();
         renderAll();
@@ -404,8 +424,8 @@ function renderSemesterRoadmap() {
             roadmapDivider.style.display = '';
             
             for (let i = 1; i <= lastCompletedIndex; i++) {
-                // Check if we have recorded data for this semester
-                const semData = recordedSems[i - 1];
+                // Check if we have recorded data for this semester (match by semNumber, not array index)
+                const semData = recordedSems.find(s => s.semNumber === i) || recordedSems[i - 1];
                 let displayName = `Semester ${i}`;
                 let detailText = 'No record';
                 let hasGpa = false;
@@ -887,29 +907,23 @@ function renderCreditDoughnut() {
 
 let predictionTarget = 3.70; // Default First Class
 
-(function bindPredictionEvents() {
-    document.addEventListener('DOMContentLoaded', () => {
-        const btns = document.querySelectorAll('.target-cls-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active from all
-                btns.forEach(b => b.classList.remove('active'));
-                // Add active to clicked
-                btn.classList.add('active');
-                // Set target
-                predictionTarget = parseFloat(btn.dataset.target);
-                // Clear results visually when target changes
-                resetPredictionUI();
-            });
+// Prediction events are bound in bindEvents() via DOMContentLoaded — see bindPredictionEvents()
+function bindPredictionEvents() {
+    const btns = document.querySelectorAll('.target-cls-btn');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            predictionTarget = parseFloat(btn.dataset.target);
+            resetPredictionUI();
         });
-        
-        // Input change also resets UI
-        const nextCreditsEl = $('predNextCredits');
-        if (nextCreditsEl) {
-            nextCreditsEl.addEventListener('input', resetPredictionUI);
-        }
     });
-})();
+
+    const nextCreditsEl = $('predNextCredits');
+    if (nextCreditsEl) {
+        nextCreditsEl.addEventListener('input', resetPredictionUI);
+    }
+}
 
 function resetPredictionUI() {
     $('predVerdictBanner').classList.add('hidden');
@@ -1121,15 +1135,26 @@ function toggleTheme() {
     // Persist theme choice
     localStorage.setItem('smartGpa_theme', html.dataset.theme);
 
+    // Update button label
+    updateThemeLabel();
+
     // Redraw charts with new colors
     renderCharts();
     renderCgpaRing();
+}
+
+function updateThemeLabel() {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    const span = document.querySelector('.theme-toggle span');
+    if (span) span.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 }
 
 // Load saved theme on startup
 (function loadTheme() {
     const saved = localStorage.getItem('smartGpa_theme');
     if (saved) document.documentElement.dataset.theme = saved;
+    // Set label after DOM ready
+    document.addEventListener('DOMContentLoaded', updateThemeLabel);
 })();
 
 // ── 20. RESET ──────────────────────────────────────────────────
@@ -1137,7 +1162,9 @@ function toggleTheme() {
 function handleReset() {
     if (!confirm('⚠️ Reset ALL data? This will permanently erase your academic record.')) return;
     localStorage.removeItem('smartGpa_v2');
-    appState = { studentName: '', totalCredits: 0, totalSemesters: 8, completedSemesters: 0, semesters: [], profileSetup: false };
+    appState = { studentName: '', totalCredits: 0, totalSemesters: 8, completedSemesters: 0, semesters: [], profileSetup: false, calcCourses: [] };
+    renderCalcTable();
+    renderCalcResult();
 
     // Clear charts
     if (gpaLineChart)   { gpaLineChart.destroy();   gpaLineChart   = null; }
@@ -1251,53 +1278,17 @@ window.deleteSemester = deleteSemester;
 // ══════════════════════════════════════════════════════════════════
 
 /**
- * In-memory list of courses for the GPA Calculator tab.
- * Each entry: { id, name, gradePts, credits, gradeLabel }
- * This list is NOT persisted to localStorage (it's a scratch calculator).
+ * GPA Calculator courses — now stored in appState.calcCourses for persistence.
+ * Convenience alias so existing code works unchanged.
  */
-let calcCourses = [];
+Object.defineProperty(window, 'calcCourses', {
+    get: () => appState.calcCourses,
+    set: (v) => { appState.calcCourses = v; }
+});
 
 // ── 24a. Bind GPA Calculator Events ───────────────────────────────
 
-(function bindCalcEvents() {
-    // We wrap in a function so this runs after DOMContentLoaded
-    // but we register it at module load time — DOMContentLoaded fires
-    // before script.js finishes, so we use a deferred check.
-    document.addEventListener('DOMContentLoaded', () => {
-        // "Add" button
-        $('calcAddCourseBtn').addEventListener('click', handleCalcAddCourse);
 
-        // Allow Enter key on the course name & credits inputs
-        $('calcCourseName').addEventListener('keydown', e => {
-            if (e.key === 'Enter') handleCalcAddCourse();
-        });
-        $('calcCredits').addEventListener('keydown', e => {
-            if (e.key === 'Enter') handleCalcAddCourse();
-        });
-
-        // Clear all courses
-        $('clearCalcBtn').addEventListener('click', () => {
-            if (calcCourses.length === 0) return;
-            if (!confirm('Clear all courses from the GPA calculator?')) return;
-            calcCourses = [];
-            renderCalcTable();
-            renderCalcResult();
-        });
-
-        // Clear invalid state on input
-        $('calcCourseName').addEventListener('input', () => {
-            $('calcFormError').textContent = '';
-            $('calcCourseName').classList.remove('is-invalid');
-        });
-        $('calcCredits').addEventListener('input', () => {
-            $('calcFormError').textContent = '';
-            $('calcCredits').classList.remove('is-invalid');
-        });
-
-        // Add 'gpacalc' to the navigation title map (extend existing)
-        // (navigateTo already handles 'gpacalc' via the titles object inside it)
-    });
-})();
 
 // ── 24b. Grade label map (value → letter) ─────────────────────────
 
@@ -1350,13 +1341,14 @@ function handleCalcAddCourse() {
     const gradeLabel = selectedOption.dataset.label || selectedOption.text.split(' ')[0];
 
     // Push to list
-    calcCourses.push({
+    appState.calcCourses.push({
         id:         Date.now(),
         name:       name,
         gradePts:   gradePts,
         gradeLabel: gradeLabel,
         credits:    credits
     });
+    saveToStorage();
 
     // Clear name field, reset credits to 3, keep grade selection
     nameEl.value    = '';
@@ -1370,7 +1362,8 @@ function handleCalcAddCourse() {
 // ── 24d. Remove a course from the calculator ──────────────────────
 
 function calcDeleteCourse(id) {
-    calcCourses = calcCourses.filter(c => c.id !== id);
+    appState.calcCourses = appState.calcCourses.filter(c => c.id !== id);
+    saveToStorage();
     renderCalcTable();
     renderCalcResult();
 }
@@ -1475,36 +1468,4 @@ function renderCalcResult() {
     badge.className   = `classification-badge ${cls.badge}`;
 }
 
-// ── 24g. Patch navigateTo to include 'gpacalc' title ──────────────
-
-// We patch the titles object by wrapping navigateTo after it's defined.
-// Since navigateTo uses a local `titles` object, we override it cleanly
-// by re-registering the section title via a data attribute approach.
-// The simplest fix: update the page title manually when navigating to gpacalc.
-
-const _origNavigateTo = navigateTo;
-
-// Re-define navigateTo in global scope to add the gpacalc title
-window.navigateTo = function(sectionId) {
-    _origNavigateTo(sectionId);
-    // Override page title for gpacalc since original titles map didn't include it
-    if (sectionId === 'gpacalc') {
-        $('pageTitle').textContent = 'GPA Calculator';
-    }
-    // Auto-close sidebar on navigation (useful for mobile)
-    const sidebar = $('sidebar');
-    if (sidebar) {
-        sidebar.classList.remove('open');
-    }
-};
-
-// Make nav items use the patched version
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.nav-item').forEach(item => {
-        // Re-bind to use window.navigateTo (patched version)
-        item.onclick = (e) => {
-            e.preventDefault();
-            window.navigateTo(item.dataset.section);
-        };
-    });
-});
+// Navigation fully handled in original navigateTo() above.

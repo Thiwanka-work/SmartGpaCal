@@ -181,6 +181,9 @@ function navigateTo(sectionId) {
     // Refresh Add GPA preview
     if (sectionId === 'addgpa') renderAddGpaPreview();
 
+    // Refresh GPA calc semester dropdown
+    if (sectionId === 'gpacalc') refreshCalcSemDropdown();
+
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -393,6 +396,7 @@ function renderAll() {
         renderSemesterRoadmap();
         renderAddGpaPreview();
         updatePredictionStanding();
+        showDashQuickCalc();
     }
 }
 
@@ -1248,6 +1252,7 @@ function escHtml(str) {
 // ── 25. GLOBAL SCOPE (for inline onclick in HTML) ──────────────
 window.openEditModal  = openEditModal;
 window.deleteSemester = deleteSemester;
+window.navigateTo     = navigateTo;
 
 // ══════════════════════════════════════════════════════════════════
 // ── 26. NORMAL GPA CALCULATOR ─────────────────────────────────────
@@ -1258,6 +1263,9 @@ Object.defineProperty(window, 'calcCourses', {
     set: (v) => { appState.calcCourses = v; }
 });
 
+// Active semester context for the calculator
+let calcActiveSem = null; // { id, name, isNew, credits } — set when user confirms semester
+
 // ── 26a. Bind GPA Calculator Events ──────────────────────────────
 
 function bindCalcEvents() {
@@ -1267,6 +1275,14 @@ function bindCalcEvents() {
     if (addBtn)   addBtn.addEventListener('click', handleCalcAddCourse);
     if (clearBtn) clearBtn.addEventListener('click', handleCalcClear);
 
+    // Semester confirm / change buttons
+    const confirmBtn = $('calcConfirmSemBtn');
+    const changeBtn  = $('calcChangeSemBtn');
+    const doSaveBtn  = $('calcDoSaveBtn');
+    if (confirmBtn) confirmBtn.addEventListener('click', handleCalcConfirmSem);
+    if (changeBtn)  changeBtn.addEventListener('click',  handleCalcChangeSem);
+    if (doSaveBtn)  doSaveBtn.addEventListener('click',  handleCalcDoSave);
+
     // Enter key support in inputs
     [$('calcCourseName'), $('calcCredits')].forEach(el => {
         if (el) el.addEventListener('keydown', e => {
@@ -1275,8 +1291,136 @@ function bindCalcEvents() {
     });
 
     // Render initial state
+    refreshCalcSemDropdown();
     renderCalcTable();
     renderCalcResult();
+}
+
+// ── 26a2. Populate the semester dropdown ──────────────────────────
+
+function refreshCalcSemDropdown() {
+    const sel = $('calcSemesterSelect');
+    if (!sel) return;
+    const sems = appState.semesters;
+    sel.innerHTML = '<option value="">— Select semester —</option>';
+    sems.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value       = s.id;
+        opt.textContent = s.name;
+        sel.appendChild(opt);
+    });
+    // Show/hide existing col hint
+    const col = $('calcExistingCol');
+    if (col) col.style.display = sems.length === 0 ? 'none' : '';
+}
+
+// ── 26a3. Confirm semester handler ────────────────────────────────
+
+function handleCalcConfirmSem() {
+    const sel      = $('calcSemesterSelect');
+    const newName  = ($('calcNewSemName') ? $('calcNewSemName').value.trim() : '');
+    const newCreds = ($('calcNewSemCreditsHint') ? parseInt($('calcNewSemCreditsHint').value, 10) : NaN);
+    const errEl    = $('calcStepErr');
+    errEl.textContent = '';
+
+    const existingId = sel ? sel.value : '';
+
+    if (!existingId && !newName) {
+        errEl.textContent = '⚠️ Please select an existing semester or enter a name for a new one.';
+        return;
+    }
+
+    if (existingId) {
+        const sem = appState.semesters.find(s => String(s.id) === String(existingId));
+        if (!sem) { errEl.textContent = '⚠️ Semester not found.'; return; }
+        calcActiveSem = { id: sem.id, name: sem.name, isNew: false };
+    } else {
+        // Create new semester stub (will be properly saved when GPA is saved)
+        calcActiveSem = { id: null, name: newName, isNew: true, credits: isNaN(newCreds) ? 0 : newCreds };
+    }
+
+    // Update UI
+    const display = $('calcActiveSemDisplay');
+    const nameSpan = $('calcActiveSemName');
+    const banner   = $('calcStepBanner');
+    const tag      = $('calcForSemTag');
+
+    if (nameSpan) nameSpan.textContent = calcActiveSem.name;
+    if (display)  display.style.display = '';
+    if (banner)   banner.classList.add('confirmed');
+    if (tag)      { tag.textContent = `for ${calcActiveSem.name}`; tag.style.display = ''; }
+
+    // Show auto-save section if courses exist
+    renderCalcResult();
+}
+
+// ── 26a4. Change semester handler ─────────────────────────────────
+
+function handleCalcChangeSem() {
+    calcActiveSem = null;
+    const display = $('calcActiveSemDisplay');
+    const banner  = $('calcStepBanner');
+    const tag     = $('calcForSemTag');
+    const autoSave = $('calcAutoSaveSection');
+    if (display)  display.style.display = 'none';
+    if (banner)   banner.classList.remove('confirmed');
+    if (tag)      tag.style.display = 'none';
+    if (autoSave) autoSave.style.display = 'none';
+}
+
+// ── 26a5. Do save handler ─────────────────────────────────────────
+
+function handleCalcDoSave() {
+    const msg = $('calcSaveMsg');
+    if (!calcActiveSem) {
+        if (msg) { msg.textContent = '⚠️ Please confirm a semester first (Step 1 above).'; msg.style.color = 'var(--danger)'; }
+        return;
+    }
+
+    const courses      = calcCourses;
+    const totalCredits = courses.reduce((acc, c) => acc + c.credits, 0);
+    const totalQP      = courses.reduce((acc, c) => acc + (c.gradePts * c.credits), 0);
+    const gpa          = totalCredits > 0 ? totalQP / totalCredits : 0;
+
+    if (courses.length === 0) {
+        if (msg) { msg.textContent = '⚠️ Add at least one course first.'; msg.style.color = 'var(--danger)'; }
+        return;
+    }
+
+    const creditsToUse = totalCredits;
+
+    if (calcActiveSem.isNew) {
+        // Create a brand-new semester
+        const newSem = {
+            id:        Date.now(),
+            semNumber: appState.semesters.length + 1,
+            name:      calcActiveSem.name,
+            gpa:       parseFloat(gpa.toFixed(2)),
+            credits:   creditsToUse
+        };
+        appState.semesters.push(newSem);
+        calcActiveSem.id    = newSem.id;
+        calcActiveSem.isNew = false;
+    } else {
+        // Update existing semester
+        const sem = appState.semesters.find(s => String(s.id) === String(calcActiveSem.id));
+        if (!sem) {
+            if (msg) { msg.textContent = '⚠️ Semester not found.'; msg.style.color = 'var(--danger)'; }
+            return;
+        }
+        sem.gpa     = parseFloat(gpa.toFixed(2));
+        sem.credits = creditsToUse;
+    }
+
+    saveToStorage();
+    renderAll();
+    refreshCalcSemDropdown();
+
+    if (msg) {
+        msg.textContent = `✅ GPA ${gpa.toFixed(2)} saved to "${calcActiveSem.name}" — your CGPA has been updated!`;
+        msg.style.color = 'var(--secondary)';
+        setTimeout(() => { if (msg) msg.textContent = ''; }, 5000);
+    }
 }
 
 // ── 26b. Grade label map ──────────────────────────────────────────
@@ -1376,7 +1520,6 @@ function renderCalcTable() {
     emptyRow.style.display = 'none';
 
     calcCourses.forEach((c, idx) => {
-        const qualityPts = (c.gradePts * c.credits).toFixed(2);
         const badgeCls   = gradeToClass(c.gradeLabel);
         const tr         = document.createElement('tr');
         tr.innerHTML = `
@@ -1385,7 +1528,6 @@ function renderCalcTable() {
             <td><span class="grade-letter ${badgeCls}">${escHtml(c.gradeLabel)}</span></td>
             <td style="font-weight:600;color:var(--text-primary);">${c.gradePts.toFixed(2)}</td>
             <td>${c.credits} cr.</td>
-            <td style="font-weight:700;color:var(--primary);">${qualityPts}</td>
             <td>
                 <button class="btn-icon delete" title="Remove course" onclick="calcDeleteCourse(${c.id})">🗑️</button>
             </td>`;
@@ -1402,15 +1544,18 @@ function renderCalcResult() {
     $('calcCourseCount').textContent  = `${count} course${count !== 1 ? 's' : ''}`;
     $('calcCoursesAdded').textContent = count;
 
+    const autoSave  = $('calcAutoSaveSection');
+    const nameLabel = $('calcAutoSaveSemName');
+
     if (count === 0) {
         $('calcGpaValue').textContent     = '0.00';
         $('calcGpaValue').style.color     = 'var(--primary)';
         $('calcTotalCredits').textContent = '0';
-        $('calcTotalQP').textContent      = '0.00';
         $('calcGpaBarFill').style.width   = '0%';
         const badge = $('calcBadge');
         badge.textContent = '--';
         badge.className   = 'classification-badge badge-nodata';
+        if (autoSave) autoSave.style.display = 'none';
         return;
     }
 
@@ -1431,10 +1576,25 @@ function renderCalcResult() {
     }, 100);
 
     $('calcTotalCredits').textContent = totalCredits;
-    $('calcTotalQP').textContent      = totalQP.toFixed(2);
     $('calcGpaBarFill').style.width   = ((gpa / 4.0) * 100).toFixed(1) + '%';
 
     const badge = $('calcBadge');
     badge.textContent = `${cls.icon}  ${cls.label}`;
     badge.className   = `classification-badge ${cls.badge}`;
+
+    // Show auto-save section if a semester is confirmed
+    if (autoSave) {
+        if (calcActiveSem) {
+            if (nameLabel) nameLabel.textContent = calcActiveSem.name;
+            autoSave.style.display = 'block';
+        } else {
+            autoSave.style.display = 'none';
+        }
+    }
+}
+
+// Also show bottom quick-calc on dashboard when profile set up
+function showDashQuickCalc() {
+    const el = $('dashQuickCalcBottom');
+    if (el) el.style.display = appState.profileSetup ? '' : 'none';
 }

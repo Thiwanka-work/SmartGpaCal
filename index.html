@@ -190,6 +190,22 @@
                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);"></div>
                 <h2>Welcome to SmartGPA</h2>
                 <p>Set up your academic profile to get started</p>
+
+                <!-- Site Description for new users -->
+                <div class="site-description-box">
+                    <h3>📖 What is SmartGPA?</h3>
+                    <p>SmartGPA is a free academic management tool for university students. Here's what you can do:</p>
+                    <div class="feature-pills">
+                        <span class="feat-pill">📊 Track your CGPA every semester</span>
+                        <span class="feat-pill">📅 Manage & edit semester records</span>
+                        <span class="feat-pill">📈 Visualize your GPA trend over time</span>
+                        <span class="feat-pill">🔮 Predict what GPA you need to hit First Class</span>
+                        <span class="feat-pill">🧮 Calculate semester GPA course-by-course</span>
+                        <span class="feat-pill">📄 Export your academic report as PDF</span>
+                    </div>
+                    <p class="desc-note">All data is saved locally on your device — no login required.</p>
+                </div>
+
                 <div class="profile-setup">
                     <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
                     <input type="number" id="totalCreditsInput" placeholder="Total Program Credits" min="30" max="300"
@@ -204,6 +220,20 @@
 
             <!-- Main Dashboard Grid (hidden until profile setup) -->
             <div class="dashboard-grid" id="dashboardGrid" style="display:none;">
+
+                <!-- Quick GPA Calc Banner (top of dashboard) -->
+                <div class="dash-quickcalc-banner">
+                    <div class="dash-qc-left">
+                        <span class="dash-qc-icon">🧮</span>
+                        <div>
+                            <div class="dash-qc-title">Quick GPA Calculator</div>
+                            <div class="dash-qc-sub">Calculate your semester GPA course-by-course and save it to your record</div>
+                        </div>
+                    </div>
+                    <button class="btn-primary dash-qc-btn" onclick="navigateTo('gpacalc')">
+                        Open GPA Calculator →
+                    </button>
+                </div>
 
                 <!-- Row 1: Stats Cards -->
                 <div class="stats-row">
@@ -340,6 +370,18 @@
                 </div>
 
             </div><!-- /dashboard-grid -->
+
+            <!-- Bottom Quick GPA Calc Shortcut -->
+            <div class="dash-quickcalc-bottom" id="dashQuickCalcBottom" style="display:none;">
+                <div class="dash-qcb-inner">
+                    <div class="dash-qcb-emoji">🧮</div>
+                    <div class="dash-qcb-text">
+                        <strong>Need to calculate a semester GPA?</strong>
+                        <span>Enter courses &amp; grades — get GPA instantly, save to your record.</span>
+                    </div>
+                    <button class="btn-primary" onclick="navigateTo('gpacalc')">GPA Calculator →</button>
+                </div>
+            </div>
         </section>
 
         <!-- ========================================= -->
@@ -578,9 +620,37 @@
                 </div>
             </div>
 
-            <div class="pred-engine-grid">
+            <!-- How Prediction Works -->
+            <div class="pred-howto-card">
+                <div class="pred-howto-header">
+                    <span class="pred-howto-icon">💡</span>
+                    <h3>How does the Prediction work?</h3>
+                </div>
+                <div class="pred-howto-steps">
+                    <div class="pred-howto-step">
+                        <div class="pred-howto-num">1</div>
+                        <div class="pred-howto-text"><strong>Your Current CGPA is calculated</strong> as a weighted average — each semester's GPA × its credits, summed and divided by total credits completed.</div>
+                    </div>
+                    <div class="pred-howto-step">
+                        <div class="pred-howto-num">2</div>
+                        <div class="pred-howto-text"><strong>You choose a target classification</strong> (e.g. First Class ≥ 3.70). The engine determines the minimum final CGPA you need.</div>
+                    </div>
+                    <div class="pred-howto-step">
+                        <div class="pred-howto-num">3</div>
+                        <div class="pred-howto-text"><strong>The engine works backwards</strong> — using your remaining credits and target CGPA, it calculates the GPA you must score each upcoming semester.</div>
+                    </div>
+                    <div class="pred-howto-step">
+                        <div class="pred-howto-num">4</div>
+                        <div class="pred-howto-text"><strong>If required GPA exceeds 4.0</strong>, the target is mathematically impossible — you'll be told clearly so you can adjust your goal.</div>
+                    </div>
+                </div>
+                <div class="pred-howto-formula">
+                    <span class="pred-formula-label">CGPA Formula:</span>
+                    <span class="pred-formula-text">CGPA = Σ (Semester GPA × Credits) ÷ Total Credits Completed</span>
+                </div>
+            </div>
 
-                <!-- ── LEFT: Config panel ── -->
+            <div class="pred-engine-grid">
                 <div class="pred-config-col">
 
                     <!-- Target Class Selector -->
@@ -758,10 +828,9 @@
                 <div class="section-page-icon">🧮</div>
                 <div>
                     <h1 class="section-page-title">GPA Calculator</h1>
-                    <p class="section-page-sub">Enter your courses, grades &amp; credits to calculate semester GPA
-                        instantly</p>
+                    <p class="section-page-sub">Calculate your semester GPA course-by-course and save it to your record</p>
                 </div>
-                <button class="btn-primary btn-page-action" id="clearCalcBtn">
+                <button class="btn-secondary btn-page-action" id="clearCalcBtn">
                     <svg viewBox="0 0 24 24" fill="none" width="15" height="15">
                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
                             fill="currentColor" />
@@ -770,13 +839,43 @@
                 </button>
             </div>
 
+            <!-- STEP 1: Choose Semester Banner -->
+            <div class="calc-step-banner" id="calcStepBanner">
+                <div class="calc-step-icon">📅</div>
+                <div class="calc-step-body">
+                    <div class="calc-step-label">Step 1 — Which semester are you calculating?</div>
+                    <p class="calc-step-hint">Select an existing semester <strong>or</strong> create a new one. Your calculated GPA will be saved automatically.</p>
+                    <div class="calc-sem-choice-row">
+                        <div class="calc-sem-choice-col" id="calcExistingCol">
+                            <label class="calc-choice-label">📋 Save to existing semester</label>
+                            <select id="calcSemesterSelect" class="calc-sem-select">
+                                <option value="">— Select semester —</option>
+                            </select>
+                        </div>
+                        <div class="calc-sem-or">OR</div>
+                        <div class="calc-sem-choice-col">
+                            <label class="calc-choice-label">➕ Create new semester</label>
+                            <input type="text" id="calcNewSemName" class="calc-sem-input" placeholder="e.g. Semester 5">
+                            <input type="number" id="calcNewSemCreditsHint" class="calc-sem-input" placeholder="Total credits (e.g. 18)" min="1" max="60" step="1" style="margin-top:6px;">
+                        </div>
+                    </div>
+                    <div class="calc-sem-active-display" id="calcActiveSemDisplay" style="display:none;">
+                        <span class="calc-active-icon">✅</span>
+                        <span class="calc-active-text">Calculating for: <strong id="calcActiveSemName">—</strong></span>
+                        <button class="calc-change-sem-btn" id="calcChangeSemBtn">Change</button>
+                    </div>
+                    <button class="btn-primary calc-confirm-sem-btn" id="calcConfirmSemBtn">Confirm Semester →</button>
+                    <div class="calc-step-err" id="calcStepErr"></div>
+                </div>
+            </div>
+
             <div class="gpacalc-layout">
 
                 <!-- LEFT: Course Entry Form + Table -->
                 <div class="gpacalc-left">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Add Course</h3>
+                            <h3>📝 Add Course <span class="calc-for-sem-tag" id="calcForSemTag" style="display:none;"></span></h3>
                             <span class="card-badge">Subject Entry</span>
                         </div>
 
@@ -827,13 +926,12 @@
                                         <th>Grade</th>
                                         <th>Grade Pts</th>
                                         <th>Credits</th>
-                                        <th>Quality Pts</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="calcTableBody">
                                     <tr id="calcEmptyRow">
-                                        <td colspan="7">
+                                        <td colspan="6">
                                             <div class="empty-state">
                                                 <span>📝</span>
                                                 <p>Add courses above to begin calculating your GPA.</p>
@@ -869,10 +967,6 @@
                                 <strong id="calcTotalCredits">0</strong>
                             </div>
                             <div class="calc-sum-row">
-                                <span>Quality Points</span>
-                                <strong id="calcTotalQP">0.00</strong>
-                            </div>
-                            <div class="calc-sum-row">
                                 <span>Courses Added</span>
                                 <strong id="calcCoursesAdded">0</strong>
                             </div>
@@ -886,6 +980,21 @@
                         </div>
                         <div class="calc-bar-labels">
                             <span>0.0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>4.0</span>
+                        </div>
+
+                        <!-- Auto-Save to Semester -->
+                        <div class="calc-autosave-section" id="calcAutoSaveSection" style="display:none;">
+                            <div class="calc-autosave-inner">
+                                <div class="calc-autosave-info">
+                                    <span class="calc-autosave-icon">💾</span>
+                                    <div>
+                                        <div class="calc-autosave-title">Save to <strong id="calcAutoSaveSemName">—</strong></div>
+                                        <div class="calc-autosave-sub">This will update that semester's GPA &amp; credits in your record</div>
+                                    </div>
+                                </div>
+                                <button class="btn-primary calc-do-save-btn" id="calcDoSaveBtn">Save GPA Now</button>
+                            </div>
+                            <div class="calc-save-msg" id="calcSaveMsg"></div>
                         </div>
                     </div>
 
@@ -973,10 +1082,22 @@
         </section>
 
         <!-- ===================== FOOTER ===================== -->
-        <footer class="app-footer" style="text-align: center; padding: 2rem 1rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 2rem;">
-            <div class="footer-content">
-                <p>&copy; 2024 SmartGPA Calculator. All rights reserved.</p>
-                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Designed for University Academic Management</p>
+        <footer class="app-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <span class="footer-logo-text">SmartGPA</span>
+                    <p class="footer-tagline">Your smart academic companion — track GPA, predict performance, and stay on top of your university journey.</p>
+                </div>
+                <div class="footer-divider"></div>
+                <div class="footer-meta">
+                    <p class="footer-copy">&copy; 2025 SmartGPA. All rights reserved.</p>
+                    <p class="footer-dev">
+                        Designed &amp; Built by
+                        <strong class="footer-author">Thiwanka Sanadaruwan</strong>
+                        <span class="footer-role">· Cloud Engineering &amp; Full Stack Development</span>
+                    </p>
+                    <p class="footer-site"><a href="https://www.smartgpa.app" target="_blank" rel="noopener">www.smartgpa.app</a></p>
+                </div>
             </div>
         </footer>
 

@@ -186,35 +186,38 @@
 
             <!-- Student Profile Setup (shown if no data) -->
             <div class="welcome-banner" id="welcomeBanner">
-                <div class="welcome-icon" style="overflow: hidden; border-radius: 25%; width: 80px; height: 80px; margin: 0 auto 15px;"><img src="app_icon.ico" alt="SmartGPA Logo"
-                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);"></div>
-                <h2>Welcome to SmartGPA</h2>
-                <p>Set up your academic profile to get started</p>
-
-                <!-- Site Description for new users -->
-                <div class="site-description-box">
-                    <h3>📖 What is SmartGPA?</h3>
-                    <p>SmartGPA is a free academic management tool for university students. Here's what you can do:</p>
-                    <div class="feature-pills">
-                        <span class="feat-pill">📊 Track your CGPA every semester</span>
-                        <span class="feat-pill">📅 Manage & edit semester records</span>
-                        <span class="feat-pill">📈 Visualize your GPA trend over time</span>
-                        <span class="feat-pill">🔮 Predict what GPA you need to hit First Class</span>
-                        <span class="feat-pill">🧮 Calculate semester GPA course-by-course</span>
-                        <span class="feat-pill">📄 Export your academic report as PDF</span>
+                <div class="welcome-content">
+                    <div class="welcome-icon" style="overflow: hidden; border-radius: 25%; width: 80px; height: 80px; margin-bottom: 20px;">
+                        <img src="app_icon.ico" alt="SmartGPA Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
                     </div>
-                    <p class="desc-note">All data is saved locally on your device — no login required.</p>
+                    <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Welcome to SmartGPA</h2>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Your intelligent academic companion. Let's get your profile set up!</p>
+
+                    <!-- Site Description for new users -->
+                    <div class="site-description-box" style="margin: 0; padding: 1.25rem;">
+                        <h3>📖 What is SmartGPA?</h3>
+                        <p>SmartGPA is a free academic management tool for university students. Here's what you can do:</p>
+                        <div class="feature-pills">
+                            <span class="feat-pill">📊 Track your CGPA every semester</span>
+                            <span class="feat-pill">📅 Manage & edit semester records</span>
+                            <span class="feat-pill">📈 Visualize your GPA trend over time</span>
+                            <span class="feat-pill">🔮 Predict what GPA you need to hit First Class</span>
+                            <span class="feat-pill">🧮 Calculate semester GPA course-by-course</span>
+                            <span class="feat-pill">📄 Export your academic report as PDF</span>
+                        </div>
+                        <p class="desc-note">All data is saved locally on your device — no login required.</p>
+                    </div>
                 </div>
 
-                <div class="profile-setup">
-                    <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
-                    <input type="number" id="totalCreditsInput" placeholder="Total Program Credits" min="30" max="300"
-                        step="1">
-                    <input type="number" id="totalSemestersInput" placeholder="Total Program Semesters" min="1" max="20"
-                        step="1">
-                    <input type="number" id="completedSemestersInput" placeholder="Already Completed Semesters" min="0"
-                        max="20" step="1">
-                    <button class="btn-primary" id="setupProfileBtn">Get Started →</button>
+                <div class="welcome-form-container">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 700; text-align: center;">Create Profile</h3>
+                    <div class="profile-setup" style="margin: 0; max-width: 100%;">
+                        <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
+                        <input type="number" id="totalCreditsInput" placeholder="Total Program Credits" min="30" max="300" step="1">
+                        <input type="number" id="totalSemestersInput" placeholder="Total Program Semesters" min="1" max="20" step="1">
+                        <input type="number" id="completedSemestersInput" placeholder="Already Completed Semesters" min="0" max="20" step="1">
+                        <button class="btn-primary" id="setupProfileBtn" style="margin-top: 10px; padding: 14px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);">Get Started →</button>
+                    </div>
                 </div>
             </div>
 
@@ -1090,10 +1093,10 @@
                 </div>
                 <div class="footer-divider"></div>
                 <div class="footer-meta">
-                    <p class="footer-copy">&copy; 2025 SmartGPA. All rights reserved.</p>
+                    <p class="footer-copy">&copy; 2026 SmartGPA. All rights reserved.</p>
                     <p class="footer-dev">
-                        Designed &amp; Built by
-                        <strong class="footer-author">Thiwanka Sanadaruwan</strong>
+                        Developed by 
+                        <strong class="footer-author">Thiwanka Sandaruwan</strong>
                         <span class="footer-role">· Cloud Engineering &amp; Full Stack Development</span>
                     </p>
                     <p class="footer-site"><a href="https://www.smartgpa.app" target="_blank" rel="noopener">www.smartgpa.app</a></p>

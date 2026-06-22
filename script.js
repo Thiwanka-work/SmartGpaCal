@@ -675,7 +675,7 @@ function renderAnalyticsSummary() {
 
     if (sems.length >= 2) {
         const first = sems[0].gpa;
-        const last  = sems[sems.length - 1].gpa;
+        const last  = cgpa;
         if (last > first) {
             $('perfTrendIcon').textContent  = '📈';
             $('perfTrendText').textContent  = 'Improving';
@@ -1189,7 +1189,15 @@ function renderPrediction() {
             totalFutureCredits = Math.max(0, profileTotal - completed);
             
             if (totalFutureCredits <= 0) {
-                totalFutureCredits = remainingSemestersInProgram * 15; 
+                if (banner) {
+                    banner.className = 'pred-verdict-banner verdict-done';
+                    if ($('verdictIcon')) $('verdictIcon').textContent  = '🎓';
+                    if ($('verdictTitle')) $('verdictTitle').textContent = 'Program Completed';
+                    if ($('verdictSub')) $('verdictSub').textContent   = 'You have completed all required credits.';
+                    if ($('verdictGpaPill')) $('verdictGpaPill').textContent = 'Finished';
+                    banner.classList.remove('hidden');
+                }
+                return;
             }
 
             const creditsPerSem = totalFutureCredits / remainingSemestersInProgram;
@@ -1215,6 +1223,8 @@ function renderPrediction() {
             }
             if (hasError) return;
         }
+
+        if (totalFutureCredits <= 0) return;
 
         const neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
         
@@ -1254,7 +1264,7 @@ function renderPrediction() {
                     simCompleted += sw.credits;
                     simCGPA = (simCGPA * (simCompleted - sw.credits) + balancedGPA * sw.credits) / simCompleted;
                     const isLast = (idx === semesterWeights.length - 1);
-                    const displayCGPA = isLast ? Math.max(targetCGPA, simCGPA) : simCGPA;
+                    const displayCGPA = simCGPA;
                     
                     roadmapHTML += `
                         <div class="roadmap-step ${isLast ? 'step-achieved' : 'step-next'}">
@@ -1423,11 +1433,6 @@ window.navigateTo     = navigateTo;
 // ── 26. NORMAL GPA CALCULATOR ─────────────────────────────────────
 // ══════════════════════════════════════════════════════════════════
 
-Object.defineProperty(window, 'calcCourses', {
-    get: () => appState.calcCourses,
-    set: (v) => { appState.calcCourses = v; }
-});
-
 // Active semester context for the calculator
 let calcActiveSem = null; // { id, name, isNew, credits } — set when user confirms semester
 
@@ -1542,7 +1547,7 @@ function handleCalcDoSave() {
         return;
     }
 
-    const courses      = calcCourses;
+    const courses      = appState.calcCourses;
     const totalCredits = courses.reduce((acc, c) => acc + c.credits, 0);
     const totalQP      = courses.reduce((acc, c) => acc + (c.gradePts * c.credits), 0);
     const gpa          = totalCredits > 0 ? totalQP / totalCredits : 0;
@@ -1677,14 +1682,14 @@ function renderCalcTable() {
 
     tbody.querySelectorAll('tr:not(#calcEmptyRow)').forEach(r => r.remove());
 
-    if (calcCourses.length === 0) {
+    if (appState.calcCourses.length === 0) {
         emptyRow.style.display = '';
         return;
     }
 
     emptyRow.style.display = 'none';
 
-    calcCourses.forEach((c, idx) => {
+    appState.calcCourses.forEach((c, idx) => {
         const badgeCls   = gradeToClass(c.gradeLabel);
         const tr         = document.createElement('tr');
         tr.innerHTML = `
@@ -1703,7 +1708,7 @@ function renderCalcTable() {
 // ── 26g. Render the live GPA result panel ─────────────────────────
 
 function renderCalcResult() {
-    const courses = calcCourses;
+    const courses = appState.calcCourses;
     const count   = courses.length;
 
     $('calcCourseCount').textContent  = `${count} course${count !== 1 ? 's' : ''}`;

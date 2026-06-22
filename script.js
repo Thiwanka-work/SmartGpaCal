@@ -951,13 +951,103 @@ function bindPredictionEvents() {
 
     const nextCreditsEl = $('predNextCredits');
     if (nextCreditsEl) nextCreditsEl.addEventListener('input', resetPredictionUI);
+
+    const timeframeEl = $('predTimeframe');
+    const calcModeEl = $('predCalcMode');
+
+    if (timeframeEl) {
+        timeframeEl.addEventListener('change', () => {
+            handlePredictionUIChange();
+            resetPredictionUI();
+        });
+    }
+
+    if (calcModeEl) {
+        calcModeEl.addEventListener('change', () => {
+            handlePredictionUIChange();
+            resetPredictionUI();
+        });
+    }
+
+    // Init UI state
+    setTimeout(handlePredictionUIChange, 100);
+}
+
+function handlePredictionUIChange() {
+    const timeframeEl = $('predTimeframe');
+    if (!timeframeEl) return;
+    
+    const timeframe = timeframeEl.value;
+    const calcModeEl = $('predCalcModeField');
+    const nextCreditsField = $('predNextCreditsField');
+    const averageNote = $('predAverageNote');
+    const exactInputsContainer = $('predExactInputsContainer');
+
+    if (timeframe === 'next') {
+        if (calcModeEl) calcModeEl.classList.add('hidden');
+        if (nextCreditsField) nextCreditsField.classList.remove('hidden');
+        if (averageNote) averageNote.classList.add('hidden');
+        if (exactInputsContainer) exactInputsContainer.classList.add('hidden');
+    } else {
+        if (calcModeEl) calcModeEl.classList.remove('hidden');
+        if (nextCreditsField) nextCreditsField.classList.add('hidden');
+        
+        const calcMode = $('predCalcMode').value;
+        if (calcMode === 'average') {
+            if (averageNote) averageNote.classList.remove('hidden');
+            if (exactInputsContainer) exactInputsContainer.classList.add('hidden');
+        } else {
+            if (averageNote) averageNote.classList.add('hidden');
+            if (exactInputsContainer) {
+                exactInputsContainer.classList.remove('hidden');
+                renderExactCreditInputs();
+            }
+        }
+    }
+}
+
+function renderExactCreditInputs() {
+    const container = $('predExactInputsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const startSemOffset = Math.max(appState.completedSemesters || 0, appState.semesters.length);
+    const totalSems = appState.totalSemesters || 8;
+    const remainingSemesters = Math.max(0, totalSems - startSemOffset);
+
+    if (remainingSemesters <= 0) {
+        container.innerHTML = '<div class="pred-note" style="color: var(--text-secondary);">No upcoming semesters remaining in your program.</div>';
+        return;
+    }
+
+    let html = '<h4 style="font-size: 0.9rem; margin-bottom: 12px; color: var(--text-primary);">Enter Exact Credits Per Semester</h4>';
+    for (let i = 1; i <= remainingSemesters; i++) {
+        const semNum = startSemOffset + i;
+        html += `
+            <div class="form-field" style="margin-bottom: 10px;">
+                <label for="predExactCr_${semNum}">Credits for Semester ${semNum}</label>
+                <input type="number" id="predExactCr_${semNum}" class="pred-exact-input" min="1" max="60" step="1" value="18">
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+    container.querySelectorAll('.pred-exact-input').forEach(input => {
+        input.addEventListener('input', resetPredictionUI);
+    });
 }
 
 function resetPredictionUI() {
-    $('predVerdictBanner').classList.add('hidden');
-    $('pred1SemBlock').classList.add('hidden');
-    $('predMultiBlock').classList.add('hidden');
-    $('predEmptyState').style.display = 'block';
+    const banner = $('predVerdictBanner');
+    const b1sem  = $('pred1SemBlock');
+    const bMulti = $('predMultiBlock');
+    const empty  = $('predEmptyState');
+    
+    if (banner) banner.classList.add('hidden');
+    if (b1sem) b1sem.classList.add('hidden');
+    if (bMulti) bMulti.classList.add('hidden');
+    if (empty) empty.style.display = 'block';
 }
 
 function updatePredictionStanding() {
@@ -966,27 +1056,32 @@ function updatePredictionStanding() {
     const remaining = Math.max(0, appState.totalCredits - completed);
     const cls       = classifyGpa(cgpa);
 
-    $('predCurrentCgpa').textContent      = appState.semesters.length > 0 ? cgpa.toFixed(2) : '--';
+    const cgpaEl = $('predCurrentCgpa');
+    if (cgpaEl) cgpaEl.textContent = appState.semesters.length > 0 ? cgpa.toFixed(2) : '--';
+    
     const classEl = $('predCurrentClass');
-    classEl.textContent = appState.semesters.length > 0 ? cls.label : '--';
-    classEl.style.color = appState.semesters.length > 0 ? cls.color : 'inherit';
-    $('predCompletedCredits').textContent = completed + ' cr.';
-    $('predRemainingCredits').textContent = remaining > 0 ? remaining + ' cr.' : '0 cr.';
+    if (classEl) {
+        classEl.textContent = appState.semesters.length > 0 ? cls.label : '--';
+        classEl.style.color = appState.semesters.length > 0 ? cls.color : 'inherit';
+    }
+    
+    const compEl = $('predCompletedCredits');
+    if (compEl) compEl.textContent = completed + ' cr.';
+    
+    const remEl = $('predRemainingCredits');
+    if (remEl) remEl.textContent = remaining > 0 ? remaining + ' cr.' : '0 cr.';
+    
+    if ($('predTimeframe') && $('predTimeframe').value === 'end' && $('predCalcMode') && $('predCalcMode').value === 'exact') {
+        renderExactCreditInputs();
+    }
 }
 
 function renderPrediction() {
-    const nextCredits = parseInt($('predNextCredits').value, 10);
-
-    if (isNaN(nextCredits) || nextCredits < 1 || nextCredits > 60) {
-        $('predNextCredits').classList.add('is-invalid');
-        return;
-    }
-    $('predNextCredits').classList.remove('is-invalid');
-
     const cgpa      = calcCGPA();
     const completed = calcCompletedCredits();
 
-    $('predEmptyState').style.display = 'none';
+    const empty = $('predEmptyState');
+    if (empty) empty.style.display = 'none';
 
     if (appState.semesters.length === 0) {
         alert('Please add at least one semester before running a prediction.');
@@ -998,9 +1093,9 @@ function renderPrediction() {
     const b1sem  = $('pred1SemBlock');
     const bMulti = $('predMultiBlock');
 
-    banner.classList.add('hidden');
-    b1sem.classList.add('hidden');
-    bMulti.classList.add('hidden');
+    if (banner) banner.classList.add('hidden');
+    if (b1sem) b1sem.classList.add('hidden');
+    if (bMulti) bMulti.classList.add('hidden');
 
     const targetCGPA = predictionTarget;
     const activeBtn  = document.querySelector('.target-cls-btn.active');
@@ -1010,115 +1105,185 @@ function renderPrediction() {
     const remainingSemestersInProgram = Math.max(0, (appState.totalSemesters || 8) - startSemOffset);
 
     if (remainingSemestersInProgram === 0) {
-        banner.className = 'pred-verdict-banner verdict-done';
-        $('verdictIcon').textContent  = '🎓';
-        $('verdictTitle').textContent = 'Program Completed';
-        $('verdictSub').textContent   = 'No upcoming semesters remaining in your program.';
-        $('verdictGpaPill').textContent = 'Finished';
-        banner.classList.remove('hidden');
+        if (banner) {
+            banner.className = 'pred-verdict-banner verdict-done';
+            $('verdictIcon').textContent  = '🎓';
+            $('verdictTitle').textContent = 'Program Completed';
+            $('verdictSub').textContent   = 'No upcoming semesters remaining in your program.';
+            $('verdictGpaPill').textContent = 'Finished';
+            banner.classList.remove('hidden');
+        }
         return;
     }
 
-    const needed1Sem = (targetCGPA * (completed + nextCredits) - cgpa * completed) / nextCredits;
+    const timeframe = $('predTimeframe') ? $('predTimeframe').value : 'next';
 
-    if (needed1Sem <= 4.00 && remainingSemestersInProgram >= 1) {
-        const requiredGpa = Math.max(0, needed1Sem);
+    if (timeframe === 'next') {
+        const nextCreditsEl = $('predNextCredits');
+        if (!nextCreditsEl) return;
+        const nextCredits = parseInt(nextCreditsEl.value, 10);
 
-        banner.className = 'pred-verdict-banner verdict-can';
-        $('verdictIcon').textContent  = cgpa >= targetCGPA ? '🛡️' : '🚀';
-        $('verdictTitle').textContent = cgpa >= targetCGPA ? 'Maintain Your Standing' : 'Highly Achievable';
-        $('verdictSub').textContent   = cgpa >= targetCGPA
-            ? `You are currently above ${targetName}.`
-            : `You can reach ${targetName} next semester!`;
-        $('verdictGpaPill').textContent = `Need ${requiredGpa.toFixed(2)}`;
+        if (isNaN(nextCredits) || nextCredits < 1 || nextCredits > 60) {
+            nextCreditsEl.classList.add('is-invalid');
+            return;
+        }
+        nextCreditsEl.classList.remove('is-invalid');
 
-        b1sem.classList.remove('hidden');
-        $('pred1SemTitle').textContent = `Semester ${startSemOffset + 1} Goal`;
-        $('pred1SemSub').textContent   = `Based on taking ${nextCredits} credits`;
+        const needed1Sem = (targetCGPA * (completed + nextCredits) - cgpa * completed) / nextCredits;
 
-        const gpaBox = $('pred1SemBox');
-        gpaBox.className = 'pred-gpa-required-box box-achievable';
-        $('pred1SemGpa').textContent = requiredGpa.toFixed(2);
-        $('pred1SemNote').textContent = cgpa >= targetCGPA
-            ? `Score at least this GPA in Semester ${startSemOffset + 1} to stay in ${targetName}.`
-            : `Score this GPA in Semester ${startSemOffset + 1} to hit ${targetCGPA.toFixed(2)} CGPA.`;
+        if (needed1Sem <= 4.00) {
+            const requiredGpa = Math.max(0, needed1Sem);
+            if (banner) {
+                banner.className = 'pred-verdict-banner verdict-can';
+                $('verdictIcon').textContent  = cgpa >= targetCGPA ? '🛡️' : '🚀';
+                $('verdictTitle').textContent = cgpa >= targetCGPA ? 'Maintain Your Standing' : 'Highly Achievable';
+                $('verdictSub').textContent   = cgpa >= targetCGPA
+                    ? `You are currently above ${targetName}.`
+                    : `You can reach ${targetName} next semester!`;
+                $('verdictGpaPill').textContent = `Need ${requiredGpa.toFixed(2)}`;
+                banner.classList.remove('hidden');
+            }
 
-        banner.classList.remove('hidden');
-    } else {
-        banner.className = 'pred-verdict-banner verdict-cannot';
-        $('verdictIcon').textContent  = '📈';
-        $('verdictTitle').textContent = 'Long-term Goal';
-        $('verdictSub').textContent   = 'Cannot be reached in just one semester.';
-        $('verdictGpaPill').textContent = 'Multi-Sem Plan';
+            if (b1sem) {
+                b1sem.classList.remove('hidden');
+                $('pred1SemTitle').textContent = `Semester ${startSemOffset + 1} Goal`;
+                $('pred1SemSub').textContent   = `Based on taking ${nextCredits} credits`;
 
-        bMulti.classList.remove('hidden');
+                const gpaBox = $('pred1SemBox');
+                gpaBox.className = 'pred-gpa-required-box box-achievable';
+                $('pred1SemGpa').textContent = requiredGpa.toFixed(2);
+                $('pred1SemGpa').style.color = '';
+                $('pred1SemNote').textContent = cgpa >= targetCGPA
+                    ? `Score at least this GPA in Semester ${startSemOffset + 1} to stay in ${targetName}.`
+                    : `Score this GPA in Semester ${startSemOffset + 1} to hit ${targetCGPA.toFixed(2)} CGPA.`;
+            }
+        } else {
+            if (banner) {
+                banner.className = 'pred-verdict-banner verdict-cannot';
+                $('verdictIcon').textContent  = '📉';
+                $('verdictTitle').textContent = 'Mathematically Impossible';
+                $('verdictSub').textContent   = 'Cannot be reached in just one semester.';
+                $('verdictGpaPill').textContent = 'Try Multi-Sem';
+                banner.classList.remove('hidden');
+            }
+            
+            if (b1sem) {
+                b1sem.classList.remove('hidden');
+                $('pred1SemTitle').textContent = `Semester ${startSemOffset + 1} Goal`;
+                $('pred1SemSub').textContent   = `Based on taking ${nextCredits} credits`;
 
-        let roadmapHTML = '';
-        let targetSems  = 0;
-        let balancedGPA = 0;
-
-        for (let sems = 2; sems <= remainingSemestersInProgram; sems++) {
-            const totalFutureCredits = sems * nextCredits;
-            const neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
-            if (neededAverage <= 4.00) {
-                targetSems  = sems;
-                balancedGPA = Math.max(0, neededAverage);
-                break;
+                const gpaBox = $('pred1SemBox');
+                gpaBox.className = 'pred-gpa-required-box';
+                $('pred1SemGpa').textContent = '> 4.00';
+                $('pred1SemGpa').style.color = 'var(--danger)';
+                $('pred1SemNote').textContent = `You would need a ${needed1Sem.toFixed(2)} GPA to hit this target in one semester, which exceeds 4.00. Please change timeframe to "Multiple Semesters".`;
             }
         }
+    } else {
+        const calcMode = $('predCalcMode') ? $('predCalcMode').value : 'average';
+        let totalFutureCredits = 0;
+        let semesterWeights = [];
+        
+        if (calcMode === 'average') {
+            const profileTotal = appState.totalCredits || 120;
+            totalFutureCredits = Math.max(0, profileTotal - completed);
+            
+            if (totalFutureCredits <= 0) {
+                totalFutureCredits = remainingSemestersInProgram * 15; 
+            }
 
-        const rmapDiv = $('predRoadmap');
+            const creditsPerSem = totalFutureCredits / remainingSemestersInProgram;
+            for (let i = 1; i <= remainingSemestersInProgram; i++) {
+                semesterWeights.push({ semNum: startSemOffset + i, credits: creditsPerSem });
+            }
+        } else {
+            let hasError = false;
+            for (let i = 1; i <= remainingSemestersInProgram; i++) {
+                const semNum = startSemOffset + i;
+                const inputEl = $(`predExactCr_${semNum}`);
+                if (!inputEl) continue;
+                
+                const cr = parseInt(inputEl.value, 10);
+                if (isNaN(cr) || cr < 1 || cr > 60) {
+                    inputEl.classList.add('is-invalid');
+                    hasError = true;
+                } else {
+                    inputEl.classList.remove('is-invalid');
+                    semesterWeights.push({ semNum, credits: cr });
+                    totalFutureCredits += cr;
+                }
+            }
+            if (hasError) return;
+        }
 
-        if (targetSems > 0) {
-            $('predMultiSub').textContent = `Balanced Plan: Average ${balancedGPA.toFixed(2)} GPA over the next ${targetSems} semesters to reach ${targetName}.`;
+        const neededAverage = (targetCGPA * (completed + totalFutureCredits) - cgpa * completed) / totalFutureCredits;
+        
+        if (banner) {
+            banner.className = neededAverage <= 4.00 ? 'pred-verdict-banner verdict-can' : 'pred-verdict-banner verdict-cannot';
+            $('verdictIcon').textContent  = neededAverage <= 4.00 ? '📈' : '📉';
+            $('verdictTitle').textContent = neededAverage <= 4.00 ? 'Long-term Goal' : 'Mathematical Limit Reached';
+            $('verdictSub').textContent   = neededAverage <= 4.00 ? 'Achievable over your remaining program.' : 'Cannot be reached before graduation.';
+            $('verdictGpaPill').textContent = neededAverage <= 4.00 ? 'Multi-Sem Plan' : 'Impossible';
+            banner.classList.remove('hidden');
+        }
+        
+        if (bMulti) {
+            bMulti.classList.remove('hidden');
+            $('predMultiTitle').textContent = 'Semester Roadmap';
 
-            roadmapHTML += `
-                <div class="roadmap-step step-past">
-                    <div class="rs-number">!</div>
-                    <div class="rs-info">
-                        <div class="rs-sem-name">Current Standing</div>
-                        <div class="rs-sem-note">${completed} credits completed</div>
-                    </div>
-                    <div class="rs-gpa-tag">${cgpa.toFixed(2)} CGPA</div>
-                </div>`;
-
-            let simCGPA = cgpa, simCompleted = completed;
-
-            for (let i = 1; i <= targetSems; i++) {
-                simCompleted += nextCredits;
-                simCGPA = (simCGPA * (simCompleted - nextCredits) + balancedGPA * nextCredits) / simCompleted;
-                const isLast     = (i === targetSems);
-                const displayCGPA = isLast ? Math.max(targetCGPA, simCGPA) : simCGPA;
-                const semNumber  = startSemOffset + i;
+            let roadmapHTML = '';
+            const rmapDiv = $('predRoadmap');
+            
+            if (neededAverage <= 4.00) {
+                const balancedGPA = Math.max(0, neededAverage);
+                $('predMultiSub').textContent = `Balanced Plan: Average ${balancedGPA.toFixed(2)} GPA over your remaining ${remainingSemestersInProgram} semesters to reach ${targetName}.`;
 
                 roadmapHTML += `
-                    <div class="roadmap-step ${isLast ? 'step-achieved' : 'step-next'}">
-                        <div class="rs-number">${semNumber}</div>
+                    <div class="roadmap-step step-past">
+                        <div class="rs-number">!</div>
                         <div class="rs-info">
-                            <div class="rs-sem-name">Semester ${semNumber}</div>
-                            <div class="rs-sem-note">Score ${balancedGPA.toFixed(2)} (${nextCredits} cr.)</div>
+                            <div class="rs-sem-name">Current Standing</div>
+                            <div class="rs-sem-note">${completed} credits completed</div>
                         </div>
-                        <div class="rs-gpa-tag">CGPA ${displayCGPA.toFixed(2)}</div>
+                        <div class="rs-gpa-tag">${cgpa.toFixed(2)} CGPA</div>
                     </div>`;
+
+                let simCGPA = cgpa, simCompleted = completed;
+
+                semesterWeights.forEach((sw, idx) => {
+                    simCompleted += sw.credits;
+                    simCGPA = (simCGPA * (simCompleted - sw.credits) + balancedGPA * sw.credits) / simCompleted;
+                    const isLast = (idx === semesterWeights.length - 1);
+                    const displayCGPA = isLast ? Math.max(targetCGPA, simCGPA) : simCGPA;
+                    
+                    roadmapHTML += `
+                        <div class="roadmap-step ${isLast ? 'step-achieved' : 'step-next'}">
+                            <div class="rs-number">${sw.semNum}</div>
+                            <div class="rs-info">
+                                <div class="rs-sem-name">Semester ${sw.semNum}</div>
+                                <div class="rs-sem-note">Score ${balancedGPA.toFixed(2)} (${sw.credits.toFixed(0)} cr.)</div>
+                            </div>
+                            <div class="rs-gpa-tag">CGPA ${displayCGPA.toFixed(2)}</div>
+                        </div>`;
+                });
+
+                $('predRoadmapNote').innerHTML = `💡 <strong>Analysis:</strong> By balancing your effort to hit exactly <strong>${balancedGPA.toFixed(2)}</strong> each semester, your CGPA will steadily climb to your goal.`;
+            } else {
+                $('predMultiSub').textContent = 'Mathematically impossible with remaining credits.';
+                roadmapHTML = `
+                    <div class="pred-empty" style="text-align:center;padding:20px;border-radius:8px;border:1px solid var(--border);">
+                        <div style="font-size:2.5rem;margin-bottom:10px;">📉</div>
+                        <p style="color:var(--danger);font-weight:600;">Mathematically impossible.</p>
+                        <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:5px;">
+                            Even with perfect 4.00 GPAs for your remaining ${totalFutureCredits.toFixed(0)} credits,
+                            you cannot reach ${targetCGPA.toFixed(2)} CGPA.
+                        </p>
+                    </div>`;
+                $('predRoadmapNote').textContent = '💡 Tip: Focus on the next immediate classification level instead.';
             }
-
-            $('predRoadmapNote').innerHTML = `💡 <strong>Analysis:</strong> By balancing your effort to hit exactly <strong>${balancedGPA.toFixed(2)}</strong> each semester, your CGPA will steadily climb to your goal.`;
-        } else {
-            $('predMultiSub').textContent = 'Mathematical Limit Reached';
-            roadmapHTML = `
-                <div class="pred-empty" style="text-align:center;padding:20px;border-radius:8px;border:1px solid var(--border);">
-                    <div style="font-size:2.5rem;margin-bottom:10px;">📉</div>
-                    <p style="color:var(--danger);font-weight:600;">Mathematically impossible with remaining semesters.</p>
-                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:5px;">
-                        Even with perfect 4.00 GPAs for all ${remainingSemestersInProgram} remaining semesters,
-                        you cannot reach ${targetCGPA.toFixed(2)} CGPA.
-                    </p>
-                </div>`;
-            $('predRoadmapNote').textContent = '💡 Tip: Focus on the next immediate classification level instead.';
+            
+            if (rmapDiv) rmapDiv.innerHTML = roadmapHTML;
         }
-
-        rmapDiv.innerHTML = roadmapHTML;
-        banner.classList.remove('hidden');
     }
 }
 

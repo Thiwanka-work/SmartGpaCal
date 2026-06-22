@@ -212,10 +212,25 @@
                 <div class="welcome-form-container">
                     <h3 style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 700; text-align: center;">Create Profile</h3>
                     <div class="profile-setup" style="margin: 0; max-width: 100%;">
-                        <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
-                        <input type="number" id="totalCreditsInput" placeholder="Total Program Credits" min="30" max="300" step="1">
-                        <input type="number" id="totalSemestersInput" placeholder="Total Program Semesters" min="1" max="20" step="1">
-                        <input type="number" id="completedSemestersInput" placeholder="Already Completed Semesters" min="0" max="20" step="1">
+                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                            <label for="studentNameInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Student Name</label>
+                            <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
+                        </div>
+                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                            <label for="totalCreditsInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Credits</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">The total credits required to graduate (e.g. 120).</span>
+                            <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300" step="1">
+                        </div>
+                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                            <label for="totalSemestersInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Semesters</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Total number of semesters in your degree (e.g. 8).</span>
+                            <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20" step="1">
+                        </div>
+                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                            <label for="completedSemestersInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Completed Semesters</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">How many semesters have you already finished?</span>
+                            <input type="number" id="completedSemestersInput" placeholder="e.g. 0" min="0" max="20" step="1">
+                        </div>
                         <button class="btn-primary" id="setupProfileBtn" style="margin-top: 10px; padding: 14px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);">Get Started →</button>
                     </div>
                 </div>
@@ -689,15 +704,43 @@
                         </div>
                     </div>
 
-                    <!-- Credits Input -->
+                    <!-- Credits Input / Simulation Settings -->
                     <div class="card">
                         <div class="card-header">
                             <h3>⚙️ Simulation Settings</h3>
                         </div>
                         <div class="form-field">
-                            <label for="predNextCredits">Credits Per Upcoming Semester</label>
+                            <label for="predTimeframe">Target Timeframe</label>
+                            <select id="predTimeframe" class="pred-select">
+                                <option value="next">Next Semester Only</option>
+                                <option value="end">Multiple Semesters (End of Program)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-field hidden" id="predCalcModeField">
+                            <label for="predCalcMode">Calculation Method</label>
+                            <select id="predCalcMode" class="pred-select">
+                                <option value="average">Quick Average Estimation</option>
+                                <option value="exact">Exact Semester-wise Calculation</option>
+                            </select>
+                        </div>
+
+                        <!-- For Next Semester Only -->
+                        <div class="form-field" id="predNextCreditsField">
+                            <label for="predNextCredits">Credits for Next Semester</label>
                             <input type="number" id="predNextCredits" min="1" max="60" step="1" value="18">
                         </div>
+
+                        <!-- For Quick Average Estimation Note -->
+                        <div class="pred-note hidden" id="predAverageNote" style="margin-bottom: 15px; font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-hover); padding: 10px; border-radius: 6px; border-left: 3px solid var(--primary);">
+                            <span style="font-weight: 600;">Note:</span> This calculates an average GPA target across all your remaining program credits. For a precise calculation, switch to "Exact Semester-wise".
+                        </div>
+
+                        <!-- For Exact Semester-wise Inputs -->
+                        <div id="predExactInputsContainer" class="hidden">
+                            <!-- Dynamically injected inputs go here -->
+                        </div>
+
                         <button class="btn-primary btn-full" id="runPredictionBtn">
                             <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
                                 <path d="M8 5v14l11-7z" fill="currentColor" />

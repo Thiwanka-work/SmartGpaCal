@@ -35,6 +35,11 @@
     </script>
     <!-- Chart.js CDN for line chart analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Lucide Icons & Lottie Animations -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -56,73 +61,39 @@
 
         <nav class="sidebar-nav">
             <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="3" width="7" height="7" rx="1" fill="currentColor" />
-                    <rect x="14" y="3" width="7" height="7" rx="1" fill="currentColor" />
-                    <rect x="3" y="14" width="7" height="7" rx="1" fill="currentColor" />
-                    <rect x="14" y="14" width="7" height="7" rx="1" fill="currentColor" />
-                </svg>
+                <i data-lucide="layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
             <a href="#" class="nav-item" data-section="addgpa" id="nav-addgpa">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
-                </svg>
+                <i data-lucide="plus-circle"></i>
                 <span>Add GPA</span>
             </a>
             <a href="#" class="nav-item" data-section="semesters" id="nav-semesters">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="calendar-days"></i>
                 <span>Semesters</span>
             </a>
             <a href="#" class="nav-item" data-section="analytics" id="nav-analytics">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M3.5 18.49L9.5 12.48L13.5 16.48L22 6.92L20.59 5.51L13.5 13.48L9.5 9.48L2 16.99L3.5 18.49Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="line-chart"></i>
                 <span>Analytics</span>
             </a>
             <a href="#" class="nav-item" data-section="prediction" id="nav-prediction">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="target"></i>
                 <span>Prediction</span>
             </a>
             <a href="#" class="nav-item" data-section="gpacalc" id="nav-gpacalc">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM13 17H7V15H13V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="calculator"></i>
                 <span>GPA Calculator</span>
             </a>
         </nav>
 
         <div class="sidebar-footer">
             <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
-                <svg class="icon-sun" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M12 7C9.24 7 7 9.24 7 12C7 14.76 9.24 17 12 17C14.76 17 17 14.76 17 12C17 9.24 14.76 7 12 7ZM2 13H4C4.55 13 5 12.55 5 12C5 11.45 4.55 11 4 11H2C1.45 11 1 11.45 1 12C1 12.55 1.45 13 2 13ZM20 13H22C22.55 13 23 12.55 23 12C23 11.45 22.55 11 22 11H20C19.45 11 19 11.45 19 12C19 12.55 19.45 13 20 13ZM11 2V4C11 4.55 11.45 5 12 5C12.55 5 13 4.55 13 4V2C13 1.45 12.55 1 12 1C11.45 1 11 1.45 11 2ZM11 20V22C11 22.55 11.45 23 12 23C12.55 23 13 22.55 13 22V20C13 19.45 12.55 19 12 19C11.45 19 11 19.45 11 20Z"
-                        fill="currentColor" />
-                </svg>
-                <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C15.5 21 18.57 19.07 20.2 16.19C17.02 16.19 14.19 14.76 12.31 12.5C10.43 10.24 9.5 7.37 10.04 4.31C10.58 3.86 11.28 3.57 12 3.5C12 3.33 12 3.17 12 3Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="sun" class="icon-sun"></i>
+                <i data-lucide="moon" class="icon-moon"></i>
                 <span>Dark Mode</span>
             </button>
             <button class="reset-btn" id="resetBtn">
-                <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z"
-                        fill="currentColor" />
-                </svg>
+                <i data-lucide="rotate-ccw"></i>
                 <span>Reset All</span>
             </button>
         </div>
@@ -177,7 +148,7 @@
         <!-- ========================================= -->
         <section class="section active" id="section-dashboard">
             <div class="section-page-header">
-                <div class="section-page-icon">📊</div>
+                <div class="section-page-icon"><i data-lucide="bar-chart-2" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">Dashboard</h1>
                     <p class="section-page-sub">Your academic overview at a glance</p>
@@ -198,12 +169,12 @@
                         <h3>📖 What is SmartGPA?</h3>
                         <p>SmartGPA is a free academic management tool for university students. Here's what you can do:</p>
                         <div class="feature-pills">
-                            <span class="feat-pill">📊 Track your CGPA every semester</span>
-                            <span class="feat-pill">📅 Manage & edit semester records</span>
-                            <span class="feat-pill">📈 Visualize your GPA trend over time</span>
-                            <span class="feat-pill">🔮 Predict what GPA you need to hit First Class</span>
-                            <span class="feat-pill">🧮 Calculate semester GPA course-by-course</span>
-                            <span class="feat-pill">📄 Export your academic report as PDF</span>
+                            <span class="feat-pill"><i data-lucide="bar-chart" style="width:16px;height:16px;"></i> Track your CGPA every semester</span>
+                            <span class="feat-pill"><i data-lucide="calendar" style="width:16px;height:16px;"></i> Manage & edit semester records</span>
+                            <span class="feat-pill"><i data-lucide="trending-up" style="width:16px;height:16px;"></i> Visualize your GPA trend over time</span>
+                            <span class="feat-pill"><i data-lucide="target" style="width:16px;height:16px;"></i> Predict what GPA you need to hit First Class</span>
+                            <span class="feat-pill"><i data-lucide="calculator" style="width:16px;height:16px;"></i> Calculate semester GPA course-by-course</span>
+                            <span class="feat-pill"><i data-lucide="file-text" style="width:16px;height:16px;"></i> Export your academic report as PDF</span>
                         </div>
                         <p class="desc-note">All data is saved locally on your device — no login required.</p>
                     </div>
@@ -253,13 +224,16 @@
                     </button>
                 </div>
 
+                <!-- Global Upgrade Hints Container (Dashboard) -->
+                <div id="dashUpgradeHintsContainer" style="display:none; margin-bottom: 20px;"></div>
+
                 <!-- Row 1: Stats Cards -->
                 <div class="stats-row">
                     <!-- CGPA Card -->
                     <div class="stat-card cgpa-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Current CGPA</span>
-                            <span class="stat-icon">📊</span>
+                            <span class="stat-icon"><i data-lucide="activity"></i></span>
                         </div>
                         <div class="cgpa-display">
                             <span class="cgpa-value" id="cgpaValue">0.00</span>
@@ -275,7 +249,7 @@
                     <div class="stat-card credits-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Credit Progress</span>
-                            <span class="stat-icon">📚</span>
+                            <span class="stat-icon"><i data-lucide="book-open"></i></span>
                         </div>
                         <div class="credits-numbers">
                             <div class="credit-item">
@@ -302,7 +276,7 @@
                     <div class="stat-card semesters-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Semesters</span>
-                            <span class="stat-icon">🗓️</span>
+                            <span class="stat-icon"><i data-lucide="calendar"></i></span>
                         </div>
                         <div class="big-number" id="semesterCountDisplay">0</div>
                         <div class="stat-sub">semesters recorded</div>
@@ -322,7 +296,7 @@
                     <div class="stat-card status-card">
                         <div class="stat-card-header">
                             <span class="stat-label">Academic Status</span>
-                            <span class="stat-icon">🏆</span>
+                            <span class="stat-icon"><i data-lucide="award"></i></span>
                         </div>
                         <div class="status-icon-big" id="statusIconBig">📋</div>
                         <div class="status-text" id="statusText">No data yet</div>
@@ -376,7 +350,7 @@
                                 <tr class="empty-row" id="emptyTableRow">
                                     <td colspan="6">
                                         <div class="empty-state">
-                                            <span>📋</span>
+                                            <i data-lucide="clipboard-list" style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
                                             <p>No semesters added yet. Use the <strong>Add GPA</strong> page to add your
                                                 first semester.</p>
                                         </div>
@@ -392,7 +366,7 @@
             <!-- Bottom Quick GPA Calc Shortcut -->
             <div class="dash-quickcalc-bottom" id="dashQuickCalcBottom" style="display:none;">
                 <div class="dash-qcb-inner">
-                    <div class="dash-qcb-emoji">🧮</div>
+                    <div class="dash-qcb-emoji"><i data-lucide="calculator" style="width: 32px; height: 32px;"></i></div>
                     <div class="dash-qcb-text">
                         <strong>Need to calculate a semester GPA?</strong>
                         <span>Enter courses &amp; grades — get GPA instantly, save to your record.</span>
@@ -407,10 +381,52 @@
         <!-- ========================================= -->
         <section class="section" id="section-addgpa">
             <div class="section-page-header accent-header">
-                <div class="section-page-icon">➕</div>
+                <div class="section-page-icon"><i data-lucide="plus-circle" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">Add GPA to Semester</h1>
                     <p class="section-page-sub">Record your semester results here</p>
+                </div>
+            </div>
+
+            <!-- ★ INSTRUCTION BANNER ★ -->
+            <div class="addgpa-instruction-banner">
+                <div class="aib-title">
+                    <span class="aib-icon"><i data-lucide="info"></i></span>
+                    How to Add Your Semester GPA
+                </div>
+                <div class="aib-steps">
+                    <div class="aib-step">
+                        <div class="aib-step-num">1</div>
+                        <div class="aib-step-text">
+                            <strong>Enter Semester Name</strong>
+                            e.g. "Semester 1" or "Year 2 Sem 1"
+                        </div>
+                    </div>
+                    <div class="aib-step">
+                        <div class="aib-step-num">2</div>
+                        <div class="aib-step-text">
+                            <strong>Enter Your GPA (0.0–4.0)</strong>
+                            Check your results portal or transcript
+                        </div>
+                    </div>
+                    <div class="aib-step">
+                        <div class="aib-step-num">3</div>
+                        <div class="aib-step-text">
+                            <strong>Enter Credits Taken</strong>
+                            Total credit hours for that semester
+                        </div>
+                    </div>
+                    <div class="aib-step">
+                        <div class="aib-step-num">4</div>
+                        <div class="aib-step-text">
+                            <strong>Skip No-GPA Semesters</strong>
+                            Internship or leave semester? Just skip it — no need to add!
+                        </div>
+                    </div>
+                </div>
+                <div class="aib-tip">
+                    <span class="aib-tip-icon"><i data-lucide="lightbulb"></i></span>
+                    <span><strong>Pro tip:</strong> Don't have a final GPA yet? Use the <strong>GPA Calculator</strong> tab to calculate it course-by-course first, then save it here automatically!</span>
                 </div>
             </div>
 
@@ -428,21 +444,28 @@
                         </div>
                         <div class="addgpa-two-col">
                             <div class="form-field">
-                                <label for="semGpa">GPA (0.0 – 4.0)</label>
-                                <input type="number" id="semGpa" placeholder="e.g. 3.75" min="0" max="4" step="0.01">
+                                <label for="semGpa">GPA (0.0 – 4.0) <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">— leave blank to skip</span></label>
+                                <input type="number" id="semGpa" placeholder="e.g. 3.75 (optional)" min="0" max="4" step="0.01">
                             </div>
                             <div class="form-field">
                                 <label for="semCredits">Credits Taken</label>
                                 <input type="number" id="semCredits" placeholder="e.g. 18" min="1" max="60" step="1">
                             </div>
                         </div>
+                        <div class="addgpa-skip-hint" id="skipHintEl" style="display:none;">
+                            ⏭️ <span>This semester will be recorded as <strong>skipped</strong> (no GPA). Credits still count toward your total.</span>
+                        </div>
                         <div class="form-error" id="formError"></div>
-                        <button class="btn-primary btn-full btn-large" id="addSemesterBtn">
-                            <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
-                            </svg>
-                            Add Semester & Calculate CGPA
-                        </button>
+                        <div class="addgpa-btn-row">
+                            <button class="btn-primary btn-large" id="addSemesterBtn" style="flex:1;">
+                                <i data-lucide="plus"></i>
+                                Add Semester &amp; Calculate CGPA
+                            </button>
+                            <button class="btn-secondary btn-large skip-sem-btn" id="skipSemBtn" type="button" title="Record this semester as skipped (e.g. Internship, Industrial Training)">
+                                <i data-lucide="skip-forward"></i>
+                                Skip Semester
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -461,9 +484,21 @@
 
                     <div class="addgpa-sem-list" id="addgpaSemList">
                         <div class="addgpa-empty-hint">
-                            <span>📋</span>
+                            <i data-lucide="clipboard-list"></i>
                             <p>Add your first semester above to see CGPA calculation</p>
                         </div>
+                    </div>
+
+                    <!-- ★ QUICK PREDICT SHORTCUT ★ -->
+                    <div class="addgpa-predict-shortcut" onclick="navigateTo('prediction')" role="button" title="Go to Prediction">
+                        <div class="aps-left">
+                            <span class="aps-icon"><i data-lucide="sparkles"></i></span>
+                            <div class="aps-text">
+                                <div class="aps-title">View GPA Prediction</div>
+                                <div class="aps-sub">See what GPA you need for First Class, Second Upper & more</div>
+                            </div>
+                        </div>
+                        <span class="aps-arrow"><i data-lucide="arrow-right"></i></span>
                     </div>
                 </div>
             </div>
@@ -518,7 +553,7 @@
         <!-- ========================================= -->
         <section class="section" id="section-semesters">
             <div class="section-page-header">
-                <div class="section-page-icon">📚</div>
+                <div class="section-page-icon"><i data-lucide="library" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">Semester Management</h1>
                     <p class="section-page-sub">View, edit, and manage all your semester records</p>
@@ -532,7 +567,7 @@
             </div>
             <div class="semesters-full-grid" id="semestersGrid">
                 <div class="empty-state-full">
-                    <div class="empty-icon">📚</div>
+                    <div class="empty-icon"><i data-lucide="library" style="width: 48px; height: 48px; opacity: 0.5;"></i></div>
                     <h3>No Semesters Yet</h3>
                     <p>Add your first semester to begin tracking your academic journey.</p>
                 </div>
@@ -544,7 +579,7 @@
         <!-- ========================================= -->
         <section class="section" id="section-analytics">
             <div class="section-page-header">
-                <div class="section-page-icon">📈</div>
+                <div class="section-page-icon"><i data-lucide="pie-chart" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">Performance Analytics</h1>
                     <p class="section-page-sub">Visualize your academic progress over time</p>
@@ -562,7 +597,7 @@
                         <canvas id="gpaLineChart"></canvas>
                     </div>
                     <div class="chart-empty" id="chartEmpty">
-                        <span>📈</span>
+                        <i data-lucide="line-chart" style="width: 48px; height: 48px; opacity: 0.5; margin-bottom: 10px;"></i>
                         <p>Add at least 2 semesters to see your GPA trend</p>
                     </div>
                 </div>
@@ -574,7 +609,7 @@
                     </div>
                     <div class="performance-grid">
                         <div class="perf-item perf-best">
-                            <div class="perf-icon">🏅</div>
+                            <div class="perf-icon"><i data-lucide="medal"></i></div>
                             <div class="perf-info">
                                 <span class="perf-label">Best Semester</span>
                                 <span class="perf-val" id="bestSemName">--</span>
@@ -582,7 +617,7 @@
                             </div>
                         </div>
                         <div class="perf-item perf-weak">
-                            <div class="perf-icon">📉</div>
+                            <div class="perf-icon"><i data-lucide="trending-down"></i></div>
                             <div class="perf-info">
                                 <span class="perf-label">Weakest Semester</span>
                                 <span class="perf-val" id="weakSemName">--</span>
@@ -590,7 +625,7 @@
                             </div>
                         </div>
                         <div class="perf-item perf-trend">
-                            <div class="perf-icon" id="perfTrendIcon">📊</div>
+                            <div class="perf-icon" id="perfTrendIcon"><i data-lucide="bar-chart"></i></div>
                             <div class="perf-info">
                                 <span class="perf-label">Overall Trend</span>
                                 <span class="perf-val" id="perfTrendText">--</span>
@@ -598,7 +633,7 @@
                             </div>
                         </div>
                         <div class="perf-item perf-avg">
-                            <div class="perf-icon">🎯</div>
+                            <div class="perf-icon"><i data-lucide="crosshair"></i></div>
                             <div class="perf-info">
                                 <span class="perf-label">Credit-Weighted CGPA</span>
                                 <span class="perf-val" id="perfCgpa">--</span>
@@ -631,42 +666,41 @@
         <!-- ========================================= -->
         <section class="section" id="section-prediction">
             <div class="section-page-header">
-                <div class="section-page-icon">🔮</div>
+                <div class="section-page-icon"><i data-lucide="target" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">GPA Prediction Engine</h1>
                     <p class="section-page-sub">Select your dream classification — see exactly what it takes</p>
                 </div>
             </div>
 
-            <!-- How Prediction Works -->
-            <div class="pred-howto-card">
-                <div class="pred-howto-header">
-                    <span class="pred-howto-icon">💡</span>
-                    <h3>How does the Prediction work?</h3>
+            <!-- ★ IMPROVED INSTRUCTIONS CARD ★ -->
+            <div class="pred-instructions-card">
+                <div class="pic-header">
+                    <span class="pic-icon"><i data-lucide="info"></i></span>
+                    <span class="pic-title">How the GPA Prediction Engine Works</span>
                 </div>
-                <div class="pred-howto-steps">
-                    <div class="pred-howto-step">
-                        <div class="pred-howto-num">1</div>
-                        <div class="pred-howto-text"><strong>Your Current CGPA is calculated</strong> as a weighted average — each semester's GPA × its credits, summed and divided by total credits completed.</div>
+                <div class="pic-steps">
+                    <div class="pic-step">
+                        <div class="pic-step-num">1</div>
+                        <div class="pic-step-text"><strong>Add your semesters</strong> in the Add GPA tab — each with GPA &amp; credits. Skip semesters with no GPA.</div>
                     </div>
-                    <div class="pred-howto-step">
-                        <div class="pred-howto-num">2</div>
-                        <div class="pred-howto-text"><strong>You choose a target classification</strong> (e.g. First Class ≥ 3.70). The engine determines the minimum final CGPA you need.</div>
+                    <div class="pic-step">
+                        <div class="pic-step-num">2</div>
+                        <div class="pic-step-text"><strong>Choose your target</strong> classification below (First Class, Second Upper, etc.)</div>
                     </div>
-                    <div class="pred-howto-step">
-                        <div class="pred-howto-num">3</div>
-                        <div class="pred-howto-text"><strong>The engine works backwards</strong> — using your remaining credits and target CGPA, it calculates the GPA you must score each upcoming semester.</div>
+                    <div class="pic-step">
+                        <div class="pic-step-num">3</div>
+                        <div class="pic-step-text"><strong>The engine calculates</strong> the exact GPA you need each upcoming semester to reach your goal.</div>
                     </div>
-                    <div class="pred-howto-step">
-                        <div class="pred-howto-num">4</div>
-                        <div class="pred-howto-text"><strong>If required GPA exceeds 4.0</strong>, the target is mathematically impossible — you'll be told clearly so you can adjust your goal.</div>
+                    <div class="pic-step">
+                        <div class="pic-step-num">4</div>
+                        <div class="pic-step-text"><strong>Each semester card</strong> shows 🟢 Easy / 🟡 Moderate / 🔴 Stretch — and ✅ when the target is already achieved!</div>
                     </div>
-                </div>
-                <div class="pred-howto-formula">
-                    <span class="pred-formula-label">CGPA Formula:</span>
-                    <span class="pred-formula-text">CGPA = Σ (Semester GPA × Credits) ÷ Total Credits Completed</span>
                 </div>
             </div>
+
+            <!-- Global Upgrade Hints Container (Prediction) -->
+            <div id="predUpgradeHintsContainer" style="display:none; margin-bottom: 20px;"></div>
 
             <div class="pred-engine-grid">
                 <div class="pred-config-col">
@@ -679,25 +713,25 @@
                         <div class="target-class-group" id="targetClassGroup">
                             <button class="target-cls-btn active" data-target="3.70" data-label="First Class"
                                 data-badge="badge-first">
-                                <span class="tcb-icon">🏆</span>
+                                <span class="tcb-icon"><i data-lucide="award"></i></span>
                                 <span class="tcb-name">First Class</span>
                                 <span class="tcb-min">≥ 3.70 CGPA</span>
                             </button>
                             <button class="target-cls-btn" data-target="3.30" data-label="Second Upper"
                                 data-badge="badge-upper">
-                                <span class="tcb-icon">🥇</span>
+                                <span class="tcb-icon"><i data-lucide="medal"></i></span>
                                 <span class="tcb-name">Second Upper</span>
                                 <span class="tcb-min">≥ 3.30 CGPA</span>
                             </button>
                             <button class="target-cls-btn" data-target="3.00" data-label="Second Lower"
                                 data-badge="badge-lower">
-                                <span class="tcb-icon">🥈</span>
+                                <span class="tcb-icon"><i data-lucide="medal" style="opacity: 0.8;"></i></span>
                                 <span class="tcb-name">Second Lower</span>
                                 <span class="tcb-min">≥ 3.00 CGPA</span>
                             </button>
                             <button class="target-cls-btn" data-target="2.00" data-label="General Pass"
                                 data-badge="badge-pass">
-                                <span class="tcb-icon">✅</span>
+                                <span class="tcb-icon"><i data-lucide="check-circle"></i></span>
                                 <span class="tcb-name">General Pass</span>
                                 <span class="tcb-min">≥ 2.00 CGPA</span>
                             </button>
@@ -768,7 +802,7 @@
 
                     <!-- Verdict Banner -->
                     <div class="pred-verdict-banner hidden" id="predVerdictBanner">
-                        <div class="verdict-icon" id="verdictIcon">🎯</div>
+                        <div class="verdict-icon" id="verdictIcon"><i data-lucide="crosshair"></i></div>
                         <div class="verdict-content">
                             <div class="verdict-title" id="verdictTitle">--</div>
                             <div class="verdict-sub" id="verdictSub">--</div>
@@ -778,7 +812,7 @@
 
                     <!-- Empty state -->
                     <div class="pred-empty-state" id="predEmptyState">
-                        <span>🔮</span>
+                        <i data-lucide="sparkles" style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
                         <h3>Select a target &amp; run prediction</h3>
                         <p>Choose your desired classification above and click "Run Prediction" to see your personalised
                             academic roadmap.</p>
@@ -787,7 +821,7 @@
                     <!-- One-Semester Result -->
                     <div class="pred-result-block hidden" id="pred1SemBlock">
                         <div class="pred-block-header">
-                            <span class="pred-block-icon" id="pred1SemIcon">✅</span>
+                            <span class="pred-block-icon" id="pred1SemIcon"><i data-lucide="info"></i></span>
                             <div>
                                 <div class="pred-block-title" id="pred1SemTitle">--</div>
                                 <div class="pred-block-sub" id="pred1SemSub">--</div>
@@ -805,14 +839,33 @@
                     <!-- Multi-Semester Roadmap -->
                     <div class="pred-result-block hidden" id="predMultiBlock">
                         <div class="pred-block-header">
-                            <span class="pred-block-icon">📅</span>
+                            <span class="pred-block-icon"><i data-lucide="calendar"></i></span>
                             <div>
                                 <div class="pred-block-title" id="predMultiTitle">Semester Roadmap</div>
                                 <div class="pred-block-sub" id="predMultiSub">--</div>
                             </div>
                         </div>
-                        <div class="pred-roadmap" id="predRoadmap"></div>
-                        <div class="pred-roadmap-note" id="predRoadmapNote"></div>
+                        <!-- ★ CGPA PROGRESS BAR ★ -->
+                        <div class="pred-progress-banner hidden" id="predProgressBanner">
+                            <div class="ppb-header">
+                                <span class="ppb-title">CGPA Progress to Target</span>
+                                <div class="ppb-values">
+                                    <span class="ppb-current" id="ppbCurrentVal">--</span>
+                                    <span class="ppb-arrow"><i data-lucide="arrow-right"></i></span>
+                                    <span class="ppb-target" id="ppbTargetVal">--</span>
+                                </div>
+                            </div>
+                            <div class="ppb-track">
+                                <div class="ppb-fill" id="ppbFill" style="width:0%"></div>
+                            </div>
+                            <div class="ppb-labels">
+                                <span>0.0</span><span>1.0</span><span>2.0</span><span>3.0</span><span>4.0</span>
+                            </div>
+                        </div>
+                        <!-- ★ PER-SEMESTER CARDS ★ -->
+                        <div class="pred-sem-cards-grid" id="predSemCardsGrid"></div>
+                        <div class="pred-roadmap" id="predRoadmap" style="display:none;"></div>
+                        <div class="pred-roadmap-note" id="predRoadmapNote" style="margin-top:10px;"></div>
                     </div>
                 </div>
 
@@ -871,7 +924,7 @@
         <!-- ========================================= -->
         <section class="section" id="section-gpacalc">
             <div class="section-page-header">
-                <div class="section-page-icon">🧮</div>
+                <div class="section-page-icon"><i data-lucide="calculator" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">GPA Calculator</h1>
                     <p class="section-page-sub">Calculate your semester GPA course-by-course and save it to your record</p>
@@ -887,26 +940,26 @@
 
             <!-- STEP 1: Choose Semester Banner -->
             <div class="calc-step-banner" id="calcStepBanner">
-                <div class="calc-step-icon">📅</div>
+                <div class="calc-step-icon"><i data-lucide="calendar"></i></div>
                 <div class="calc-step-body">
                     <div class="calc-step-label">Step 1 — Which semester are you calculating?</div>
                     <p class="calc-step-hint">Select an existing semester <strong>or</strong> create a new one. Your calculated GPA will be saved automatically.</p>
                     <div class="calc-sem-choice-row">
                         <div class="calc-sem-choice-col" id="calcExistingCol">
-                            <label class="calc-choice-label">📋 Save to existing semester</label>
+                            <label class="calc-choice-label"><i data-lucide="clipboard" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Save to existing semester</label>
                             <select id="calcSemesterSelect" class="calc-sem-select">
                                 <option value="">— Select semester —</option>
                             </select>
                         </div>
                         <div class="calc-sem-or">OR</div>
                         <div class="calc-sem-choice-col">
-                            <label class="calc-choice-label">➕ Create new semester</label>
+                            <label class="calc-choice-label"><i data-lucide="plus-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Create new semester</label>
                             <input type="text" id="calcNewSemName" class="calc-sem-input" placeholder="e.g. Semester 5">
                             <input type="number" id="calcNewSemCreditsHint" class="calc-sem-input" placeholder="Total credits (e.g. 18)" min="1" max="60" step="1" style="margin-top:6px;">
                         </div>
                     </div>
                     <div class="calc-sem-active-display" id="calcActiveSemDisplay" style="display:none;">
-                        <span class="calc-active-icon">✅</span>
+                        <span class="calc-active-icon"><i data-lucide="check-circle" style="width:16px;height:16px;color:#10b981;"></i></span>
                         <span class="calc-active-text">Calculating for: <strong id="calcActiveSemName">—</strong></span>
                         <button class="calc-change-sem-btn" id="calcChangeSemBtn">Change</button>
                     </div>
@@ -921,7 +974,7 @@
                 <div class="gpacalc-left">
                     <div class="card">
                         <div class="card-header">
-                            <h3>📝 Add Course <span class="calc-for-sem-tag" id="calcForSemTag" style="display:none;"></span></h3>
+                            <h3><i data-lucide="edit-3" style="width:20px;height:20px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Add Course <span class="calc-for-sem-tag" id="calcForSemTag" style="display:none;"></span></h3>
                             <span class="card-badge">Subject Entry</span>
                         </div>
 
@@ -954,9 +1007,7 @@
                                     value="3">
                             </div>
                             <button class="btn-primary calc-add-btn" id="calcAddCourseBtn">
-                                <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
-                                    <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
-                                </svg>
+                                <i data-lucide="plus"></i>
                                 Add
                             </button>
                         </div>
@@ -979,7 +1030,7 @@
                                     <tr id="calcEmptyRow">
                                         <td colspan="6">
                                             <div class="empty-state">
-                                                <span>📝</span>
+                                                <i data-lucide="edit-3" style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
                                                 <p>Add courses above to begin calculating your GPA.</p>
                                             </div>
                                         </td>
@@ -1032,7 +1083,7 @@
                         <div class="calc-autosave-section" id="calcAutoSaveSection" style="display:none;">
                             <div class="calc-autosave-inner">
                                 <div class="calc-autosave-info">
-                                    <span class="calc-autosave-icon">💾</span>
+                                    <span class="calc-autosave-icon"><i data-lucide="save"></i></span>
                                     <div>
                                         <div class="calc-autosave-title">Save to <strong id="calcAutoSaveSemName">—</strong></div>
                                         <div class="calc-autosave-sub">This will update that semester's GPA &amp; credits in your record</div>
@@ -1129,21 +1180,68 @@
 
         <!-- ===================== FOOTER ===================== -->
         <footer class="app-footer">
+            <div class="footer-glow"></div>
             <div class="footer-inner">
-                <div class="footer-brand">
-                    <span class="footer-logo-text">SmartGPA</span>
-                    <p class="footer-tagline">Your smart academic companion — track GPA, predict performance, and stay on top of your university journey.</p>
+
+                <!-- Top Row: Brand + Nav Links -->
+                <div class="footer-top">
+                    <div class="footer-brand-col">
+                        <div class="footer-logo-wrap">
+                            <div class="footer-logo-icon">
+                                <img src="app_icon.ico" alt="SmartGPA" style="width:100%;height:100%;object-fit:cover;border-radius:20%;">
+                            </div>
+                            <div>
+                                <div class="footer-logo-name">SmartGPA</div>
+                                <div class="footer-logo-sub">Academic Management System</div>
+                            </div>
+                        </div>
+                        <p class="footer-desc">Your intelligent academic companion — track GPA, predict your classification, and stay ahead every semester. Free. Local. Private.</p>
+                        <div class="footer-badges">
+                            <span class="footer-badge"><i data-lucide="shield-check" style="width:13px;height:13px;"></i> 100% Private</span>
+                            <span class="footer-badge"><i data-lucide="database" style="width:13px;height:13px;"></i> Local Storage</span>
+                            <span class="footer-badge"><i data-lucide="zap" style="width:13px;height:13px;"></i> No Login</span>
+                        </div>
+                    </div>
+
+                    <div class="footer-nav-col">
+                        <div class="footer-nav-group">
+                            <h4 class="footer-nav-title">Navigation</h4>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('dashboard');return false;"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('addgpa');return false;"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Add GPA</a>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('semesters');return false;"><i data-lucide="calendar-days" style="width:14px;height:14px;"></i> Semesters</a>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('analytics');return false;"><i data-lucide="line-chart" style="width:14px;height:14px;"></i> Analytics</a>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('prediction');return false;"><i data-lucide="target" style="width:14px;height:14px;"></i> Prediction</a>
+                            <a href="#" class="footer-nav-link" onclick="navigateTo('gpacalc');return false;"><i data-lucide="calculator" style="width:14px;height:14px;"></i> GPA Calculator</a>
+                        </div>
+                        <div class="footer-nav-group">
+                            <h4 class="footer-nav-title">Features</h4>
+                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> CGPA Tracking</span>
+                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> Grade Prediction</span>
+                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> GPA Calculator</span>
+                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> PDF Export</span>
+                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> Analytics Charts</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-divider"></div>
-                <div class="footer-meta">
-                    <p class="footer-copy">&copy; 2026 SmartGPA. All rights reserved.</p>
-                    <p class="footer-dev">
-                        Developed by 
+
+                <!-- Divider -->
+                <div class="footer-hr"></div>
+
+                <!-- Bottom Row: Copyright + Dev Credit -->
+                <div class="footer-bottom">
+                    <div class="footer-copy-row">
+                        <span class="footer-copy">&copy; 2026 SmartGPA &mdash; All rights reserved.</span>
+                        <span class="footer-dot">·</span>
+                        <a href="https://www.smartgpa.app" target="_blank" rel="noopener" class="footer-site-link">www.smartgpa.app</a>
+                    </div>
+                    <div class="footer-dev-row">
+                        <span class="footer-dev-text">Crafted with</span>
+                        <i data-lucide="heart" style="width:14px;height:14px;color:#ef4444;fill:#ef4444;" class="icon-pulse"></i>
+                        <span class="footer-dev-text">by</span>
                         <strong class="footer-author">Thiwanka Sandaruwan</strong>
-                        <span class="footer-role">· Cloud Engineering &amp; Full Stack Development</span>
-                    </p>
-                    <p class="footer-site"><a href="https://www.smartgpa.app" target="_blank" rel="noopener">www.smartgpa.app</a></p>
+                    </div>
                 </div>
+
             </div>
         </footer>
 
@@ -1222,6 +1320,57 @@
             <div class="modal-footer">
                 <button class="btn-secondary" id="cancelModal">Cancel</button>
                 <button class="btn-primary" id="saveEditBtn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SKIP REASON MODAL ===================== -->
+    <div class="modal-overlay" id="skipReasonModal">
+        <div class="modal" style="max-width:440px;">
+            <div class="modal-header">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:1.4rem;">⏭️</span>
+                    <h3>Skip This Semester</h3>
+                </div>
+                <button class="modal-close" id="closeSkipModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;line-height:1.5;">
+                    This semester has <strong>no GPA</strong> (credits still count). Please select or enter a reason so it shows clearly in your records and PDF export.
+                </p>
+                <div class="form-field">
+                    <label>Semester Name</label>
+                    <div id="skipModalSemName" style="font-weight:700;color:var(--primary);font-size:1rem;padding:6px 0;"></div>
+                </div>
+                <div class="form-field">
+                    <label for="skipReasonSelect">Reason for Skipping</label>
+                    <select id="skipReasonSelect" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-page);color:var(--text-primary);font-family:inherit;font-size:0.92rem;">
+                        <option value="">-- Select a reason --</option>
+                        <option value="Internship">Internship / Industrial Training</option>
+                        <option value="Non-GPA Semester">Non-GPA Semester</option>
+                        <option value="Medical Leave">Medical Leave</option>
+                        <option value="Exchange Program">Exchange Program</option>
+                        <option value="Research Semester">Research / Project Semester</option>
+                        <option value="Personal Leave">Personal Leave</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-field" id="skipCustomReasonField" style="display:none;">
+                    <label for="skipCustomReason">Specify Reason</label>
+                    <input type="text" id="skipCustomReason" placeholder="e.g. Year abroad" maxlength="60">
+                </div>
+                <div class="form-field">
+                    <label for="skipSemCreditsModal">Credits Taken</label>
+                    <input type="number" id="skipSemCreditsModal" placeholder="e.g. 0 or 18" min="0" max="60" step="1" value="0">
+                </div>
+                <div class="form-error" id="skipReasonError"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelSkipModal">Cancel</button>
+                <button class="btn-primary" id="confirmSkipBtn">
+                    <i data-lucide="check-circle" style="width:16px;height:16px;"></i>
+                    Confirm &amp; Save Skip
+                </button>
             </div>
         </div>
     </div>

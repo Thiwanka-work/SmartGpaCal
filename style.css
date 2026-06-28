@@ -3981,3 +3981,191 @@ img, svg, canvas { max-width: 100%; height: auto; }
 [data-theme="dark"] .footer-glow {
     background: radial-gradient(ellipse at center, rgba(99,102,241,0.15) 0%, transparent 70%);
 }
+
+/* ═══════════════════════════════════════════════════
+   FOOTER — MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+
+/* Tablet: stack footer columns */
+@media (max-width: 768px) {
+    .footer-inner {
+        padding: 2rem 1.25rem 1.5rem;
+        gap: 1.75rem;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+
+    .footer-brand-col {
+        gap: 0.75rem;
+    }
+
+    .footer-desc {
+        max-width: 100%;
+        font-size: 0.82rem;
+    }
+
+    .footer-nav-col {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+/* Mobile: fully single-column footer */
+@media (max-width: 480px) {
+    .footer-inner {
+        padding: 1.5rem 1rem 1.25rem;
+        gap: 1.25rem;
+    }
+
+    .footer-logo-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .footer-logo-name {
+        font-size: 1.1rem;
+    }
+
+    .footer-nav-col {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .footer-badges {
+        gap: 6px;
+    }
+
+    .footer-badge {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+    }
+
+    .footer-copy-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .footer-dot {
+        display: none;
+    }
+
+    .footer-bottom {
+        gap: 8px;
+        padding-bottom: 1rem;
+    }
+
+    .footer-dev-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.78rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════
+   GPA CALCULATOR — MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+
+/* Tablet: stack left + right panels */
+@media (max-width: 900px) {
+    .gpacalc-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .gpacalc-right {
+        position: static;
+    }
+}
+
+/* Mobile: full responsive GPA calc */
+@media (max-width: 640px) {
+    /* Course input row → single column stacked */
+    .calc-input-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .calc-input-row .form-field {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .calc-add-btn {
+        width: 100%;
+        justify-content: center;
+        height: 48px;
+        font-size: 1rem;
+    }
+
+    /* GPA result card — center aligned */
+    .calc-result-card {
+        text-align: center;
+    }
+
+    .calc-gpa-value {
+        font-size: 2.8rem;
+    }
+
+    /* Course table: horizontal scroll */
+    .calc-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .calc-table {
+        min-width: 380px;
+    }
+
+    /* Save to record button */
+    .calc-save-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .calc-save-row button {
+        width: 100%;
+    }
+
+    /* Auto-save bar */
+    .calc-autosave-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .calc-autosave-bar button {
+        width: 100%;
+    }
+
+    /* GPA bar */
+    .calc-gpa-bar-track {
+        width: 100%;
+    }
+}
+
+/* Extra small: very small phones */
+@media (max-width: 380px) {
+    .calc-gpa-value {
+        font-size: 2.2rem;
+    }
+
+    .footer-nav-col {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer-nav-group {
+        gap: 6px;
+    }
+}

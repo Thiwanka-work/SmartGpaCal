@@ -531,7 +531,8 @@ function calcCGPA() {
 }
 
 function calcCompletedCredits() {
-    return appState.semesters.reduce((acc, s) => acc + s.credits, 0);
+    // Include ALL semesters (including non-GPA/skipped) for credit count
+    return appState.semesters.reduce((acc, s) => acc + (s.credits || 0), 0);
 }
 
 function classifyGpa(gpa) {
@@ -640,10 +641,10 @@ function renderAddGpaPreview() {
         const isSkipped = sem.skipped || sem.gpa === null || sem.gpa === undefined;
         if (isSkipped) {
             return `
-                <div class="addgpa-sem-item sem-skipped" style="border-left-color:#94a3b8;">
-                    <span class="sem-name">${escHtml(sem.name)}</span>
-                    <span class="sem-credits">${sem.credits} cr.</span>
-                    <span class="sem-skipped-badge"><i data-lucide="skip-forward" style="width:14px;height:14px;margin-right:2px;display:inline-block;vertical-align:middle;"></i> Skipped${sem.skipReason ? ` &mdash; ${escHtml(sem.skipReason)}` : ''}</span>
+                <div class="addgpa-sem-item sem-skipped" style="border-left-color:#7c3aed;background:rgba(124,58,237,0.04);">
+                    <span class="sem-name" style="color:var(--text-primary);">${escHtml(sem.name)}</span>
+                    <span style="font-size:0.75rem;font-weight:700;color:#7c3aed;background:rgba(124,58,237,0.12);padding:2px 8px;border-radius:99px;">Non-GPA ${sem.skipReason ? `· ${escHtml(sem.skipReason)}` : ''}</span>
+                    <span class="sem-credits" style="color:var(--text-muted);">${sem.credits} cr.</span>
                     <button class="btn-icon delete" title="Delete" onclick="deleteSemester(${sem.id})" style="margin-left:4px;"><i data-lucide="trash-2" style="width:16px;height:16px;color:#ef4444;"></i></button>
                 </div>`;
         }
@@ -793,9 +794,12 @@ function renderSemesterTable() {
         tr.innerHTML = `
             <td style="color:var(--text-muted);font-weight:600;">${idx + 1}</td>
             <td style="font-weight:600;">${escHtml(sem.name)}</td>
-            <td class="gpa-cell ${isSkipped ? '' : getGpaTableClass(sem.gpa)}">${isSkipped ? '<span style="color:var(--text-muted);font-style:italic;">Skipped</span>' : sem.gpa.toFixed(2)}</td>
+            <td class="gpa-cell ${isSkipped ? '' : getGpaTableClass(sem.gpa)}">${isSkipped ? '<span style="color:#7c3aed;font-weight:700;font-size:0.82rem;">Non-GPA</span>' : sem.gpa.toFixed(2)}</td>
             <td>${sem.credits} cr.</td>
-            <td>${isSkipped ? '<span class="classification-badge badge-nodata">No GPA</span>' : `<span class="classification-badge ${cls.badge}">${cls.label}</span>`}</td>
+            <td>${isSkipped
+                ? `<span class="classification-badge" style="background:rgba(124,58,237,0.12);color:#7c3aed;border:1px solid rgba(124,58,237,0.25);font-size:0.76rem;">${escHtml(sem.skipReason || 'Non-GPA Semester')}</span>`
+                : `<span class="classification-badge ${cls.badge}">${cls.label}</span>`
+            }</td>
             <td class="action-btns">
                 <button class="btn-icon edit" title="Edit" onclick="openEditModal(${sem.id})"><i data-lucide="edit-2" style="width:16px;height:16px;"></i></button>
                 <button class="btn-icon delete" title="Delete" onclick="deleteSemester(${sem.id})"><i data-lucide="trash-2" style="width:16px;height:16px;color:#ef4444;"></i></button>
@@ -828,6 +832,7 @@ function renderSemesterCards() {
         const cls  = classifyGpa(gpaVal);
         const card = document.createElement('div');
         card.className = `semester-card ${isSkipped ? 'class-skip' : cls.cardClass}`;
+        if (isSkipped) card.style.cssText += ';border-top:3px solid #7c3aed;';
         card.innerHTML = `
             <div class="sem-card-header">
                 <div class="sem-card-name">${escHtml(sem.name)}</div>
@@ -836,8 +841,8 @@ function renderSemesterCards() {
                     <button class="btn-icon delete" title="Delete" onclick="deleteSemester(${sem.id})"><i data-lucide="trash-2" style="width:16px;height:16px;color:#ef4444;"></i></button>
                 </div>
             </div>
-            <div class="sem-card-gpa" style="${isSkipped ? 'color:var(--text-muted);font-size:1.5rem;' : ''}">${isSkipped ? '—' : gpaVal.toFixed(2)}</div>
-            <div class="sem-card-label">${isSkipped ? `<i data-lucide="skip-forward" style="width:14px;height:14px;margin-right:4px;"></i> Skipped${sem.skipReason ? ` &mdash; ${escHtml(sem.skipReason)}` : ''}` : `GPA - ${cls.icon} ${cls.label}`}</div>
+            <div class="sem-card-gpa" style="${isSkipped ? 'color:#7c3aed;font-size:1.2rem;' : ''}">${isSkipped ? 'Non-GPA' : gpaVal.toFixed(2)}</div>
+            <div class="sem-card-label" style="${isSkipped ? 'color:#7c3aed;' : ''}">${isSkipped ? `<i data-lucide="bookmark-x" style="width:14px;height:14px;margin-right:4px;"></i>${escHtml(sem.skipReason || 'Non-GPA Semester')}` : `GPA — ${cls.icon} ${cls.label}`}</div>
             <div class="sem-card-credits">
                 <div class="credit-pill">
                     <span class="val">${sem.credits}</span>
@@ -939,7 +944,7 @@ function renderSemesterRoadmap() {
                 if (semData) {
                     displayName = semData.name;
                     const isSkipped = semData.skipped || semData.gpa === null || semData.gpa === undefined;
-                    detailText  = isSkipped ? 'Skipped' : `${semData.gpa.toFixed(2)} GPA`;
+                    detailText  = isSkipped ? `Non-GPA${semData.skipReason ? ' · ' + semData.skipReason : ''}` : `${semData.gpa.toFixed(2)} GPA`;
                     hasGpa      = !isSkipped;
                 }
 
@@ -1632,7 +1637,7 @@ function exportReport() {
         return `<tr>
             <td>${i + 1}</td>
             <td>${escHtml(s.name)}</td>
-            <td><strong>${isSkipped ? '—' : s.gpa.toFixed(2)}</strong></td>
+            <td><strong>${isSkipped ? 'Non-GPA' : s.gpa.toFixed(2)}</strong></td>
             <td>${s.credits}</td>
             <td>${classLabel}</td>
         </tr>`;

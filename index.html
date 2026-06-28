@@ -461,9 +461,9 @@
                                 <i data-lucide="plus"></i>
                                 Add Semester &amp; Calculate CGPA
                             </button>
-                            <button class="btn-secondary btn-large skip-sem-btn" id="skipSemBtn" type="button" title="Record this semester as skipped (e.g. Internship, Industrial Training)">
-                                <i data-lucide="skip-forward"></i>
-                                Skip Semester
+                            <button class="btn-secondary btn-large skip-sem-btn" id="skipSemBtn" type="button" title="Record this semester as a Non-GPA semester (e.g. Internship, Industrial Training, Leave)">
+                                <i data-lucide="bookmark-x"></i>
+                                Add Non-GPA Semester
                             </button>
                         </div>
                     </div>
@@ -1324,52 +1324,66 @@
         </div>
     </div>
 
-    <!-- ===================== SKIP REASON MODAL ===================== -->
+    <!-- ===================== NON-GPA SEMESTER MODAL ===================== -->
     <div class="modal-overlay" id="skipReasonModal">
-        <div class="modal" style="max-width:440px;">
-            <div class="modal-header">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-size:1.4rem;">⏭️</span>
-                    <h3>Skip This Semester</h3>
+        <div class="modal" style="max-width:480px;">
+            <div class="modal-header" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:42px;height:42px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">📋</div>
+                    <div>
+                        <h3 style="color:#fff;margin:0;font-size:1.1rem;">Add Non-GPA Semester</h3>
+                        <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin:2px 0 0;">Internship, Leave, Exchange &amp; more</p>
+                    </div>
                 </div>
-                <button class="modal-close" id="closeSkipModal">✕</button>
+                <button class="modal-close" id="closeSkipModal" style="color:#fff;opacity:0.8;">✕</button>
             </div>
             <div class="modal-body">
-                <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;line-height:1.5;">
-                    This semester has <strong>no GPA</strong> (credits still count). Please select or enter a reason so it shows clearly in your records and PDF export.
-                </p>
+                <!-- Info banner -->
+                <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+                    <span style="font-size:1.1rem;flex-shrink:0;">ℹ️</span>
+                    <div style="font-size:0.83rem;color:var(--text-secondary);line-height:1.55;">
+                        This semester will be recorded as a <strong style="color:var(--primary);">Non-GPA Semester</strong> — it will <strong>not</strong> affect your CGPA calculation. Any credits taken will still count toward your total progress.
+                    </div>
+                </div>
+
+                <!-- Semester name display -->
                 <div class="form-field">
                     <label>Semester Name</label>
-                    <div id="skipModalSemName" style="font-weight:700;color:var(--primary);font-size:1rem;padding:6px 0;"></div>
+                    <div id="skipModalSemName" style="font-weight:700;color:var(--primary);font-size:1rem;padding:8px 12px;background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);"></div>
                 </div>
+
+                <!-- Reason select -->
                 <div class="form-field">
-                    <label for="skipReasonSelect">Reason for Skipping</label>
+                    <label for="skipReasonSelect">Reason for Non-GPA Semester <span style="color:var(--danger);">*</span></label>
                     <select id="skipReasonSelect" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-page);color:var(--text-primary);font-family:inherit;font-size:0.92rem;">
                         <option value="">-- Select a reason --</option>
-                        <option value="Internship">Internship / Industrial Training</option>
-                        <option value="Non-GPA Semester">Non-GPA Semester</option>
-                        <option value="Medical Leave">Medical Leave</option>
-                        <option value="Exchange Program">Exchange Program</option>
-                        <option value="Research Semester">Research / Project Semester</option>
-                        <option value="Personal Leave">Personal Leave</option>
-                        <option value="Other">Other</option>
+                        <option value="Internship">🏢 Internship / Industrial Training</option>
+                        <option value="Non-GPA Semester">📋 Non-GPA Semester (General)</option>
+                        <option value="Medical Leave">🏥 Medical Leave</option>
+                        <option value="Exchange Program">✈️ Exchange / Study Abroad Program</option>
+                        <option value="Research Semester">🔬 Research / Project Semester</option>
+                        <option value="Personal Leave">🙏 Personal Leave</option>
+                        <option value="Other">✏️ Other (specify below)</option>
                     </select>
                 </div>
                 <div class="form-field" id="skipCustomReasonField" style="display:none;">
                     <label for="skipCustomReason">Specify Reason</label>
-                    <input type="text" id="skipCustomReason" placeholder="e.g. Year abroad" maxlength="60">
+                    <input type="text" id="skipCustomReason" placeholder="e.g. Year abroad, Gap semester" maxlength="60">
                 </div>
+
+                <!-- Credits -->
                 <div class="form-field">
-                    <label for="skipSemCreditsModal">Credits Taken</label>
-                    <input type="number" id="skipSemCreditsModal" placeholder="e.g. 0 or 18" min="0" max="60" step="1" value="0">
+                    <label for="skipSemCreditsModal">Credits Taken During This Semester <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(0 if none)</span></label>
+                    <input type="number" id="skipSemCreditsModal" placeholder="e.g. 0" min="0" max="60" step="1" value="0">
                 </div>
+
                 <div class="form-error" id="skipReasonError"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" id="cancelSkipModal">Cancel</button>
-                <button class="btn-primary" id="confirmSkipBtn">
+                <button class="btn-primary" id="confirmSkipBtn" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;">
                     <i data-lucide="check-circle" style="width:16px;height:16px;"></i>
-                    Confirm &amp; Save Skip
+                    Save as Non-GPA Semester
                 </button>
             </div>
         </div>

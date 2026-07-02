@@ -16,6 +16,159 @@ let appState = {
     calcCourses:        []
 };
 
+// ── 1b. GRADING SETTINGS STATE ────────────────────────────────
+// University preset grading scales
+const UNI_PRESETS = {
+    sliit: {
+        name: 'SLIIT (Standard 4.0)',
+        maxGpa: 4.0,
+        grades: [
+            { grade: 'A+', points: 4.00, markMin: 80, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 75, markMax: 79 },
+            { grade: 'A-', points: 3.75, markMin: 70, markMax: 74 },
+            { grade: 'B+', points: 3.50, markMin: 65, markMax: 69 },
+            { grade: 'B',  points: 3.00, markMin: 60, markMax: 64 },
+            { grade: 'B-', points: 2.75, markMin: 55, markMax: 59 },
+            { grade: 'C+', points: 2.50, markMin: 50, markMax: 54 },
+            { grade: 'C',  points: 2.00, markMin: 45, markMax: 49 },
+            { grade: 'C-', points: 1.75, markMin: 40, markMax: 44 },
+            { grade: 'D+', points: 1.50, markMin: 35, markMax: 39 },
+            { grade: 'D',  points: 1.00, markMin: 30, markMax: 34 },
+            { grade: 'E',  points: 0.00, markMin: 0,  markMax: 29 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    },
+    uom: {
+        name: 'University of Moratuwa (4.2 Scale)',
+        maxGpa: 4.2,
+        grades: [
+            { grade: 'A+', points: 4.20, markMin: 85, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 75, markMax: 84 },
+            { grade: 'A-', points: 3.70, markMin: 70, markMax: 74 },
+            { grade: 'B+', points: 3.30, markMin: 65, markMax: 69 },
+            { grade: 'B',  points: 3.00, markMin: 60, markMax: 64 },
+            { grade: 'B-', points: 2.70, markMin: 55, markMax: 59 },
+            { grade: 'C+', points: 2.30, markMin: 50, markMax: 54 },
+            { grade: 'C',  points: 2.00, markMin: 45, markMax: 49 },
+            { grade: 'C-', points: 1.50, markMin: 40, markMax: 44 },
+            { grade: 'D',  points: 1.00, markMin: 35, markMax: 39 },
+            { grade: 'F',  points: 0.00, markMin: 0,  markMax: 34 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    },
+    uoc: {
+        name: 'University of Colombo / UCSC (4.0 Scale)',
+        maxGpa: 4.0,
+        grades: [
+            { grade: 'A+', points: 4.00, markMin: 90, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 85, markMax: 89 },
+            { grade: 'A-', points: 3.70, markMin: 75, markMax: 84 },
+            { grade: 'B+', points: 3.30, markMin: 70, markMax: 74 },
+            { grade: 'B',  points: 3.00, markMin: 65, markMax: 69 },
+            { grade: 'B-', points: 2.70, markMin: 60, markMax: 64 },
+            { grade: 'C+', points: 2.30, markMin: 55, markMax: 59 },
+            { grade: 'C',  points: 2.00, markMin: 50, markMax: 54 },
+            { grade: 'C-', points: 1.70, markMin: 45, markMax: 49 },
+            { grade: 'D+', points: 1.30, markMin: 40, markMax: 44 },
+            { grade: 'D',  points: 1.00, markMin: 30, markMax: 39 },
+            { grade: 'E',  points: 0.00, markMin: 0,  markMax: 29 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    },
+    usjp: {
+        name: 'University of Sri Jayewardenepura (USJP)',
+        maxGpa: 4.0,
+        grades: [
+            { grade: 'A+', points: 4.00, markMin: 85, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 75, markMax: 84 },
+            { grade: 'A-', points: 3.70, markMin: 70, markMax: 74 },
+            { grade: 'B+', points: 3.30, markMin: 65, markMax: 69 },
+            { grade: 'B',  points: 3.00, markMin: 60, markMax: 64 },
+            { grade: 'B-', points: 2.70, markMin: 55, markMax: 59 },
+            { grade: 'C+', points: 2.30, markMin: 50, markMax: 54 },
+            { grade: 'C',  points: 2.00, markMin: 45, markMax: 49 },
+            { grade: 'C-', points: 1.70, markMin: 40, markMax: 44 },
+            { grade: 'D',  points: 1.00, markMin: 35, markMax: 39 },
+            { grade: 'E',  points: 0.00, markMin: 0,  markMax: 34 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    },
+    nsbm_iit: {
+        name: 'NSBM / IIT (Standard 4.0)',
+        maxGpa: 4.0,
+        grades: [
+            { grade: 'A+', points: 4.00, markMin: 85, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 75, markMax: 84 },
+            { grade: 'A-', points: 3.70, markMin: 70, markMax: 74 },
+            { grade: 'B+', points: 3.30, markMin: 65, markMax: 69 },
+            { grade: 'B',  points: 3.00, markMin: 60, markMax: 64 },
+            { grade: 'B-', points: 2.70, markMin: 55, markMax: 59 },
+            { grade: 'C+', points: 2.30, markMin: 50, markMax: 54 },
+            { grade: 'C',  points: 2.00, markMin: 45, markMax: 49 },
+            { grade: 'D',  points: 1.00, markMin: 40, markMax: 44 },
+            { grade: 'E',  points: 0.00, markMin: 0,  markMax: 39 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    },
+    custom: {
+        name: 'Custom (User Defined)',
+        maxGpa: 4.0,
+        grades: [
+            { grade: 'A+', points: 4.00, markMin: 90, markMax: 100 },
+            { grade: 'A',  points: 4.00, markMin: 85, markMax: 89 },
+            { grade: 'A-', points: 3.75, markMin: 80, markMax: 84 },
+            { grade: 'B+', points: 3.50, markMin: 75, markMax: 79 },
+            { grade: 'B',  points: 3.00, markMin: 70, markMax: 74 },
+            { grade: 'B-', points: 2.75, markMin: 65, markMax: 69 },
+            { grade: 'C+', points: 2.50, markMin: 60, markMax: 64 },
+            { grade: 'C',  points: 2.00, markMin: 55, markMax: 59 },
+            { grade: 'C-', points: 1.75, markMin: 50, markMax: 54 },
+            { grade: 'D+', points: 1.50, markMin: 45, markMax: 49 },
+            { grade: 'D',  points: 1.00, markMin: 40, markMax: 44 },
+            { grade: 'E',  points: 0.00, markMin: 0,  markMax: 39 }
+        ],
+        classifications: [
+            { label: 'First Class',   minGpa: 3.70 },
+            { label: 'Second Upper',  minGpa: 3.30 },
+            { label: 'Second Lower',  minGpa: 3.00 },
+            { label: 'General Pass',  minGpa: 2.00 }
+        ]
+    }
+};
+
+// Active grading settings (loaded from localStorage or defaults to SLIIT)
+let gradingSettings = {
+    preset:          'sliit',
+    grades:          JSON.parse(JSON.stringify(UNI_PRESETS.sliit.grades)),
+    classifications: JSON.parse(JSON.stringify(UNI_PRESETS.sliit.classifications)),
+    maxGpa:          4.0
+};
+
 // ── 2. CHART INSTANCES ─────────────────────────────────────────
 let gpaLineChart   = null;
 let creditDoughnut = null;
@@ -30,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAll();
     // Initialize semester name auto-value on first load
     setTimeout(() => updateSemNameAutoValue(), 50);
+    // Populate GPA calc grade dropdown from saved grading settings
+    setTimeout(() => refreshGradeDropdown(), 120);
 });
 
 // ── 4.1 LUCIDE ICONS HELPER ────────────────────────────────────
@@ -57,6 +212,23 @@ function loadFromStorage() {
             console.warn('Could not parse saved data, starting fresh.');
         }
     }
+    // Load grading settings
+    const rawSettings = localStorage.getItem('smartGpa_gradingSettings');
+    if (rawSettings) {
+        try {
+            const saved = JSON.parse(rawSettings);
+            gradingSettings.preset          = saved.preset          || 'sliit';
+            gradingSettings.grades          = saved.grades          || gradingSettings.grades;
+            gradingSettings.classifications = saved.classifications || gradingSettings.classifications;
+            gradingSettings.maxGpa          = saved.maxGpa          || 4.0;
+        } catch (e) {
+            console.warn('Could not parse grading settings, using defaults.');
+        }
+    }
+}
+
+function saveGradingSettings() {
+    localStorage.setItem('smartGpa_gradingSettings', JSON.stringify(gradingSettings));
 }
 
 // ── 6. EVENT BINDING ───────────────────────────────────────────
@@ -205,6 +377,10 @@ function bindEvents() {
 
     // ---- GPA Calculator events ----
     bindCalcEvents();
+
+    // ---- Blog events ----
+    const backToBlogBtn = $('backToBlogBtn');
+    if (backToBlogBtn) backToBlogBtn.addEventListener('click', closeBlogArticle);
 }
 
 // ── 7. NAVIGATION ──────────────────────────────────────────────
@@ -234,13 +410,18 @@ function navigateTo(sectionId) {
     // Update topbar page title
     const titles = {
         dashboard:  'Dashboard',
-        addgpa:     'Add GPA',
+        addgpa:     'CGPA Calculator',
         semesters:  'Semesters',
         analytics:  'Analytics',
         prediction: 'Prediction',
-        gpacalc:    'GPA Calculator'
+        gpacalc:    'GPA Calculator',
+        blog:       'Blog & Guides',
+        settings:   'Grading Settings'
     };
     $('pageTitle').textContent = titles[sectionId] || 'Dashboard';
+
+    // Refresh settings page if navigating to it
+    if (sectionId === 'settings') renderSettingsPage();
 
     // Close mobile sidebar
     $('sidebar').classList.remove('open');
@@ -535,19 +716,34 @@ function calcCompletedCredits() {
     return appState.semesters.reduce((acc, s) => acc + (s.credits || 0), 0);
 }
 
+// Classification icon/badge helpers mapped by index in classifications array
+const CLASS_STYLES = [
+    { badge: 'badge-first', icon: '<i data-lucide="award" class="icon-bounce" style="color: #059669;"></i>', cardClass: 'class-first', color: '#059669' },
+    { badge: 'badge-upper', icon: '<i data-lucide="medal" class="icon-pulse" style="color: #2563eb;"></i>', cardClass: 'class-upper', color: '#2563eb' },
+    { badge: 'badge-lower', icon: '<i data-lucide="medal" style="opacity:0.8; color: #d97706;"></i>', cardClass: 'class-lower', color: '#d97706' },
+    { badge: 'badge-pass',  icon: '<i data-lucide="check-circle" style="color: #64748b;"></i>', cardClass: 'class-pass',  color: '#64748b' },
+    { badge: 'badge-pass',  icon: '<i data-lucide="check-circle" style="color: #94a3b8;"></i>', cardClass: 'class-pass',  color: '#94a3b8' },
+    { badge: 'badge-pass',  icon: '<i data-lucide="check-circle" style="color: #94a3b8;"></i>', cardClass: 'class-pass',  color: '#94a3b8' }
+];
+
 function classifyGpa(gpa) {
-    if (gpa >= 3.7) return { label: 'First Class',  badge: 'badge-first', icon: '<i data-lucide="award" class="icon-bounce" style="color: #059669;"></i>', cardClass: 'class-first', color: '#059669' };
-    if (gpa >= 3.3) return { label: 'Second Upper',  badge: 'badge-upper', icon: '<i data-lucide="medal" class="icon-pulse" style="color: #2563eb;"></i>', cardClass: 'class-upper', color: '#2563eb' };
-    if (gpa >= 3.0) return { label: 'Second Lower',  badge: 'badge-lower', icon: '<i data-lucide="medal" style="opacity:0.8; color: #d97706;"></i>', cardClass: 'class-lower', color: '#d97706' };
-    if (gpa >= 2.0) return { label: 'General Pass',  badge: 'badge-pass',  icon: '<i data-lucide="check-circle" style="color: #64748b;"></i>', cardClass: 'class-pass',  color: '#64748b' };
-    return             { label: 'Fail',              badge: 'badge-fail',  icon: '<i data-lucide="x-circle" style="color: #ef4444;"></i>', cardClass: 'class-fail',  color: '#ef4444' };
+    // Use active gradingSettings.classifications (sorted high→low)
+    const classes = [...gradingSettings.classifications].sort((a, b) => b.minGpa - a.minGpa);
+    for (let i = 0; i < classes.length; i++) {
+        if (gpa >= classes[i].minGpa) {
+            const style = CLASS_STYLES[i] || CLASS_STYLES[CLASS_STYLES.length - 1];
+            return { label: classes[i].label, ...style };
+        }
+    }
+    return { label: 'Fail', badge: 'badge-fail', icon: '<i data-lucide="x-circle" style="color: #ef4444;"></i>', cardClass: 'class-fail', color: '#ef4444' };
 }
 
 function getGpaTableClass(gpa) {
-    if (gpa >= 3.7) return 'gpa-first';
-    if (gpa >= 3.3) return 'gpa-upper';
-    if (gpa >= 3.0) return 'gpa-lower';
-    if (gpa >= 2.0) return 'gpa-pass';
+    const classes = [...gradingSettings.classifications].sort((a, b) => b.minGpa - a.minGpa);
+    const tableClasses = ['gpa-first','gpa-upper','gpa-lower','gpa-pass'];
+    for (let i = 0; i < classes.length; i++) {
+        if (gpa >= classes[i].minGpa) return tableClasses[i] || 'gpa-pass';
+    }
     return 'gpa-fail';
 }
 
@@ -577,6 +773,8 @@ function renderAll() {
     updateSemNameAutoValue();
     // Render global upgrade hints
     renderGlobalUpgradeHints();
+    // Render classification guide from active grading settings
+    renderClassificationGuide();
 }
 
 function updateSemNameAutoValue() {
@@ -821,7 +1019,7 @@ function renderSemesterCards() {
             <div class="empty-state-full">
                 <div class="empty-icon"><i data-lucide="library" style="width: 48px; height: 48px; opacity: 0.5;"></i></div>
                 <h3>No Semesters Yet</h3>
-                <p>Add your first semester from the <strong>Add GPA</strong> page to begin tracking.</p>
+                <p>Add your first semester from the <strong>CGPA Calculator</strong> page to begin tracking.</p>
             </div>`;
         return;
     }
@@ -1919,6 +2117,7 @@ function handleCalcAddCourse() {
 
     nameEl.value    = '';
     creditsEl.value = 3;
+    gradeEl.selectedIndex = 0; // Reset to default grade (A+)
     nameEl.focus();
 
     renderCalcTable();
@@ -2197,3 +2396,446 @@ function showDashQuickCalc() {
     const el = $('dashQuickCalcBottom');
     if (el) el.style.display = appState.profileSetup ? '' : 'none';
 }
+
+// ── 16. BLOG & ACADEMIC GUIDES CONTROLLER ──────────────────────
+
+function openBlogArticle(articleId) {
+    const source = $(`art-${articleId}`);
+    const container = $('blogArticleContainer');
+    const grid = $('blogGridView');
+    const reader = $('blogReaderView');
+
+    if (!source || !container || !grid || !reader) return;
+
+    // Set article HTML
+    container.innerHTML = source.innerHTML;
+
+    // Show reader, hide grid
+    grid.classList.add('hidden');
+    reader.classList.remove('hidden');
+
+    // Refresh Lucide icons in article
+    refreshIcons();
+
+    // Scroll to the top of the blog section
+    const section = $('section-blog');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+window.openBlogArticle = openBlogArticle;
+
+function closeBlogArticle() {
+    const grid = $('blogGridView');
+    const reader = $('blogReaderView');
+
+    if (!grid || !reader) return;
+
+    // Show grid, hide reader
+    grid.classList.remove('hidden');
+    reader.classList.add('hidden');
+
+    // Scroll to the top of the blog section
+    const section = $('section-blog');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+window.closeBlogArticle = closeBlogArticle;
+
+// ── 27. GRADING SETTINGS PAGE ──────────────────────────────────
+
+function renderSettingsPage() {
+    const container = $('settingsContainer');
+    if (!container) return;
+
+    const preset = gradingSettings.preset;
+    const presetOptions = Object.entries(UNI_PRESETS).map(([key, p]) =>
+        `<option value="${key}" ${preset === key ? 'selected' : ''}>${escHtml(p.name)}</option>`
+    ).join('');
+
+    // Grade scale table rows (editable)
+    const gradeRows = gradingSettings.grades.map((g, i) => `
+        <tr class="settings-grade-row" data-idx="${i}">
+            <td><input type="text" class="sg-input sg-grade" value="${escHtml(g.grade)}" maxlength="4" placeholder="A+" data-field="grade" data-idx="${i}"></td>
+            <td><input type="number" class="sg-input sg-pts" value="${g.points}" min="0" max="5" step="0.01" placeholder="4.00" data-field="points" data-idx="${i}"></td>
+            <td>
+                <div class="sg-range-row">
+                    <input type="number" class="sg-input sg-range" value="${g.markMin}" min="0" max="100" step="1" placeholder="0" data-field="markMin" data-idx="${i}">
+                    <span class="sg-range-dash">–</span>
+                    <input type="number" class="sg-input sg-range" value="${g.markMax}" min="0" max="100" step="1" placeholder="100" data-field="markMax" data-idx="${i}">
+                </div>
+            </td>
+            <td>
+                <button class="btn-icon delete sg-delete-grade" title="Remove row" data-idx="${i}" onclick="settingsDeleteGradeRow(${i})">
+                    <i data-lucide="trash-2" style="width:15px;height:15px;color:#ef4444;"></i>
+                </button>
+            </td>
+        </tr>`).join('');
+
+    // Classification thresholds (editable)
+    const classRows = gradingSettings.classifications.map((c, i) => `
+        <tr class="settings-class-row" data-idx="${i}">
+            <td><input type="text" class="sg-input sg-class-label" value="${escHtml(c.label)}" maxlength="30" placeholder="First Class" data-cidx="${i}"></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:0.82rem;color:var(--text-muted);">CGPA ≥</span>
+                    <input type="number" class="sg-input sg-class-min" value="${c.minGpa}" min="0" max="5" step="0.01" placeholder="3.70" data-cidx="${i}" style="width:80px;">
+                </div>
+            </td>
+            <td>
+                <button class="btn-icon delete sg-delete-class" title="Remove" data-cidx="${i}" onclick="settingsDeleteClassRow(${i})">
+                    <i data-lucide="trash-2" style="width:15px;height:15px;color:#ef4444;"></i>
+                </button>
+            </td>
+        </tr>`).join('');
+
+    container.innerHTML = `
+        <!-- ── INSTRUCTION BANNER ── -->
+        <div class="settings-instruction-banner">
+            <div class="sib-icon"><i data-lucide="info" style="width:22px;height:22px;color:var(--primary);"></i></div>
+            <div class="sib-body">
+                <div class="sib-title">How to Customize Your University Grading System</div>
+                <ol class="sib-steps">
+                    <li><strong>Step 1 — Choose a Preset:</strong> Select your university from the dropdown below (SLIIT, UOM, UOC, USJP, NSBM/IIT). The grade scale and classification thresholds will auto-fill.</li>
+                    <li><strong>Step 2 — Review & Edit:</strong> You can modify any grade points, mark ranges, or degree classification thresholds directly in the tables below.</li>
+                    <li><strong>Step 3 — Add/Remove Rows:</strong> Use <strong>+ Add Grade Row</strong> or <strong>+ Add Classification</strong> buttons to add new entries, or click the trash icon to remove them.</li>
+                    <li><strong>Step 4 — Save Settings:</strong> Click <strong>Save Settings</strong>. Your changes will be applied immediately across the entire app — GPA calculator, classification badges, prediction targets, and CGPA calculations.</li>
+                </ol>
+                <div class="sib-note"><i data-lucide="lightbulb" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;color:#d97706;"></i><strong>Note:</strong> Settings are saved locally on your device. Resetting will restore the default SLIIT grading scale.</div>
+            </div>
+        </div>
+
+        <!-- ── PRESET SELECTOR ── -->
+        <div class="card settings-card" style="margin-bottom:18px;">
+            <div class="card-header">
+                <h3><i data-lucide="building-2" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>University Preset</h3>
+                <span class="card-badge">${escHtml(UNI_PRESETS[preset]?.name || 'Custom')}</span>
+            </div>
+            <div style="padding:16px 18px;">
+                <label for="settingsPresetSelect" style="font-size:0.88rem;font-weight:600;color:var(--text-primary);display:block;margin-bottom:8px;">Select Your University / System</label>
+                <select id="settingsPresetSelect" class="sg-select" onchange="settingsApplyPreset(this.value)" style="width:100%;max-width:420px;">
+                    ${presetOptions}
+                </select>
+                <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">Selecting a preset will <strong>overwrite</strong> the current grade scale below. Save Settings to apply.</p>
+            </div>
+        </div>
+
+        <!-- ── GRADE SCALE TABLE ── -->
+        <div class="card settings-card" style="margin-bottom:18px;">
+            <div class="card-header">
+                <h3><i data-lucide="table" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--secondary);"></i>Grade Scale</h3>
+                <span class="card-badge">${gradingSettings.grades.length} grades</span>
+            </div>
+            <div style="padding:0 0 16px;">
+                <div class="table-wrapper">
+                    <table class="sem-table grade-settings-table">
+                        <thead>
+                            <tr>
+                                <th>Grade Letter</th>
+                                <th>Grade Points</th>
+                                <th>Marks Range</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="settingsGradeTableBody">
+                            ${gradeRows}
+                        </tbody>
+                    </table>
+                </div>
+                <div style="padding:10px 16px 0;">
+                    <button class="btn-secondary" onclick="settingsAddGradeRow()" style="font-size:0.85rem;padding:8px 16px;">
+                        <i data-lucide="plus" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Add Grade Row
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── CLASSIFICATION THRESHOLDS ── -->
+        <div class="card settings-card" style="margin-bottom:18px;">
+            <div class="card-header">
+                <h3><i data-lucide="award" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:#d97706;"></i>Degree Classification Thresholds</h3>
+                <span class="card-badge">${gradingSettings.classifications.length} tiers</span>
+            </div>
+            <div style="padding:0 0 16px;">
+                <p style="padding:12px 18px 0;font-size:0.82rem;color:var(--text-muted);">Set the minimum CGPA required for each degree classification. These thresholds are used for your CGPA badge, prediction engine, and dashboard status.</p>
+                <div class="table-wrapper" style="margin-top:8px;">
+                    <table class="sem-table grade-settings-table">
+                        <thead>
+                            <tr>
+                                <th>Classification Name</th>
+                                <th>Minimum CGPA</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="settingsClassTableBody">
+                            ${classRows}
+                        </tbody>
+                    </table>
+                </div>
+                <div style="padding:10px 16px 0;">
+                    <button class="btn-secondary" onclick="settingsAddClassRow()" style="font-size:0.85rem;padding:8px 16px;">
+                        <i data-lucide="plus" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>Add Classification
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── SAVE / RESET BUTTONS ── -->
+        <div class="settings-action-bar">
+            <button class="btn-primary" onclick="settingsSave()" id="settingsSaveBtn" style="min-width:160px;">
+                <i data-lucide="save" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px;"></i>Save Settings
+            </button>
+            <button class="btn-secondary" onclick="settingsReset()" style="min-width:140px;">
+                <i data-lucide="rotate-ccw" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px;"></i>Reset to Default
+            </button>
+        </div>
+        <div id="settingsSaveMsg" style="min-height:26px;font-size:0.88rem;font-weight:600;margin-top:8px;color:var(--secondary);"></div>
+
+        <!-- ── CURRENT SCALE PREVIEW ── -->
+        <div class="card settings-card" style="margin-top:20px;">
+            <div class="card-header">
+                <h3><i data-lucide="eye" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Live Preview — Current Active Scale</h3>
+            </div>
+            <div style="padding:12px 18px 18px;">
+                <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">This is how your currently saved grading settings appear in the app. Press <strong>Save Settings</strong> first to update this preview.</p>
+                <div class="settings-preview-grid">
+                    ${gradingSettings.grades.map(g => {
+                        const displayPts = g.points.toFixed(2);
+                        return `<div class="settings-preview-pill">
+                            <span class="sp-grade">${escHtml(g.grade)}</span>
+                            <span class="sp-pts">${displayPts}</span>
+                            <span class="sp-range">${g.markMin}–${g.markMax}%</span>
+                        </div>`;
+                    }).join('')}
+                </div>
+                <div style="margin-top:16px;">
+                    <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:8px;">Classification Thresholds</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                        ${[...gradingSettings.classifications].sort((a,b)=>b.minGpa-a.minGpa).map((c,i) => {
+                            const s = CLASS_STYLES[i] || CLASS_STYLES[3];
+                            return `<span class="classification-badge ${s.badge}" style="font-size:0.82rem;">${s.icon} ${escHtml(c.label)} ≥ ${c.minGpa.toFixed(2)}</span>`;
+                        }).join('')}
+                        <span class="classification-badge badge-fail" style="font-size:0.82rem;">Fail &lt; ${Math.min(...gradingSettings.classifications.map(c=>c.minGpa)).toFixed(2)}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    refreshIcons();
+}
+window.renderSettingsPage = renderSettingsPage;
+
+function settingsApplyPreset(presetKey) {
+    const preset = UNI_PRESETS[presetKey];
+    if (!preset) return;
+    gradingSettings.preset          = presetKey;
+    gradingSettings.grades          = JSON.parse(JSON.stringify(preset.grades));
+    gradingSettings.classifications = JSON.parse(JSON.stringify(preset.classifications));
+    gradingSettings.maxGpa          = preset.maxGpa;
+    renderSettingsPage();
+}
+window.settingsApplyPreset = settingsApplyPreset;
+
+function settingsReadFromDOM() {
+    // Read grade rows
+    const gradeRows = document.querySelectorAll('#settingsGradeTableBody .settings-grade-row');
+    const newGrades = [];
+    gradeRows.forEach(row => {
+        const idx = parseInt(row.dataset.idx, 10);
+        const grade  = row.querySelector('[data-field="grade"]').value.trim();
+        const points = parseFloat(row.querySelector('[data-field="points"]').value);
+        const markMin = parseInt(row.querySelector('[data-field="markMin"]').value, 10);
+        const markMax = parseInt(row.querySelector('[data-field="markMax"]').value, 10);
+        if (grade) {
+            newGrades.push({ grade, points: isNaN(points) ? 0 : points, markMin: isNaN(markMin) ? 0 : markMin, markMax: isNaN(markMax) ? 100 : markMax });
+        }
+    });
+
+    // Read classification rows
+    const classRows = document.querySelectorAll('#settingsClassTableBody .settings-class-row');
+    const newClasses = [];
+    classRows.forEach(row => {
+        const label  = row.querySelector('.sg-class-label').value.trim();
+        const minGpa = parseFloat(row.querySelector('.sg-class-min').value);
+        if (label) {
+            newClasses.push({ label, minGpa: isNaN(minGpa) ? 0 : minGpa });
+        }
+    });
+
+    return { grades: newGrades, classifications: newClasses };
+}
+
+function settingsSave() {
+    const data = settingsReadFromDOM();
+
+    if (data.grades.length === 0) {
+        const msg = $('settingsSaveMsg');
+        if (msg) { msg.textContent = '⚠️ Please add at least one grade row.'; msg.style.color = 'var(--danger)'; }
+        return;
+    }
+    if (data.classifications.length === 0) {
+        const msg = $('settingsSaveMsg');
+        if (msg) { msg.textContent = '⚠️ Please add at least one classification.'; msg.style.color = 'var(--danger)'; }
+        return;
+    }
+
+    gradingSettings.grades          = data.grades;
+    gradingSettings.classifications = data.classifications;
+    // Mark as custom if not matching a preset exactly
+    const presetSel = $('settingsPresetSelect');
+    if (presetSel) gradingSettings.preset = presetSel.value;
+
+    saveGradingSettings();
+    refreshGradeDropdown();
+    renderAll(); // Re-classify all semesters with new settings
+
+    const msg = $('settingsSaveMsg');
+    if (msg) {
+        msg.textContent = '✅ Settings saved! Grading scale applied across the app.';
+        msg.style.color = 'var(--secondary)';
+        setTimeout(() => { if (msg) msg.textContent = ''; }, 4000);
+    }
+
+    // Re-render settings page to refresh the preview
+    setTimeout(renderSettingsPage, 100);
+}
+window.settingsSave = settingsSave;
+
+function settingsReset() {
+    if (!confirm('Reset grading settings to the default SLIIT scale? This cannot be undone.')) return;
+    gradingSettings.preset          = 'sliit';
+    gradingSettings.grades          = JSON.parse(JSON.stringify(UNI_PRESETS.sliit.grades));
+    gradingSettings.classifications = JSON.parse(JSON.stringify(UNI_PRESETS.sliit.classifications));
+    gradingSettings.maxGpa          = 4.0;
+    saveGradingSettings();
+    refreshGradeDropdown();
+    renderAll();
+    renderSettingsPage();
+}
+window.settingsReset = settingsReset;
+
+function settingsAddGradeRow() {
+    const data = settingsReadFromDOM();
+    data.grades.push({ grade: '', points: 0.00, markMin: 0, markMax: 0 });
+    gradingSettings.grades = data.grades;
+    gradingSettings.classifications = settingsReadFromDOM().classifications;
+    renderSettingsPage();
+    // Focus the last grade input
+    setTimeout(() => {
+        const rows = document.querySelectorAll('#settingsGradeTableBody .settings-grade-row');
+        if (rows.length) rows[rows.length - 1].querySelector('.sg-grade').focus();
+    }, 80);
+}
+window.settingsAddGradeRow = settingsAddGradeRow;
+
+function settingsDeleteGradeRow(idx) {
+    const data = settingsReadFromDOM();
+    data.grades.splice(idx, 1);
+    gradingSettings.grades = data.grades;
+    renderSettingsPage();
+}
+window.settingsDeleteGradeRow = settingsDeleteGradeRow;
+
+function settingsAddClassRow() {
+    const data = settingsReadFromDOM();
+    data.classifications.push({ label: '', minGpa: 0.00 });
+    gradingSettings.classifications = data.classifications;
+    renderSettingsPage();
+    setTimeout(() => {
+        const rows = document.querySelectorAll('#settingsClassTableBody .settings-class-row');
+        if (rows.length) rows[rows.length - 1].querySelector('.sg-class-label').focus();
+    }, 80);
+}
+window.settingsAddClassRow = settingsAddClassRow;
+
+function settingsDeleteClassRow(idx) {
+    const data = settingsReadFromDOM();
+    data.classifications.splice(idx, 1);
+    gradingSettings.classifications = data.classifications;
+    renderSettingsPage();
+}
+window.settingsDeleteClassRow = settingsDeleteClassRow;
+
+
+// ── 27b. Refresh GPA Calculator grade dropdown ─────────────────
+function refreshGradeDropdown() {
+    const sel = $('calcGrade');
+    if (!sel) return;
+    const currentVal = sel.value;
+    sel.innerHTML = gradingSettings.grades.map(g =>
+        `<option value="${g.points.toFixed(2)}" data-label="${escHtml(g.grade)}">${escHtml(g.grade)} (${g.points.toFixed(2)})</option>`
+    ).join('');
+    // Try to restore selection
+    if (currentVal) sel.value = currentVal;
+}
+window.refreshGradeDropdown = refreshGradeDropdown;
+
+// ── 27c. Dynamic Classification Guide Renderer ────────────────
+function renderClassificationGuide() {
+    const container = $('classificationGuideRow');
+    if (!container) return;
+
+    const classes = [...gradingSettings.classifications].sort((a, b) => b.minGpa - a.minGpa);
+    const barWidths = [100, 82, 68, 47, 30, 20];
+    const itemClasses = ['first-class', 'second-upper', 'second-lower', 'general-pass', 'general-pass', 'general-pass'];
+
+    let html = classes.map((c, i) => {
+        const nextClass = classes[i + 1];
+        const rangeText = nextClass ? `${c.minGpa.toFixed(2)} – ${(c.minGpa + 0.01 > nextClass ? nextClass.minGpa + 0.29 : nextClass.minGpa + 0.29).toFixed(2)}` : `≥ ${c.minGpa.toFixed(2)}`;
+        // Simpler range: just show ≥ threshold
+        const simpleRange = i === 0 ? `≥ ${c.minGpa.toFixed(2)}` :
+            `${c.minGpa.toFixed(2)} – ${(classes[i-1].minGpa - 0.01).toFixed(2)}`;
+        const bw = barWidths[i] || 20;
+        const cls = itemClasses[i] || 'general-pass';
+        return `<div class="class-item ${cls}">
+            <div class="class-range">${simpleRange}</div>
+            <div class="class-name">${escHtml(c.label)}</div>
+            <div class="class-bar"><div style="width:${bw}%"></div></div>
+        </div>`;
+    }).join('');
+
+    // Add Fail tier
+    const lowestMin = Math.min(...classes.map(c => c.minGpa));
+    html += `<div class="class-item fail">
+        <div class="class-range">&lt; ${lowestMin.toFixed(2)}</div>
+        <div class="class-name">Fail</div>
+        <div class="class-bar"><div style="width:18%"></div></div>
+    </div>`;
+
+    container.innerHTML = html;
+}
+window.renderClassificationGuide = renderClassificationGuide;
+
+// ── 28. Privacy Modal ──────────────────────────────────────────
+function openPrivacyModal() {
+    const modal = $('privacyModal');
+    if (modal) {
+        modal.classList.add('active');
+        refreshIcons(); // Ensure Lucide icons render in modal
+    }
+}
+window.openPrivacyModal = openPrivacyModal;
+
+function closePrivacyModal() {
+    const modal = $('privacyModal');
+    if (modal) modal.classList.remove('active');
+}
+window.closePrivacyModal = closePrivacyModal;
+
+// ── 29. Feedback Form ──────────────────────────────────────────
+function sendFeedback() {
+    const msgEl = $('footerFeedbackMsg');
+    const msg = msgEl ? msgEl.value.trim() : '';
+    if (!msg) {
+        alert("Please write a message first!");
+        return;
+    }
+    const subject = encodeURIComponent("SmartGPA Feedback / Bug Report");
+    const body = encodeURIComponent(msg);
+    window.location.href = `mailto:thiwasan2002@gmail.com?subject=${subject}&body=${body}`;
+    if (msgEl) msgEl.value = '';
+}
+window.sendFeedback = sendFeedback;
+

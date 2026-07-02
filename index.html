@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SmartGPA | GPA &amp; CGPA Calculator - University Academic Management System</title>
+    <title>SmartGPA | Sri Lankan University GPA &amp; CGPA Calculator - SLIIT, UOM, UOC, USJP, NSBM, IIT</title>
     <link rel="icon" href="app_icon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="app_icon.ico">
     <meta name="description"
-        content="Calculate your GPA and CGPA easily. Professional university CGPA calculator (cgpa cal) and GPA calculator (gpa cal) with credit tracking, prediction, and analytics.">
+        content="Calculate your GPA and CGPA easily. Professional Sri Lankan university GPA and CGPA calculator for SLIIT, University of Moratuwa (UOM), University of Colombo (UOC), USJP, NSBM, IIT, and others with credit tracking, prediction, and analytics.">
     <meta name="keywords"
-        content="gpa cal, cgpa cal, gpa calculator, cgpa calculator, calculate gpa, university gpa tracker, smartgpa">
+        content="gpa cal, cgpa cal, gpa calculator, cgpa calculator, calculate gpa, university gpa tracker, smartgpa, sliit gpa calculator, uom gpa calculator, uoc gpa calculator, usjp gpa calculator, sri lankan university gpa, nsbm gpa calculator, iit gpa calculator">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="yWozeo7StvKiuApowC9itVB_ADNS6C8Ll0xhucq3rms" />
     <meta property="og:title" content="SmartGPA | GPA &amp; CGPA Calculator">
@@ -35,7 +35,7 @@
     </script>
     <!-- Chart.js CDN for line chart analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
+
     <!-- Lucide Icons & Lottie Animations -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
@@ -51,7 +51,8 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon" style="overflow: hidden; border-radius: 25%;">
-                <img src="app_icon.ico" alt="SmartGPA Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
+                <img src="app_icon.ico" alt="SmartGPA Logo"
+                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
             </div>
             <div class="logo-text">
                 <span class="logo-name">SmartGPA</span>
@@ -66,7 +67,7 @@
             </a>
             <a href="#" class="nav-item" data-section="addgpa" id="nav-addgpa">
                 <i data-lucide="plus-circle"></i>
-                <span>Add GPA</span>
+                <span>CGPA Calculator</span>
             </a>
             <a href="#" class="nav-item" data-section="semesters" id="nav-semesters">
                 <i data-lucide="calendar-days"></i>
@@ -83,6 +84,14 @@
             <a href="#" class="nav-item" data-section="gpacalc" id="nav-gpacalc">
                 <i data-lucide="calculator"></i>
                 <span>GPA Calculator</span>
+            </a>
+            <a href="#" class="nav-item" data-section="blog" id="nav-blog">
+                <i data-lucide="book-open"></i>
+                <span>Blog &amp; Guides</span>
+            </a>
+            <a href="#" class="nav-item" data-section="settings" id="nav-settings">
+                <i data-lucide="settings"></i>
+                <span>Grading Settings</span>
             </a>
         </nav>
 
@@ -148,7 +157,8 @@
         <!-- ========================================= -->
         <section class="section active" id="section-dashboard">
             <div class="section-page-header">
-                <div class="section-page-icon"><i data-lucide="bar-chart-2" style="width: 32px; height: 32px;"></i></div>
+                <div class="section-page-icon"><i data-lucide="bar-chart-2" style="width: 32px; height: 32px;"></i>
+                </div>
                 <div>
                     <h1 class="section-page-title">Dashboard</h1>
                     <p class="section-page-sub">Your academic overview at a glance</p>
@@ -158,51 +168,75 @@
             <!-- Student Profile Setup (shown if no data) -->
             <div class="welcome-banner" id="welcomeBanner">
                 <div class="welcome-content">
-                    <div class="welcome-icon" style="overflow: hidden; border-radius: 25%; width: 80px; height: 80px; margin-bottom: 20px;">
-                        <img src="app_icon.ico" alt="SmartGPA Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
+                    <div class="welcome-icon"
+                        style="overflow: hidden; border-radius: 25%; width: 80px; height: 80px; margin-bottom: 20px;">
+                        <img src="app_icon.ico" alt="SmartGPA Logo"
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
                     </div>
                     <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Welcome to SmartGPA</h2>
-                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Your intelligent academic companion. Let's get your profile set up!</p>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Your intelligent academic
+                        companion. Let's get your profile set up!</p>
 
                     <!-- Site Description for new users -->
                     <div class="site-description-box" style="margin: 0; padding: 1.25rem;">
-                        <h3>📖 What is SmartGPA?</h3>
-                        <p>SmartGPA is a free academic management tool for university students. Here's what you can do:</p>
+                        <h3><i data-lucide="book-open" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>What is SmartGPA?</h3>
+                        <p>SmartGPA is a free academic management tool for university students. Here's what you can do:
+                        </p>
                         <div class="feature-pills">
-                            <span class="feat-pill"><i data-lucide="bar-chart" style="width:16px;height:16px;"></i> Track your CGPA every semester</span>
-                            <span class="feat-pill"><i data-lucide="calendar" style="width:16px;height:16px;"></i> Manage & edit semester records</span>
-                            <span class="feat-pill"><i data-lucide="trending-up" style="width:16px;height:16px;"></i> Visualize your GPA trend over time</span>
-                            <span class="feat-pill"><i data-lucide="target" style="width:16px;height:16px;"></i> Predict what GPA you need to hit First Class</span>
-                            <span class="feat-pill"><i data-lucide="calculator" style="width:16px;height:16px;"></i> Calculate semester GPA course-by-course</span>
-                            <span class="feat-pill"><i data-lucide="file-text" style="width:16px;height:16px;"></i> Export your academic report as PDF</span>
+                            <span class="feat-pill"><i data-lucide="bar-chart" style="width:16px;height:16px;"></i>
+                                Track your CGPA every semester</span>
+                            <span class="feat-pill"><i data-lucide="calendar" style="width:16px;height:16px;"></i>
+                                Manage & edit semester records</span>
+                            <span class="feat-pill"><i data-lucide="trending-up" style="width:16px;height:16px;"></i>
+                                Visualize your GPA trend over time</span>
+                            <span class="feat-pill"><i data-lucide="target" style="width:16px;height:16px;"></i> Predict
+                                what GPA you need to hit First Class</span>
+                            <span class="feat-pill"><i data-lucide="calculator" style="width:16px;height:16px;"></i>
+                                Calculate semester GPA course-by-course</span>
+                            <span class="feat-pill"><i data-lucide="file-text" style="width:16px;height:16px;"></i>
+                                Export your academic report as PDF</span>
                         </div>
                         <p class="desc-note">All data is saved locally on your device — no login required.</p>
                     </div>
                 </div>
 
                 <div class="welcome-form-container">
-                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 700; text-align: center;">Create Profile</h3>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 700; text-align: center;">Create
+                        Profile</h3>
                     <div class="profile-setup" style="margin: 0; max-width: 100%;">
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="studentNameInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Student Name</label>
+                            <label for="studentNameInput"
+                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Student Name</label>
                             <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
                         </div>
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="totalCreditsInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Credits</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">The total credits required to graduate (e.g. 120).</span>
-                            <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300" step="1">
+                            <label for="totalCreditsInput"
+                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Credits</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">The
+                                total credits required to graduate (e.g. 120).</span>
+                            <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300"
+                                step="1">
                         </div>
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="totalSemestersInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Semesters</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Total number of semesters in your degree (e.g. 8).</span>
-                            <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20" step="1">
+                            <label for="totalSemestersInput"
+                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program
+                                Semesters</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Total
+                                number of semesters in your degree (e.g. 8).</span>
+                            <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20"
+                                step="1">
                         </div>
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="completedSemestersInput" style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Completed Semesters</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">How many semesters have you already finished?</span>
-                            <input type="number" id="completedSemestersInput" placeholder="e.g. 0" min="0" max="20" step="1">
+                            <label for="completedSemestersInput"
+                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Completed Semesters</label>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">How many
+                                semesters have you already finished?</span>
+                            <input type="number" id="completedSemestersInput" placeholder="e.g. 0" min="0" max="20"
+                                step="1">
                         </div>
-                        <button class="btn-primary" id="setupProfileBtn" style="margin-top: 10px; padding: 14px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);">Get Started →</button>
+                        <button class="btn-primary" id="setupProfileBtn"
+                            style="margin-top: 10px; padding: 14px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);">Get
+                            Started →</button>
                     </div>
                 </div>
             </div>
@@ -213,10 +247,11 @@
                 <!-- Quick GPA Calc Banner (top of dashboard) -->
                 <div class="dash-quickcalc-banner">
                     <div class="dash-qc-left">
-                        <span class="dash-qc-icon">🧮</span>
+                        <span class="dash-qc-icon"><i data-lucide="calculator" style="width:20px;height:20px;color:var(--primary);"></i></span>
                         <div>
                             <div class="dash-qc-title">Quick GPA Calculator</div>
-                            <div class="dash-qc-sub">Calculate your semester GPA course-by-course and save it to your record</div>
+                            <div class="dash-qc-sub">Calculate your semester GPA course-by-course and save it to your
+                                record</div>
                         </div>
                     </div>
                     <button class="btn-primary dash-qc-btn" onclick="navigateTo('gpacalc')">
@@ -298,7 +333,7 @@
                             <span class="stat-label">Academic Status</span>
                             <span class="stat-icon"><i data-lucide="award"></i></span>
                         </div>
-                        <div class="status-icon-big" id="statusIconBig">📋</div>
+                        <div class="status-icon-big" id="statusIconBig"><i data-lucide="award" style="width:36px;height:36px;color:var(--primary);"></i></div>
                         <div class="status-text" id="statusText">No data yet</div>
                         <div class="trend-indicator" id="trendIndicator">
                             <span class="trend-arrow" id="trendArrow">→</span>
@@ -350,8 +385,9 @@
                                 <tr class="empty-row" id="emptyTableRow">
                                     <td colspan="6">
                                         <div class="empty-state">
-                                            <i data-lucide="clipboard-list" style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
-                                            <p>No semesters added yet. Use the <strong>Add GPA</strong> page to add your
+                                            <i data-lucide="clipboard-list"
+                                                style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
+                                            <p>No semesters added yet. Use the <strong>CGPA Calculator</strong> page to add your
                                                 first semester.</p>
                                         </div>
                                     </td>
@@ -366,7 +402,8 @@
             <!-- Bottom Quick GPA Calc Shortcut -->
             <div class="dash-quickcalc-bottom" id="dashQuickCalcBottom" style="display:none;">
                 <div class="dash-qcb-inner">
-                    <div class="dash-qcb-emoji"><i data-lucide="calculator" style="width: 32px; height: 32px;"></i></div>
+                    <div class="dash-qcb-emoji"><i data-lucide="calculator" style="width: 32px; height: 32px;"></i>
+                    </div>
                     <div class="dash-qcb-text">
                         <strong>Need to calculate a semester GPA?</strong>
                         <span>Enter courses &amp; grades — get GPA instantly, save to your record.</span>
@@ -381,10 +418,11 @@
         <!-- ========================================= -->
         <section class="section" id="section-addgpa">
             <div class="section-page-header accent-header">
-                <div class="section-page-icon"><i data-lucide="plus-circle" style="width: 32px; height: 32px;"></i></div>
+                <div class="section-page-icon"><i data-lucide="plus-circle" style="width: 32px; height: 32px;"></i>
+                </div>
                 <div>
-                    <h1 class="section-page-title">Add GPA to Semester</h1>
-                    <p class="section-page-sub">Record your semester results here</p>
+                    <h1 class="section-page-title">CGPA Calculator &amp; Tracker</h1>
+                    <p class="section-page-sub">Calculate and track your overall academic records</p>
                 </div>
             </div>
 
@@ -426,7 +464,8 @@
                 </div>
                 <div class="aib-tip">
                     <span class="aib-tip-icon"><i data-lucide="lightbulb"></i></span>
-                    <span><strong>Pro tip:</strong> Don't have a final GPA yet? Use the <strong>GPA Calculator</strong> tab to calculate it course-by-course first, then save it here automatically!</span>
+                    <span><strong>Pro tip:</strong> Don't have a final GPA yet? Use the <strong>GPA Calculator</strong>
+                        tab to calculate it course-by-course first, then save it here automatically!</span>
                 </div>
             </div>
 
@@ -434,7 +473,7 @@
                 <!-- Quick Add Form -->
                 <div class="card addgpa-form-card">
                     <div class="card-header">
-                        <h3>📝 New Semester Entry</h3>
+                        <h3><i data-lucide="plus-circle" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--secondary);"></i>New Semester Entry</h3>
                         <span class="card-badge">CGPA Calculator</span>
                     </div>
                     <div class="addgpa-form-body">
@@ -444,8 +483,11 @@
                         </div>
                         <div class="addgpa-two-col">
                             <div class="form-field">
-                                <label for="semGpa">GPA (0.0 – 4.0) <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">— leave blank to skip</span></label>
-                                <input type="number" id="semGpa" placeholder="e.g. 3.75 (optional)" min="0" max="4" step="0.01">
+                                <label for="semGpa">GPA (0.0 – 4.0) <span
+                                        style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">— leave blank
+                                        to skip</span></label>
+                                <input type="number" id="semGpa" placeholder="e.g. 3.75 (optional)" min="0" max="4"
+                                    step="0.01">
                             </div>
                             <div class="form-field">
                                 <label for="semCredits">Credits Taken</label>
@@ -453,7 +495,8 @@
                             </div>
                         </div>
                         <div class="addgpa-skip-hint" id="skipHintEl" style="display:none;">
-                            ⏭️ <span>This semester will be recorded as <strong>skipped</strong> (no GPA). Credits still count toward your total.</span>
+                            <i data-lucide="skip-forward" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;color:var(--purple);"></i> <span>This semester will be recorded as <strong>skipped</strong> (no GPA). Credits still
+                                count toward your total.</span>
                         </div>
                         <div class="form-error" id="formError"></div>
                         <div class="addgpa-btn-row">
@@ -461,7 +504,8 @@
                                 <i data-lucide="plus"></i>
                                 Add Semester &amp; Calculate CGPA
                             </button>
-                            <button class="btn-secondary btn-large skip-sem-btn" id="skipSemBtn" type="button" title="Record this semester as a Non-GPA semester (e.g. Internship, Industrial Training, Leave)">
+                            <button class="btn-secondary btn-large skip-sem-btn" id="skipSemBtn" type="button"
+                                title="Record this semester as a Non-GPA semester (e.g. Internship, Industrial Training, Leave)">
                                 <i data-lucide="bookmark-x"></i>
                                 Add Non-GPA Semester
                             </button>
@@ -472,7 +516,7 @@
                 <!-- CGPA Live Preview -->
                 <div class="card addgpa-cgpa-preview" id="addgpaCgpaPreview">
                     <div class="card-header">
-                        <h3>📊 Current CGPA</h3>
+                        <h3><i data-lucide="activity" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Current CGPA</h3>
                         <span class="card-badge" id="addgpaSemCount">0 semesters</span>
                     </div>
                     <div class="addgpa-cgpa-big">
@@ -490,7 +534,8 @@
                     </div>
 
                     <!-- ★ QUICK PREDICT SHORTCUT ★ -->
-                    <div class="addgpa-predict-shortcut" onclick="navigateTo('prediction')" role="button" title="Go to Prediction">
+                    <div class="addgpa-predict-shortcut" onclick="navigateTo('prediction')" role="button"
+                        title="Go to Prediction">
                         <div class="aps-left">
                             <span class="aps-icon"><i data-lucide="sparkles"></i></span>
                             <div class="aps-text">
@@ -507,43 +552,16 @@
             <div class="card class-guide-full" style="margin-top:18px;">
                 <div class="card-header">
                     <h3>Classification Reference</h3>
+                    <button class="btn-secondary" onclick="navigateTo('settings')" style="font-size:0.78rem;padding:5px 12px;display:inline-flex;align-items:center;gap:5px;">
+                        <i data-lucide="settings" style="width:13px;height:13px;"></i> Customize
+                    </button>
                 </div>
-                <div class="class-guide-row">
-                    <div class="class-item first-class">
-                        <div class="class-range">≥ 3.70</div>
-                        <div class="class-name">First Class</div>
-                        <div class="class-bar">
-                            <div style="width:100%"></div>
-                        </div>
-                    </div>
-                    <div class="class-item second-upper">
-                        <div class="class-range">3.30 – 3.69</div>
-                        <div class="class-name">Second Upper</div>
-                        <div class="class-bar">
-                            <div style="width:82%"></div>
-                        </div>
-                    </div>
-                    <div class="class-item second-lower">
-                        <div class="class-range">3.00 – 3.29</div>
-                        <div class="class-name">Second Lower</div>
-                        <div class="class-bar">
-                            <div style="width:68%"></div>
-                        </div>
-                    </div>
-                    <div class="class-item general-pass">
-                        <div class="class-range">2.00 – 2.99</div>
-                        <div class="class-name">General Pass</div>
-                        <div class="class-bar">
-                            <div style="width:47%"></div>
-                        </div>
-                    </div>
-                    <div class="class-item fail">
-                        <div class="class-range">&lt; 2.00</div>
-                        <div class="class-name">Fail</div>
-                        <div class="class-bar">
-                            <div style="width:18%"></div>
-                        </div>
-                    </div>
+                <div id="classificationGuideRow" class="class-guide-row">
+                    <!-- Rendered by renderClassificationGuide() -->
+                </div>
+                <div style="padding:10px 16px;font-size:0.78rem;color:var(--text-muted);border-top:1px solid var(--border);">
+                    <i data-lucide="info" style="width:13px;height:13px;vertical-align:middle;margin-right:4px;"></i>
+                    These thresholds reflect your current <strong>Grading Settings</strong>. Go to <a href="#" onclick="navigateTo('settings');return false;" style="color:var(--primary);font-weight:600;">Settings</a> to change them for your university.
                 </div>
             </div>
         </section>
@@ -567,7 +585,8 @@
             </div>
             <div class="semesters-full-grid" id="semestersGrid">
                 <div class="empty-state-full">
-                    <div class="empty-icon"><i data-lucide="library" style="width: 48px; height: 48px; opacity: 0.5;"></i></div>
+                    <div class="empty-icon"><i data-lucide="library"
+                            style="width: 48px; height: 48px; opacity: 0.5;"></i></div>
                     <h3>No Semesters Yet</h3>
                     <p>Add your first semester to begin tracking your academic journey.</p>
                 </div>
@@ -597,7 +616,8 @@
                         <canvas id="gpaLineChart"></canvas>
                     </div>
                     <div class="chart-empty" id="chartEmpty">
-                        <i data-lucide="line-chart" style="width: 48px; height: 48px; opacity: 0.5; margin-bottom: 10px;"></i>
+                        <i data-lucide="line-chart"
+                            style="width: 48px; height: 48px; opacity: 0.5; margin-bottom: 10px;"></i>
                         <p>Add at least 2 semesters to see your GPA trend</p>
                     </div>
                 </div>
@@ -682,19 +702,23 @@
                 <div class="pic-steps">
                     <div class="pic-step">
                         <div class="pic-step-num">1</div>
-                        <div class="pic-step-text"><strong>Add your semesters</strong> in the Add GPA tab — each with GPA &amp; credits. Skip semesters with no GPA.</div>
+                        <div class="pic-step-text"><strong>Add your semesters</strong> in the CGPA Calculator tab — each with
+                            GPA &amp; credits. Skip semesters with no GPA.</div>
                     </div>
                     <div class="pic-step">
                         <div class="pic-step-num">2</div>
-                        <div class="pic-step-text"><strong>Choose your target</strong> classification below (First Class, Second Upper, etc.)</div>
+                        <div class="pic-step-text"><strong>Choose your target</strong> classification below (First
+                            Class, Second Upper, etc.)</div>
                     </div>
                     <div class="pic-step">
                         <div class="pic-step-num">3</div>
-                        <div class="pic-step-text"><strong>The engine calculates</strong> the exact GPA you need each upcoming semester to reach your goal.</div>
+                        <div class="pic-step-text"><strong>The engine calculates</strong> the exact GPA you need each
+                            upcoming semester to reach your goal.</div>
                     </div>
                     <div class="pic-step">
                         <div class="pic-step-num">4</div>
-                        <div class="pic-step-text"><strong>Each semester card</strong> shows 🟢 Easy / 🟡 Moderate / 🔴 Stretch — and ✅ when the target is already achieved!</div>
+                        <div class="pic-step-text"><strong>Each semester card</strong> shows 🟢 Easy / 🟡 Moderate / 🔴
+                            Stretch — and ✅ when the target is already achieved!</div>
                     </div>
                 </div>
             </div>
@@ -708,7 +732,7 @@
                     <!-- Target Class Selector -->
                     <div class="card pred-target-selector-card">
                         <div class="card-header">
-                            <h3>🎯 Select Your Target</h3>
+                            <h3><i data-lucide="target" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--accent);"></i>Select Your Target</h3>
                         </div>
                         <div class="target-class-group" id="targetClassGroup">
                             <button class="target-cls-btn active" data-target="3.70" data-label="First Class"
@@ -741,7 +765,7 @@
                     <!-- Credits Input / Simulation Settings -->
                     <div class="card">
                         <div class="card-header">
-                            <h3>⚙️ Simulation Settings</h3>
+                            <h3><i data-lucide="settings" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Simulation Settings</h3>
                         </div>
                         <div class="form-field">
                             <label for="predTimeframe">Target Timeframe</label>
@@ -750,7 +774,7 @@
                                 <option value="end">Multiple Semesters (End of Program)</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-field hidden" id="predCalcModeField">
                             <label for="predCalcMode">Calculation Method</label>
                             <select id="predCalcMode" class="pred-select">
@@ -766,8 +790,11 @@
                         </div>
 
                         <!-- For Quick Average Estimation Note -->
-                        <div class="pred-note hidden" id="predAverageNote" style="margin-bottom: 15px; font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-hover); padding: 10px; border-radius: 6px; border-left: 3px solid var(--primary);">
-                            <span style="font-weight: 600;">Note:</span> This calculates an average GPA target across all your remaining program credits. For a precise calculation, switch to "Exact Semester-wise".
+                        <div class="pred-note hidden" id="predAverageNote"
+                            style="margin-bottom: 15px; font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-hover); padding: 10px; border-radius: 6px; border-left: 3px solid var(--primary);">
+                            <span style="font-weight: 600;">Note:</span> This calculates an average GPA target across
+                            all your remaining program credits. For a precise calculation, switch to "Exact
+                            Semester-wise".
                         </div>
 
                         <!-- For Exact Semester-wise Inputs -->
@@ -927,7 +954,8 @@
                 <div class="section-page-icon"><i data-lucide="calculator" style="width: 32px; height: 32px;"></i></div>
                 <div>
                     <h1 class="section-page-title">GPA Calculator</h1>
-                    <p class="section-page-sub">Calculate your semester GPA course-by-course and save it to your record</p>
+                    <p class="section-page-sub">Calculate your semester GPA course-by-course and save it to your record
+                    </p>
                 </div>
                 <button class="btn-secondary btn-page-action" id="clearCalcBtn">
                     <svg viewBox="0 0 24 24" fill="none" width="15" height="15">
@@ -943,23 +971,30 @@
                 <div class="calc-step-icon"><i data-lucide="calendar"></i></div>
                 <div class="calc-step-body">
                     <div class="calc-step-label">Step 1 — Which semester are you calculating?</div>
-                    <p class="calc-step-hint">Select an existing semester <strong>or</strong> create a new one. Your calculated GPA will be saved automatically.</p>
+                    <p class="calc-step-hint">Select an existing semester <strong>or</strong> create a new one. Your
+                        calculated GPA will be saved automatically.</p>
                     <div class="calc-sem-choice-row">
                         <div class="calc-sem-choice-col" id="calcExistingCol">
-                            <label class="calc-choice-label"><i data-lucide="clipboard" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Save to existing semester</label>
+                            <label class="calc-choice-label"><i data-lucide="clipboard"
+                                    style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
+                                Save to existing semester</label>
                             <select id="calcSemesterSelect" class="calc-sem-select">
                                 <option value="">— Select semester —</option>
                             </select>
                         </div>
                         <div class="calc-sem-or">OR</div>
                         <div class="calc-sem-choice-col">
-                            <label class="calc-choice-label"><i data-lucide="plus-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Create new semester</label>
+                            <label class="calc-choice-label"><i data-lucide="plus-circle"
+                                    style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
+                                Create new semester</label>
                             <input type="text" id="calcNewSemName" class="calc-sem-input" placeholder="e.g. Semester 5">
-                            <input type="number" id="calcNewSemCreditsHint" class="calc-sem-input" placeholder="Total credits (e.g. 18)" min="1" max="60" step="1" style="margin-top:6px;">
+                            <input type="number" id="calcNewSemCreditsHint" class="calc-sem-input"
+                                placeholder="Total credits (e.g. 18)" min="1" max="60" step="1" style="margin-top:6px;">
                         </div>
                     </div>
                     <div class="calc-sem-active-display" id="calcActiveSemDisplay" style="display:none;">
-                        <span class="calc-active-icon"><i data-lucide="check-circle" style="width:16px;height:16px;color:#10b981;"></i></span>
+                        <span class="calc-active-icon"><i data-lucide="check-circle"
+                                style="width:16px;height:16px;color:#10b981;"></i></span>
                         <span class="calc-active-text">Calculating for: <strong id="calcActiveSemName">—</strong></span>
                         <button class="calc-change-sem-btn" id="calcChangeSemBtn">Change</button>
                     </div>
@@ -974,7 +1009,10 @@
                 <div class="gpacalc-left">
                     <div class="card">
                         <div class="card-header">
-                            <h3><i data-lucide="edit-3" style="width:20px;height:20px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Add Course <span class="calc-for-sem-tag" id="calcForSemTag" style="display:none;"></span></h3>
+                            <h3><i data-lucide="edit-3"
+                                    style="width:20px;height:20px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
+                                Add Course <span class="calc-for-sem-tag" id="calcForSemTag"
+                                    style="display:none;"></span></h3>
                             <span class="card-badge">Subject Entry</span>
                         </div>
 
@@ -1030,7 +1068,8 @@
                                     <tr id="calcEmptyRow">
                                         <td colspan="6">
                                             <div class="empty-state">
-                                                <i data-lucide="edit-3" style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
+                                                <i data-lucide="edit-3"
+                                                    style="width:48px;height:48px;opacity:0.5;margin-bottom:10px;"></i>
                                                 <p>Add courses above to begin calculating your GPA.</p>
                                             </div>
                                         </td>
@@ -1085,8 +1124,10 @@
                                 <div class="calc-autosave-info">
                                     <span class="calc-autosave-icon"><i data-lucide="save"></i></span>
                                     <div>
-                                        <div class="calc-autosave-title">Save to <strong id="calcAutoSaveSemName">—</strong></div>
-                                        <div class="calc-autosave-sub">This will update that semester's GPA &amp; credits in your record</div>
+                                        <div class="calc-autosave-title">Save to <strong
+                                                id="calcAutoSaveSemName">—</strong></div>
+                                        <div class="calc-autosave-sub">This will update that semester's GPA &amp;
+                                            credits in your record</div>
                                     </div>
                                 </div>
                                 <button class="btn-primary calc-do-save-btn" id="calcDoSaveBtn">Save GPA Now</button>
@@ -1178,72 +1219,491 @@
             </div>
         </section>
 
-        <!-- ===================== FOOTER ===================== -->
-        <footer class="app-footer">
-            <div class="footer-glow"></div>
-            <div class="footer-inner">
+        <!-- ========================================= -->
+        <!-- SECTION 6: BLOG & ACADEMIC GUIDES         -->
+        <!-- ========================================= -->
+        <section class="section" id="section-blog">
+            <div class="section-page-header">
+                <div class="section-page-icon"><i data-lucide="book-open" style="width: 32px; height: 32px; color:var(--primary);"></i></div>
+                <div>
+                    <h1 class="section-page-title">Blog &amp; Academic Guides</h1>
+                    <p class="section-page-sub">Tips, techniques, and calculators for Sri Lankan university students</p>
+                </div>
+            </div>
 
-                <!-- Top Row: Brand + Nav Links -->
-                <div class="footer-top">
-                    <div class="footer-brand-col">
-                        <div class="footer-logo-wrap">
-                            <div class="footer-logo-icon">
-                                <img src="app_icon.ico" alt="SmartGPA" style="width:100%;height:100%;object-fit:cover;border-radius:20%;">
+            <!-- Blog Grid View (all articles list) -->
+            <div id="blogGridView" class="blog-grid">
+                <div class="blog-card" onclick="openBlogArticle('how-gpa-is-calculated')">
+                    <div class="blog-card-header card-gradient-1">
+                        <i data-lucide="calculator" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-gpa">GPA Guide</span>
+                        <h3 class="blog-card-title">How GPA is Calculated</h3>
+                        <p class="blog-card-desc">Understand the mathematical formulas behind your GPA and CGPA with step-by-step examples.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 4 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-card" onclick="openBlogArticle('how-to-improve-gpa')">
+                    <div class="blog-card-header card-gradient-2">
+                        <i data-lucide="trending-up" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-success">Study Tips</span>
+                        <h3 class="blog-card-title">How to Improve GPA</h3>
+                        <p class="blog-card-desc">Struggling with grades? Learn proven academic strategies to bounce back and raise your standing.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 5 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-card" onclick="openBlogArticle('first-year-study-tips')">
+                    <div class="blog-card-header card-gradient-3">
+                        <i data-lucide="graduation-cap" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-purple">First Year</span>
+                        <h3 class="blog-card-title">First Year Study Tips</h3>
+                        <p class="blog-card-desc">Smooth transition tips from school to university. Master lecturing, scheduling, and networking.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 4 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-card" onclick="openBlogArticle('best-study-techniques')">
+                    <div class="blog-card-header card-gradient-4">
+                        <i data-lucide="brain" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-accent">Techniques</span>
+                        <h3 class="blog-card-title">Best Study Techniques</h3>
+                        <p class="blog-card-desc">Optimize your learning with Active Recall, Spaced Repetition, and the Pomodoro technique.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 6 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-card" onclick="openBlogArticle('sri-lankan-university-gpa-guide')">
+                    <div class="blog-card-header card-gradient-5">
+                        <i data-lucide="school" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-lanka">Lanka Uni Guide</span>
+                        <h3 class="blog-card-title">Sri Lankan University GPA Guide</h3>
+                        <p class="blog-card-desc">Compare the exact grading scales and credit models of SLIIT, UOM, UOC, USJP, NSBM, and IIT.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 8 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog-card" onclick="openBlogArticle('semester-planning-guide')">
+                    <div class="blog-card-header card-gradient-6">
+                        <i data-lucide="calendar" class="blog-card-icon"></i>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-badge badge-muted">Planning</span>
+                        <h3 class="blog-card-title">Semester Planning Guide</h3>
+                        <p class="blog-card-desc">Plan your academic load, manage high-credit subjects, and factor in internship requirements.</p>
+                        <div class="blog-card-footer">
+                            <span class="blog-readtime"><i data-lucide="clock" style="width:12px;height:12px;display:inline-block;vertical-align:middle;margin-right:3px;"></i> 5 min read</span>
+                            <span class="blog-btn-read">Read Guide →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Reader View -->
+            <div id="blogReaderView" class="blog-reader hidden">
+                <button class="btn-secondary back-to-blog-btn" id="backToBlogBtn">
+                    <i data-lucide="arrow-left" style="width:14px;height:14px;margin-right:6px;display:inline-block;vertical-align:middle;"></i> Back to Articles
+                </button>
+                <div class="blog-article-container" id="blogArticleContainer">
+                    <!-- Dynamic Content Injected Here -->
+                </div>
+            </div>
+
+            <!-- Crawlable Source Articles for Search Engines (Hidden from UI but crawlable) -->
+            <div class="blog-articles-source" style="display: none !important;">
+                <article id="art-how-gpa-is-calculated">
+                    <h2>How GPA is Calculated: A Step-by-Step Guide</h2>
+                    <p class="article-meta">Category: GPA Guide | Read Time: 4 min read</p>
+                    <p>Grade Point Average (GPA) is the standard metric used by universities globally to measure academic performance. It represents the average of the grade points you earn, weighted by the credit value of each course.</p>
+                    
+                    <h3>1. What is a Credit Hour?</h3>
+                    <p>A credit hour (or credit value) reflects the weekly workload of a subject. For example, a standard lecture course is usually 3 credits, whereas a laboratory or practical course might be 1 credit. Higher credit courses have a greater impact on your GPA.</p>
+                    
+                    <h3>2. Grade Points System</h3>
+                    <p>Universities assign a numerical value to letter grades. The most common system is the 4.0 GPA scale, where:</p>
+                    <ul>
+                        <li><strong>A+ / A</strong> = 4.00</li>
+                        <li><strong>A-</strong> = 3.75</li>
+                        <li><strong>B+</strong> = 3.50</li>
+                        <li><strong>B</strong> = 3.00</li>
+                        <li><strong>C</strong> = 2.00</li>
+                        <li><strong>D</strong> = 1.00</li>
+                        <li><strong>E / F</strong> = 0.00</li>
+                    </ul>
+
+                    <h3>3. The GPA Formula</h3>
+                    <p>The formula for calculating your semester GPA is:</p>
+                    <div class="formula-box">
+                        <strong>GPA = Cumulative Quality Points / Total Credits Taken</strong>
+                        <br><br>
+                        Where <em>Quality Points</em> = Course Grade Points &times; Course Credits.
+                    </div>
+
+                    <h3>4. Step-by-Step Calculation Example</h3>
+                    <p>Let's calculate the GPA for a student taking four courses in a semester:</p>
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Credits</th>
+                                <th>Grade</th>
+                                <th>Grade Points</th>
+                                <th>Quality Points (Credits &times; Pts)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics I</td>
+                                <td>3</td>
+                                <td>A</td>
+                                <td>4.00</td>
+                                <td>12.00</td>
+                            </tr>
+                            <tr>
+                                <td>General Chemistry</td>
+                                <td>4</td>
+                                <td>B+</td>
+                                <td>3.50</td>
+                                <td>14.00</td>
+                            </tr>
+                            <tr>
+                                <td>Intro to Programming</td>
+                                <td>3</td>
+                                <td>B-</td>
+                                <td>2.75</td>
+                                <td>8.25</td>
+                            </tr>
+                            <tr>
+                                <td>Physics Laboratory</td>
+                                <td>1</td>
+                                <td>A-</td>
+                                <td>3.75</td>
+                                <td>3.75</td>
+                            </tr>
+                            <tr class="table-total-row">
+                                <td><strong>Total</strong></td>
+                                <td><strong>11</strong></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><strong>38.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Calculation:</strong> Divide total quality points (38.00) by total credits (11):</p>
+                    <p class="highlight-box"><strong>Semester GPA = 38.00 / 11 = 3.45</strong></p>
+
+                    <h3>5. GPA vs CGPA</h3>
+                    <p>While <strong>GPA</strong> represents your performance in a single semester, <strong>CGPA (Cumulative Grade Point Average)</strong> represents your overall performance across all semesters. CGPA is not a simple average of semester GPAs; it must be calculated using the total quality points across all semesters divided by the total cumulative credits.</p>
+                </article>
+
+                <article id="art-how-to-improve-gpa">
+                    <h2>How to Improve Your GPA: Proven Academic Strategies</h2>
+                    <p class="article-meta">Category: Study Tips | Read Time: 5 min read</p>
+                    <p>If your CGPA has dropped, don't panic. With a systematic approach and correct habits, you can raise your grades and secure your target degree classification.</p>
+
+                    <h3>1. Focus on High-Credit Courses</h3>
+                    <p>Because GPA is weighted, a 4-credit course has double the mathematical impact of a 2-credit course. Focus your energy on securing high grades in core subjects with heavy credit weights.</p>
+
+                    <h3>2. Secure Your Continuous Assessments (CA)</h3>
+                    <p>Continuous assessments (quizzes, midterms, labs, assignments) often count for 40% to 60% of your final grade. Earning high marks during the semester takes the pressure off the final exam. Never treat continuous assignments as optional.</p>
+
+                    <h3>3. Address Weak Spots Early</h3>
+                    <p>Do not wait until final exam study week to understand difficult concepts. If you perform poorly on a midterm or quiz, seek immediate feedback from your lecturers or peers. Course material builds on itself, so clearing doubts early is critical.</p>
+
+                    <h3>4. Simulate Your Target Grades</h3>
+                    <p>Use the <strong>Prediction Engine</strong> in SmartGPA. By setting your goal (e.g. Second Class Upper) and entering your remaining semesters, you can see the exact GPA target you need to hit each semester. Having a specific target helps you stay focused.</p>
+
+                    <h3>5. Learn the Art of Active Learning</h3>
+                    <p>Passively reading notes is the least effective study method. Pivot to active methods like active recall (testing yourself without looking) and spaced repetition (reviewing material periodically) to ensure concepts stick.</p>
+                </article>
+
+                <article id="art-first-year-study-tips">
+                    <h2>First Year Study Tips: Navigating University Academics</h2>
+                    <p class="article-meta">Category: First Year | Read Time: 4 min read</p>
+                    <p>Transitioning from school to university is a major shift. The structure changes from closely guided instruction to absolute academic freedom. Here is how to succeed in your first year.</p>
+
+                    <h3>1. Master the Course Syllabus</h3>
+                    <p>The syllabus is your contract for the semester. It outlines reading expectations, midterm dates, assignment deadlines, and how grades are weighted. Read it in week one and mark all deadlines on your calendar.</p>
+
+                    <h3>2. Stay Consistent from Week One</h3>
+                    <p>In university, missing two weeks of lectures can create an academic backlog that is nearly impossible to clear during study week. Spend at least 1–2 hours reviewing notes after lectures each week.</p>
+
+                    <h3>3. Join Study Groups</h3>
+                    <p>Forming study groups with dedicated peers is one of the best ways to tackle challenging course topics. Explaining concepts to others reinforces your understanding, and you can share resource libraries and test preps.</p>
+
+                    <h3>4. Get to Know Your Lecturers</h3>
+                    <p>Attending office hours to ask questions shows lecturers that you are serious about their course. This connection is invaluable if you need grading clarifications, academic mentoring, or letters of recommendation later.</p>
+
+                    <h3>5. Set Up Your GPA Tracker Early</h3>
+                    <p>Start recording your semesters on SmartGPA from your very first semester. Keeping an eye on your CGPA and credit progress keeps you motivated and ensures there are no surprises in your final year.</p>
+                </article>
+
+                <article id="art-best-study-techniques">
+                    <h2>Best Study Techniques for University Exams</h2>
+                    <p class="article-meta">Category: Techniques | Read Time: 6 min read</p>
+                    <p>Working hard is good, but studying smart is what sets high-achievers apart. Avoid rote memorization and implement cognitive science-backed study techniques.</p>
+
+                    <h3>1. Active Recall</h3>
+                    <p>Active recall involves forcing your brain to retrieve information from memory without looking at notes. Write down everything you know about a topic on a blank sheet, or make flashcards. This builds stronger neural connections than passive reading.</p>
+
+                    <h3>2. Spaced Repetition</h3>
+                    <p>Cramming stores information in short-term memory, which fades rapidly after exams. To retain details long-term, review notes at expanding intervals: 1 day, 3 days, 7 days, and 14 days. Use software like Anki to automate this cycle.</p>
+
+                    <h3>3. The Feynman Technique</h3>
+                    <p>Named after physicist Richard Feynman, this technique helps you identify gaps in your understanding. The process is simple:</p>
+                    <ol>
+                        <li>Choose a concept you want to study.</li>
+                        <li>Write an explanation of the concept as if teaching it to a complete beginner (or a child) using simple words.</li>
+                        <li>Identify areas where you struggle to explain it simply—these are the gaps in your knowledge.</li>
+                        <li>Go back to the source material to patch those gaps, and repeat the process.</li>
+                    </ol>
+
+                    <h3>4. The Pomodoro Technique</h3>
+                    <p>To avoid burnout and maintain deep focus, study in intervals: work for 25 minutes (free of distractions), break for 5 minutes. After 4 sessions, take a longer 20-30 minute break. This technique trains your brain to maintain high-intensity focus without fatigue.</p>
+                </article>
+
+                <article id="art-sri-lankan-university-gpa-guide">
+                    <h2>Sri Lankan University GPA Guide: Grading &amp; Credit Models</h2>
+                    <p class="article-meta">Category: Lanka Uni Guide | Read Time: 8 min read</p>
+                    <p>Sri Lankan universities—both state and private—have custom grading models, pass requirements, and GPA scales. Understanding your institute's scale is crucial for accurate tracking.</p>
+
+                    <h3>1. Sri Lanka Institute of Information Technology (SLIIT)</h3>
+                    <p>SLIIT uses a standard 4.00 maximum GPA system. A+ and A both award 4.00, meaning a perfect GPA is 4.00.</p>
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Grade Points</th>
+                                <th>Marks Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A+ / A</td><td>4.00</td><td>80 – 100</td></tr>
+                            <tr><td>A-</td><td>3.75</td><td>75 – 79</td></tr>
+                            <tr><td>B+</td><td>3.50</td><td>70 – 74</td></tr>
+                            <tr><td>B</td><td>3.00</td><td>65 – 69</td></tr>
+                            <tr><td>B-</td><td>2.75</td><td>60 – 64</td></tr>
+                            <tr><td>C+</td><td>2.50</td><td>55 – 59</td></tr>
+                            <tr><td>C</td><td>2.00</td><td>45 – 54</td></tr>
+                            <tr><td>C-</td><td>1.75</td><td>40 – 44</td></tr>
+                            <tr><td>D+</td><td>1.50</td><td>35 – 39</td></tr>
+                            <tr><td>D</td><td>1.00</td><td>30 – 34</td></tr>
+                            <tr><td>E</td><td>0.00</td><td>0 – 29</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2. University of Moratuwa (UOM)</h3>
+                    <p>UOM uses a 4.20 scale for honors calculations, where an A+ yields 4.20 points, allowing exceptional students to exceed a 4.00 GPA.</p>
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Grade Points</th>
+                                <th>Marks Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A+</td><td>4.20</td><td>85 – 100</td></tr>
+                            <tr><td>A</td><td>4.00</td><td>75 – 84</td></tr>
+                            <tr><td>A-</td><td>3.70</td><td>70 – 74</td></tr>
+                            <tr><td>B+</td><td>3.30</td><td>65 – 69</td></tr>
+                            <tr><td>B</td><td>3.00</td><td>60 – 64</td></tr>
+                            <tr><td>B-</td><td>2.70</td><td>55 – 59</td></tr>
+                            <tr><td>C+</td><td>2.30</td><td>50 – 54</td></tr>
+                            <tr><td>C</td><td>2.00</td><td>45 – 49</td></tr>
+                            <tr><td>C-</td><td>1.50</td><td>40 – 44</td></tr>
+                            <tr><td>D</td><td>1.00</td><td>35 – 39</td></tr>
+                            <tr><td>F</td><td>0.00</td><td>&lt; 35</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>3. University of Colombo (UOC) - UCSC &amp; Science</h3>
+                    <p>Colombo uses a 4.00 scale with a grading profile optimized for high precision. A+ is capped at 4.00.</p>
+                    <table class="article-table">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Grade Points</th>
+                                <th>Marks Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A+ / A</td><td>4.00</td><td>85 – 100 (A+ is 90+)</td></tr>
+                            <tr><td>A-</td><td>3.70</td><td>75 – 79</td></tr>
+                            <tr><td>B+</td><td>3.30</td><td>70 – 74</td></tr>
+                            <tr><td>B</td><td>3.00</td><td>65 – 69</td></tr>
+                            <tr><td>B-</td><td>2.70</td><td>60 – 64</td></tr>
+                            <tr><td>C+</td><td>2.30</td><td>55 – 59</td></tr>
+                            <tr><td>C</td><td>2.00</td><td>50 – 54</td></tr>
+                            <tr><td>C-</td><td>1.70</td><td>45 – 49</td></tr>
+                            <tr><td>D+</td><td>1.30</td><td>40 – 44</td></tr>
+                            <tr><td>D</td><td>1.00</td><td>30 – 39</td></tr>
+                            <tr><td>E</td><td>0.00</td><td>0 – 29</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>4. University of Sri Jayewardenepura (USJP)</h3>
+                    <p>USJP implements a standard UGC-approved 4.00 scale very similar to the Colombo scale. To qualify for a First Class Honours, students generally need a CGPA &ge; 3.70 alongside passing all subjects at the first attempt.</p>
+
+                    <h3>5. NSBM Green University &amp; IIT</h3>
+                    <p>NSBM utilizes a standard 4.00 scale for local degrees. For affiliated UK degrees (e.g. Plymouth), and similarly at the Informatics Institute of Technology (IIT) for Westminster degrees, grading is based on UK marks bands (70%+ First Class, 60-69% Upper Second, 50-59% Lower Second, 40-49% Third Class). In SmartGPA, students in these systems can choose to map their classifications using the target classification selector.</p>
+
+                    <h3>6. Set Your University's Scale in SmartGPA</h3>
+                    <p>SmartGPA lets you configure the exact grading scale for your university. Once set, all GPA calculations, degree classification badges, and prediction targets across the entire app will reflect your university's actual system.</p>
+                    <div style="margin-top:16px;padding:16px 18px;background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(79,70,229,0.04));border:1px solid rgba(124,58,237,0.25);border-radius:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                        <div style="flex:1;min-width:180px;">
+                            <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px;">⚙️ Configure Your Grading Scale</div>
+                            <div style="font-size:0.84rem;color:var(--text-secondary);">Choose a preset (SLIIT, UOM, UOC, USJP, NSBM/IIT) or enter custom grade points and classification thresholds.</div>
+                        </div>
+                        <button class="btn-primary" onclick="navigateTo('settings')" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;white-space:nowrap;">
+                            Open Grading Settings →
+                        </button>
+                    </div>
+                </article>
+
+                <article id="art-semester-planning-guide">
+                    <h2>Semester Planning Guide: Balancing Workload &amp; Targets</h2>
+                    <p class="article-meta">Category: Planning | Read Time: 5 min read</p>
+                    <p>Succeeding in academics requires foresight. Simply studying hard semester-by-semester is not enough. You must actively plan your semesters to balance your credit load and keep your GPA target achievable.</p>
+
+                    <h3>1. Understand Credit Balancing</h3>
+                    <p>Avoid loading too many difficult or lab-heavy subjects into a single semester. A standard semester consists of 15 to 18 credits. Balance heavy 3-credit or 4-credit math/programming modules with lighter elective courses.</p>
+
+                    <h3>2. Plan for Non-GPA Semesters (Internships)</h3>
+                    <p>Many Sri Lankan degree programs include an industrial training (internship) semester, usually in Year 3 or Year 4. These internships often award credits (e.g. 6 to 8 credits) but are graded as Pass/Fail (Non-GPA).
+                    <br><br>
+                    In SmartGPA, you can handle this by adding a <strong>Non-GPA Semester</strong>. This records your internship credits towards completion without skewing your CGPA calculation.</p>
+
+                    <h3>3. Work Backwards from Your Graduation Goal</h3>
+                    <p>If you want a First Class degree (requires &ge; 3.70 CGPA) and currently sit at a 3.40 CGPA in Year 2, use the <strong>GPA Prediction Engine</strong> to compute your future targets. The engine will show if you need a 3.90 in upcoming semesters. If the target is too high, you might want to adjust your goal to a Second Class Upper (&ge; 3.30 CGPA) to have a more realistic academic plan.</p>
+
+                    <h3>4. Log and Review Regularly</h3>
+                    <p>Keep your SmartGPA profile updated. Check the Analytics tab to view your GPA trend. A rising trend indicates that your study modifications are working, while a downward trend indicates a need to alter your study techniques or seek academic help.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- SECTION 7: GRADING SETTINGS              -->
+        <!-- ========================================= -->
+        <section class="section" id="section-settings">
+            <div class="section-page-header accent-header" style="background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);">
+                <div class="section-page-icon"><i data-lucide="settings" style="width: 32px; height: 32px;"></i></div>
+                <div>
+                    <h1 class="section-page-title">Grading Settings</h1>
+                    <p class="section-page-sub">Customize your university's grading scale &amp; degree classification thresholds</p>
+                </div>
+            </div>
+            <!-- Dynamic settings content injected by renderSettingsPage() -->
+            <div id="settingsContainer"></div>
+        </section>
+
+        <!-- ===================== FOOTER ===================== -->
+        <footer class="app-footer" style="padding:40px 0 20px; border-top:1px solid var(--border); margin-top:40px; position:relative; overflow:hidden;">
+            <div class="footer-glow" style="position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:600px; height:200px; background:radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+            <div class="footer-inner" style="max-width:1200px; margin:0 auto; padding:0 20px; position:relative; z-index:1;">
+                <div class="footer-top" style="display:flex; flex-wrap:wrap; gap:40px; margin-bottom:30px;">
+                    <!-- Brand Column -->
+                    <div class="footer-brand-col" style="flex:2; min-width:280px;">
+                        <div class="footer-logo-wrap" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                            <div class="footer-logo-icon" style="width:40px; height:40px;">
+                                <img src="app_icon.ico" alt="SmartGPA" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
                             </div>
                             <div>
-                                <div class="footer-logo-name">SmartGPA</div>
-                                <div class="footer-logo-sub">Academic Management System</div>
+                                <div class="footer-logo-name" style="font-size:1.4rem; font-weight:800; color:var(--text-primary);">SmartGPA</div>
+                                <div class="footer-logo-sub" style="font-size:0.8rem; color:var(--text-secondary); letter-spacing:0.5px; text-transform:uppercase;">Academic Management System</div>
                             </div>
                         </div>
-                        <p class="footer-desc">Your intelligent academic companion — track GPA, predict your classification, and stay ahead every semester. Free. Local. Private.</p>
-                        <div class="footer-badges">
-                            <span class="footer-badge"><i data-lucide="shield-check" style="width:13px;height:13px;"></i> 100% Private</span>
-                            <span class="footer-badge"><i data-lucide="database" style="width:13px;height:13px;"></i> Local Storage</span>
-                            <span class="footer-badge"><i data-lucide="zap" style="width:13px;height:13px;"></i> No Login</span>
-                        </div>
+                        <p class="footer-desc" style="font-size:0.9rem; color:var(--text-muted); line-height:1.6; margin-bottom:20px; max-width:400px;">
+                            Your intelligent academic companion — track GPA, predict your classification, and stay ahead every semester. Designed for Sri Lankan University standards. Free, local, and 100% private.
+                        </p>
                     </div>
 
-                    <div class="footer-nav-col">
-                        <div class="footer-nav-group">
-                            <h4 class="footer-nav-title">Navigation</h4>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('dashboard');return false;"><i data-lucide="layout-dashboard" style="width:14px;height:14px;"></i> Dashboard</a>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('addgpa');return false;"><i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Add GPA</a>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('semesters');return false;"><i data-lucide="calendar-days" style="width:14px;height:14px;"></i> Semesters</a>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('analytics');return false;"><i data-lucide="line-chart" style="width:14px;height:14px;"></i> Analytics</a>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('prediction');return false;"><i data-lucide="target" style="width:14px;height:14px;"></i> Prediction</a>
-                            <a href="#" class="footer-nav-link" onclick="navigateTo('gpacalc');return false;"><i data-lucide="calculator" style="width:14px;height:14px;"></i> GPA Calculator</a>
-                        </div>
-                        <div class="footer-nav-group">
-                            <h4 class="footer-nav-title">Features</h4>
-                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> CGPA Tracking</span>
-                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> Grade Prediction</span>
-                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> GPA Calculator</span>
-                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> PDF Export</span>
-                            <span class="footer-feat"><i data-lucide="check" style="width:13px;height:13px;color:#10b981;"></i> Analytics Charts</span>
+                    <!-- Support / Contact Column -->
+                    <div class="footer-contact-col" style="flex:1; min-width:260px;">
+                        <h4 class="footer-nav-title" style="font-size:0.95rem; font-weight:700; color:var(--text-primary); margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px;">Support &amp; Feedback</h4>
+                        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:12px;">
+                            Have feedback, found a bug, or want to suggest a feature? Drop a message!
+                        </p>
+                        <div class="feedback-form-inline" style="display:flex; flex-direction:column; gap:10px;">
+                            <textarea id="footerFeedbackMsg" placeholder="Type your message here..." rows="3" style="width:100%; border-radius:8px; border:1px solid rgba(124,58,237,0.25); padding:10px 12px; font-size:0.85rem; background:rgba(0,0,0,0.02); color:var(--text-primary); resize:none; font-family:inherit; outline:none; transition:all 0.2s;" onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(124,58,237,0.1)';" onblur="this.style.borderColor='rgba(124,58,237,0.25)'; this.style.boxShadow='none';"></textarea>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <button onclick="sendFeedback()" class="btn-primary" style="padding:8px 16px; font-size:0.85rem; background:linear-gradient(135deg, #7c3aed, #4f46e5); border:none; display:flex; align-items:center; gap:6px;">
+                                    <i data-lucide="send" style="width:14px;height:14px;"></i> Send
+                                </button>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">thiwasan2002@gmail.com</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Divider -->
-                <div class="footer-hr"></div>
+                <div class="footer-hr" style="height:1px; background:var(--border); margin:20px 0;"></div>
 
-                <!-- Bottom Row: Copyright + Dev Credit -->
-                <div class="footer-bottom">
-                    <div class="footer-copy-row">
-                        <span class="footer-copy">&copy; 2026 SmartGPA &mdash; All rights reserved.</span>
-                        <span class="footer-dot">·</span>
-                        <a href="https://www.smartgpa.app" target="_blank" rel="noopener" class="footer-site-link">www.smartgpa.app</a>
+                <!-- Bottom Row: Copyright + Links + Dev Credit -->
+                <div class="footer-bottom" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; font-size:0.85rem; color:var(--text-muted);">
+                    <div class="footer-copy-row" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span class="footer-copy">&copy; 2026 SmartGPA. All rights reserved.</span>
+                        <span class="footer-dot" style="opacity:0.4;">·</span>
+                        <a href="#" onclick="openPrivacyModal();return false;" style="color:var(--text-muted); text-decoration:underline; text-underline-offset:2px; transition:color 0.2s;">Privacy Policy</a>
+                        <span class="footer-dot" style="opacity:0.4;">·</span>
+                        <a href="https://www.smartgpa.app" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:underline; text-underline-offset:2px; transition:color 0.2s;">www.smartgpa.app</a>
                     </div>
-                    <div class="footer-dev-row">
-                        <span class="footer-dev-text">Crafted with</span>
-                        <i data-lucide="heart" style="width:14px;height:14px;color:#ef4444;fill:#ef4444;" class="icon-pulse"></i>
+                    <div class="footer-dev-row" style="display:flex; align-items:center; gap:6px;">
+                        <span class="footer-dev-text">Developed with</span>
+                        <i data-lucide="code-2" style="width:15px;height:15px;color:var(--primary);"></i>
                         <span class="footer-dev-text">by</span>
-                        <strong class="footer-author">Thiwanka Sandaruwan</strong>
+                        <strong class="footer-author" style="color:var(--text-primary); font-weight:700;">Thiwanka Sandaruwan</strong>
                     </div>
                 </div>
-
             </div>
         </footer>
+
+        <!-- Privacy Policy Modal -->
+        <div class="modal-overlay" id="privacyModal">
+            <div class="modal" style="max-width:550px;">
+                <div class="modal-header">
+                    <h3><i data-lucide="shield-check" style="width:18px;height:18px;margin-right:6px;vertical-align:middle;color:var(--primary);"></i> Privacy Policy</h3>
+                    <button class="btn-icon" onclick="closePrivacyModal()">
+                        <i data-lucide="x" style="width:18px;height:18px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body" style="font-size:0.9rem; line-height:1.6; color:var(--text-secondary);">
+                    <p><strong>1. Local Data Storage:</strong> SmartGPA is a fully localized application. All your academic data, including grades, course names, and university settings, are stored locally in your browser's <code>localStorage</code>.</p>
+                    <p style="margin-top:10px;"><strong>2. No Cloud Sync:</strong> We do not upload, sync, or transmit any of your personal data to external servers or third parties.</p>
+                    <p style="margin-top:10px;"><strong>3. Privacy First:</strong> We do not use intrusive analytics trackers, targeted advertising, or external cookies.</p>
+                    <p style="margin-top:10px;"><strong>4. Data Deletion:</strong> You can permanently delete all your data at any time by clearing your browser's local storage or using the Factory Reset option in the app.</p>
+                    <p style="margin-top:16px;font-style:italic;color:var(--text-muted);border-top:1px solid var(--border);padding-top:12px;">By using SmartGPA, you agree to this strictly local data model.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="closePrivacyModal()">Understood</button>
+                </div>
+            </div>
+        </div>
 
     </main><!-- /main-content -->
 
@@ -1264,7 +1724,7 @@
                     <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
                 </svg>
             </div>
-            <span>Add GPA</span>
+            <span>CGPA Calculator</span>
         </a>
         <a href="#" class="mbn-item" data-section="gpacalc" id="mbn-gpacalc">
             <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
@@ -1327,61 +1787,77 @@
     <!-- ===================== NON-GPA SEMESTER MODAL ===================== -->
     <div class="modal-overlay" id="skipReasonModal">
         <div class="modal" style="max-width:480px;">
-            <div class="modal-header" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">
+            <div class="modal-header"
+                style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <div style="width:42px;height:42px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">📋</div>
+                    <div
+                        style="width:42px;height:42px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;">
+                        <i data-lucide="clipboard-list" style="width:20px;height:20px;"></i></div>
                     <div>
                         <h3 style="color:#fff;margin:0;font-size:1.1rem;">Add Non-GPA Semester</h3>
-                        <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin:2px 0 0;">Internship, Leave, Exchange &amp; more</p>
+                        <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin:2px 0 0;">Internship, Leave,
+                            Exchange &amp; more</p>
                     </div>
                 </div>
                 <button class="modal-close" id="closeSkipModal" style="color:#fff;opacity:0.8;">✕</button>
             </div>
             <div class="modal-body">
                 <!-- Info banner -->
-                <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
-                    <span style="font-size:1.1rem;flex-shrink:0;">ℹ️</span>
+                <div
+                    style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+                    <i data-lucide="info" style="width:18px;height:18px;flex-shrink:0;color:var(--primary);margin-top:2px;"></i>
                     <div style="font-size:0.83rem;color:var(--text-secondary);line-height:1.55;">
-                        This semester will be recorded as a <strong style="color:var(--primary);">Non-GPA Semester</strong> — it will <strong>not</strong> affect your CGPA calculation. Any credits taken will still count toward your total progress.
+                        This semester will be recorded as a <strong style="color:var(--primary);">Non-GPA
+                            Semester</strong> — it will <strong>not</strong> affect your CGPA calculation. Any credits
+                        taken will still count toward your total progress.
                     </div>
                 </div>
 
                 <!-- Semester name display -->
                 <div class="form-field">
                     <label>Semester Name</label>
-                    <div id="skipModalSemName" style="font-weight:700;color:var(--primary);font-size:1rem;padding:8px 12px;background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);"></div>
+                    <div id="skipModalSemName"
+                        style="font-weight:700;color:var(--primary);font-size:1rem;padding:8px 12px;background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-sm);">
+                    </div>
                 </div>
 
                 <!-- Reason select -->
                 <div class="form-field">
-                    <label for="skipReasonSelect">Reason for Non-GPA Semester <span style="color:var(--danger);">*</span></label>
-                    <select id="skipReasonSelect" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-page);color:var(--text-primary);font-family:inherit;font-size:0.92rem;">
+                    <label for="skipReasonSelect">Reason for Non-GPA Semester <span
+                            style="color:var(--danger);">*</span></label>
+                    <select id="skipReasonSelect"
+                        style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-page);color:var(--text-primary);font-family:inherit;font-size:0.92rem;">
                         <option value="">-- Select a reason --</option>
-                        <option value="Internship">🏢 Internship / Industrial Training</option>
-                        <option value="Non-GPA Semester">📋 Non-GPA Semester (General)</option>
-                        <option value="Medical Leave">🏥 Medical Leave</option>
-                        <option value="Exchange Program">✈️ Exchange / Study Abroad Program</option>
-                        <option value="Research Semester">🔬 Research / Project Semester</option>
-                        <option value="Personal Leave">🙏 Personal Leave</option>
-                        <option value="Other">✏️ Other (specify below)</option>
+                        <option value="Internship">Internship / Industrial Training</option>
+                        <option value="Non-GPA Semester">Non-GPA Semester (General)</option>
+                        <option value="Medical Leave">Medical Leave</option>
+                        <option value="Exchange Program">Exchange / Study Abroad Program</option>
+                        <option value="Research Semester">Research / Project Semester</option>
+                        <option value="Personal Leave">Personal Leave</option>
+                        <option value="Other">Other (specify below)</option>
                     </select>
                 </div>
                 <div class="form-field" id="skipCustomReasonField" style="display:none;">
                     <label for="skipCustomReason">Specify Reason</label>
-                    <input type="text" id="skipCustomReason" placeholder="e.g. Year abroad, Gap semester" maxlength="60">
+                    <input type="text" id="skipCustomReason" placeholder="e.g. Year abroad, Gap semester"
+                        maxlength="60">
                 </div>
 
                 <!-- Credits -->
                 <div class="form-field">
-                    <label for="skipSemCreditsModal">Credits Taken During This Semester <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(0 if none)</span></label>
-                    <input type="number" id="skipSemCreditsModal" placeholder="e.g. 0" min="0" max="60" step="1" value="0">
+                    <label for="skipSemCreditsModal">Credits Taken During This Semester <span
+                            style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(0 if
+                            none)</span></label>
+                    <input type="number" id="skipSemCreditsModal" placeholder="e.g. 0" min="0" max="60" step="1"
+                        value="0">
                 </div>
 
                 <div class="form-error" id="skipReasonError"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-secondary" id="cancelSkipModal">Cancel</button>
-                <button class="btn-primary" id="confirmSkipBtn" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;">
+                <button class="btn-primary" id="confirmSkipBtn"
+                    style="background:linear-gradient(135deg,#7c3aed,#4f46e5);border:none;">
                     <i data-lucide="check-circle" style="width:16px;height:16px;"></i>
                     Save as Non-GPA Semester
                 </button>

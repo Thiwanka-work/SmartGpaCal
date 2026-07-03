@@ -209,22 +209,19 @@
                                 style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Student Name</label>
                             <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
                         </div>
-                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="totalCreditsInput"
-                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program Credits</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">The
-                                total credits required to graduate (e.g. 120).</span>
-                            <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300"
-                                step="1">
-                        </div>
-                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="totalSemestersInput"
-                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Program
-                                Semesters</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Total
-                                number of semesters in your degree (e.g. 8).</span>
-                            <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20"
-                                step="1">
+                        <div class="profile-2col">
+                            <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                                <label for="totalCreditsInput"
+                                    style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Program Credits</label>
+                                <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300"
+                                    step="1">
+                            </div>
+                            <div class="form-field" style="margin-bottom: 10px; text-align: left;">
+                                <label for="totalSemestersInput"
+                                    style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Semesters</label>
+                                <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20"
+                                    step="1">
+                            </div>
                         </div>
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
                             <label for="completedSemestersInput"
@@ -988,8 +985,6 @@
                                     style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i>
                                 Create new semester</label>
                             <input type="text" id="calcNewSemName" class="calc-sem-input" placeholder="e.g. Semester 5">
-                            <input type="number" id="calcNewSemCreditsHint" class="calc-sem-input"
-                                placeholder="Total credits (e.g. 18)" min="1" max="60" step="1" style="margin-top:6px;">
                         </div>
                     </div>
                     <div class="calc-sem-active-display" id="calcActiveSemDisplay" style="display:none;">

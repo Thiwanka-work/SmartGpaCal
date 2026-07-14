@@ -2839,3 +2839,200 @@ function sendFeedback() {
 }
 window.sendFeedback = sendFeedback;
 
+// ── 30. HERO GPA CALCULATOR (No-Profile, Dashboard) ────────────
+
+let heroCourses = [];
+let heroRingChart = null;
+
+function heroAddCourse() {
+    const nameEl    = $('heroCourse');
+    const gradeEl   = $('heroGrade');
+    const creditsEl = $('heroCredits');
+    const errEl     = $('heroCalcErr');
+
+    const name    = nameEl.value.trim() || `Course ${heroCourses.length + 1}`;
+    const grade   = parseFloat(gradeEl.value);
+    const gradeLabel = gradeEl.options[gradeEl.selectedIndex].dataset.label || gradeEl.options[gradeEl.selectedIndex].text.split(' ')[0];
+    const credits = parseInt(creditsEl.value, 10);
+
+    errEl.textContent = '';
+
+    if (isNaN(credits) || credits < 1 || credits > 12) {
+        errEl.textContent = 'Please enter valid credit hours (1–12).';
+        return;
+    }
+
+    heroCourses.push({ id: Date.now() + Math.random(), name, grade, gradeLabel, credits });
+    nameEl.value = '';
+    creditsEl.value = '3';
+    nameEl.focus();
+
+    heroRenderAll();
+}
+window.heroAddCourse = heroAddCourse;
+
+function heroClearCourse(id) {
+    heroCourses = heroCourses.filter(c => c.id !== id);
+    heroRenderAll();
+}
+window.heroClearCourse = heroClearCourse;
+
+function heroReset() {
+    heroCourses = [];
+    heroRenderAll();
+}
+window.heroReset = heroReset;
+
+function heroRenderAll() {
+    const listEl       = $('heroCourseList');
+    const countEl      = $('heroCourseCount');
+    const gpaEl        = $('heroGpaValue');
+    const creditsEl    = $('heroTotalCredits');
+    const coursesEl    = $('heroTotalCourses');
+    const resultClass  = $('heroResultClass');
+    const resetBtn     = $('heroResetBtn');
+    const savePromo    = $('heroSavePromo');
+
+    if (!listEl) return;
+
+    // Render course list
+    if (heroCourses.length === 0) {
+        listEl.innerHTML = `
+            <div class="hero-empty-state">
+                <i data-lucide="edit-3" style="width:36px;height:36px;opacity:0.3;"></i>
+                <p>Add courses above to see your GPA</p>
+            </div>`;
+    } else {
+        listEl.innerHTML = heroCourses.map(c => `
+            <div class="hero-course-row">
+                <span class="hero-row-name">${escHtml(c.name)}</span>
+                <span class="hero-row-grade">${escHtml(c.gradeLabel)}</span>
+                <span class="hero-row-credits">${c.credits} cr</span>
+                <button class="hero-row-del" onclick="heroClearCourse(${c.id})" title="Remove">
+                    <i data-lucide="x" style="width:14px;height:14px;"></i>
+                </button>
+            </div>`).join('');
+    }
+
+    // Count badge
+    if (countEl) countEl.textContent = `${heroCourses.length} course${heroCourses.length !== 1 ? 's' : ''}`;
+
+    // Calculate GPA
+    const totalQP      = heroCourses.reduce((acc, c) => acc + c.grade * c.credits, 0);
+    const totalCredits = heroCourses.reduce((acc, c) => acc + c.credits, 0);
+    const gpa          = totalCredits > 0 ? totalQP / totalCredits : 0;
+
+    if (gpaEl) {
+        gpaEl.textContent = gpa.toFixed(2);
+        // Colour the number based on classification
+        const cls = classifyGpa(gpa);
+        gpaEl.style.color = heroCourses.length > 0 ? cls.color : 'var(--text-primary)';
+    }
+    if (creditsEl) creditsEl.textContent = totalCredits;
+    if (coursesEl) coursesEl.textContent = heroCourses.length;
+
+    // Classification badge
+    if (resultClass) {
+        if (heroCourses.length > 0) {
+            const cls = classifyGpa(gpa);
+            resultClass.innerHTML = `<span class="classification-badge ${cls.badge}">${cls.icon} <span style="margin-left:4px;">${cls.label}</span></span>`;
+        } else {
+            resultClass.innerHTML = `<span class="classification-badge badge-nodata">Add courses</span>`;
+        }
+    }
+
+    // Reset & save promo
+    if (resetBtn) resetBtn.style.display = heroCourses.length > 0 ? 'inline-flex' : 'none';
+    if (savePromo) savePromo.style.display = heroCourses.length >= 2 ? 'flex' : 'none';
+
+    // Draw ring
+    heroDrawRing(gpa);
+
+    // Refresh icons
+    refreshIcons();
+}
+
+function heroDrawRing(gpa) {
+    const canvas = $('heroGpaRing');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const size = canvas.width;
+    const cx = size / 2;
+    const cy = size / 2;
+    const radius = (size / 2) - 10;
+    const lineW = 10;
+
+    // Determine color
+    let color = '#e2e8f0'; // default grey
+    if (heroCourses.length > 0) {
+        const cls = classifyGpa(gpa);
+        color = cls.color;
+    }
+
+    const pct = Math.min(gpa / 4.0, 1);
+    const startAngle = -Math.PI / 2;
+    const endAngle   = startAngle + (2 * Math.PI * pct);
+
+    // Destroy old chart.js instance if exists
+    if (heroRingChart) {
+        heroRingChart.destroy();
+        heroRingChart = null;
+    }
+
+    ctx.clearRect(0, 0, size, size);
+
+    // Background track
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+    ctx.lineWidth = lineW;
+    ctx.stroke();
+
+    // Gradient arc
+    if (heroCourses.length > 0 && pct > 0) {
+        const grad = ctx.createLinearGradient(0, 0, size, size);
+        grad.addColorStop(0, color);
+        grad.addColorStop(1, color + 'aa');
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, startAngle, endAngle);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = lineW;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+    }
+}
+
+// ── 31. Skip Profile ───────────────────────────────────────────
+function skipProfile() {
+    // Hide welcome banner, navigate to GPA calculator
+    const wb = $('welcomeBanner');
+    if (wb) {
+        wb.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        wb.style.opacity = '0';
+        wb.style.transform = 'translateY(-10px)';
+        setTimeout(() => { wb.style.display = 'none'; }, 300);
+    }
+    setTimeout(() => navigateTo('gpacalc'), 350);
+}
+window.skipProfile = skipProfile;
+
+// Bind Enter key in hero calculator
+document.addEventListener('DOMContentLoaded', () => {
+    const heroCreditsEl = $('heroCredits');
+    if (heroCreditsEl) {
+        heroCreditsEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter') heroAddCourse();
+        });
+    }
+    const heroCourseEl = $('heroCourse');
+    if (heroCourseEl) {
+        heroCourseEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter') heroAddCourse();
+        });
+    }
+    // Initial ring draw
+    heroDrawRing(0);
+});
+

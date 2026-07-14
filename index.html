@@ -4,46 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SmartGPA | Sri Lankan University GPA &amp; CGPA Calculator - SLIIT, UOM, UOC, USJP, NSBM, IIT</title>
+    <title>SmartGPA | Free GPA Calculator — No Login Required | Sri Lanka University GPA & CGPA</title>
     <link rel="icon" href="app_icon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="app_icon.ico">
     <link rel="canonical" href="https://www.smartgpa.app/" />
     <meta name="description"
-        content="Calculate your GPA and CGPA easily. Professional Sri Lankan university GPA and CGPA calculator for SLIIT, University of Moratuwa (UOM), University of Colombo (UOC), USJP, NSBM, IIT, and others with credit tracking, prediction, and analytics.">
+        content="Free GPA calculator — no login, no signup required. Calculate your semester GPA & CGPA instantly. Supports SLIIT, UOM, UOC, USJP, NSBM, IIT grading scales. Track academic progress, predict classifications.">
     <meta name="keywords"
-        content="gpa cal, cgpa cal, gpa calculator, cgpa calculator, calculate gpa, university gpa tracker, smartgpa, sliit gpa calculator, uom gpa calculator, uoc gpa calculator, usjp gpa calculator, sri lankan university gpa, nsbm gpa calculator, iit gpa calculator">
+        content="gpa calculator, gpa cal, cgpa calculator, cgpa cal, free gpa calculator, online gpa calculator, calculate gpa online, university gpa calculator, sri lankan gpa calculator, sliit gpa calculator, uom gpa calculator, uoc gpa calculator, usjp gpa calculator, nsbm gpa calculator, iit gpa calculator, semester gpa, cgpa tracker, smartgpa">
     <meta name="robots" content="index, follow">
+    <meta name="author" content="SmartGPA">
     <meta name="google-site-verification" content="yWozeo7StvKiuApowC9itVB_ADNS6C8Ll0xhucq3rms" />
-    <meta property="og:title" content="SmartGPA | GPA &amp; CGPA Calculator">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="SmartGPA | Free GPA Calculator — No Login Required">
     <meta property="og:description"
-        content="Calculate your GPA and CGPA easily with SmartGPA. Your professional academic performance tracker.">
+        content="Calculate your semester GPA & CGPA instantly. Free, no signup. Supports all major Sri Lankan university grading scales.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.smartgpa.app/">
     <meta property="og:image" content="https://www.smartgpa.app/app_icon.ico">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SmartGPA | Free GPA Calculator">
+    <meta name="twitter:description" content="Free GPA & CGPA calculator for Sri Lankan university students. No login needed.">
+    <meta name="theme-color" content="#4f46e5">
 
-    <!-- Structured Data for SEO -->
+    <!-- Structured Data: WebApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "SmartGPA Calculator",
-      "description": "Professional university CGPA calculator (cgpa cal) and GPA calculator (gpa cal) to track credits and academic performance.",
+      "url": "https://www.smartgpa.app/",
+      "description": "Free online GPA and CGPA calculator for Sri Lankan university students. No login or signup required.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "All",
-      "image": "https://smartgpa.app/app_icon.ico"
+      "isAccessibleForFree": true,
+      "image": "https://smartgpa.app/app_icon.ico",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
+
+    <!-- Structured Data: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "SmartGPA",
+      "url": "https://www.smartgpa.app/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.smartgpa.app/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: FAQ for Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I calculate my GPA?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Multiply each course's grade points by its credit hours to get quality points. Divide the total quality points by the total credit hours. For example: (3×4.00 + 4×3.50) ÷ 7 = 3.71 GPA. SmartGPA does this automatically — just enter your courses and grades." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to create an account to use SmartGPA?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. SmartGPA's GPA Calculator works instantly with zero login or signup required. Just open the calculator and start adding your courses. Profile creation is optional and only needed if you want to track CGPA across multiple semesters." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between GPA and CGPA?",
+          "acceptedAnswer": { "@type": "Answer", "text": "GPA (Grade Point Average) measures your performance in a single semester. CGPA (Cumulative Grade Point Average) is the overall average across all semesters, weighted by credit hours. SmartGPA calculates both." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which Sri Lankan universities does SmartGPA support?",
+          "acceptedAnswer": { "@type": "Answer", "text": "SmartGPA supports SLIIT, University of Moratuwa (UOM), University of Colombo (UOC), USJP, NSBM, and IIT grading scales. You can also customize the grading scale in Settings." }
+        },
+        {
+          "@type": "Question",
+          "name": "What GPA do I need for First Class Honours?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Most Sri Lankan universities require a CGPA of 3.70 or above (out of 4.00) for First Class Honours. Second Class Upper requires 3.30–3.69 and Second Class Lower requires 3.00–3.29. Use SmartGPA's Prediction Engine to see exactly what GPA you need each semester." }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "SmartGPA Home", "item": "https://www.smartgpa.app/" },
+        { "@type": "ListItem", "position": 2, "name": "GPA Calculator", "item": "https://www.smartgpa.app/#gpacalc" },
+        { "@type": "ListItem", "position": 3, "name": "CGPA Tracker", "item": "https://www.smartgpa.app/#addgpa" }
+      ]
+    }
+    </script>
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="style.css" as="style">
+    
     <!-- Chart.js CDN for line chart analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 
     <!-- Lucide Icons & Lottie Animations -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -62,6 +139,10 @@
         </div>
 
         <nav class="sidebar-nav">
+            <a href="#" class="nav-item nav-item-hero" data-section="gpacalc" id="nav-gpacalc">
+                <i data-lucide="calculator"></i>
+                <span>GPA Calculator <em class="nav-free-badge">Free</em></span>
+            </a>
             <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
                 <i data-lucide="layout-dashboard"></i>
                 <span>Dashboard</span>
@@ -81,10 +162,6 @@
             <a href="#" class="nav-item" data-section="prediction" id="nav-prediction">
                 <i data-lucide="target"></i>
                 <span>Prediction</span>
-            </a>
-            <a href="#" class="nav-item" data-section="gpacalc" id="nav-gpacalc">
-                <i data-lucide="calculator"></i>
-                <span>GPA Calculator</span>
             </a>
             <a href="#" class="nav-item" data-section="blog" id="nav-blog">
                 <i data-lucide="book-open"></i>
@@ -166,7 +243,103 @@
                 </div>
             </div>
 
-            <!-- Student Profile Setup (shown if no data) -->
+            <!-- ★ HERO GPA CALCULATOR (always visible, no profile needed) ★ -->
+            <div class="hero-gpa-calc" id="heroGpaCalc">
+                <div class="hero-calc-header">
+                    <div class="hero-calc-badge">
+                        <i data-lucide="zap" style="width:13px;height:13px;"></i>
+                        No signup &middot; Instant &middot; Free
+                    </div>
+                    <h2 class="hero-calc-title">GPA Calculator</h2>
+                    <p class="hero-calc-sub">Enter your courses and grades — your GPA updates instantly</p>
+                </div>
+
+                <div class="hero-calc-body">
+                    <!-- Input Row -->
+                    <div class="hero-calc-inputs">
+                        <div class="form-field hero-field">
+                            <label for="heroCourse">Course Name <span class="optional-tag">optional</span></label>
+                            <input type="text" id="heroCourse" placeholder="e.g. Mathematics" maxlength="40">
+                        </div>
+                        <div class="form-field hero-field">
+                            <label for="heroGrade">Grade</label>
+                            <select id="heroGrade">
+                                <option value="4.00" data-label="A+">A+ (4.00)</option>
+                                <option value="4.00" data-label="A">A (4.00)</option>
+                                <option value="3.75" data-label="A-">A- (3.75)</option>
+                                <option value="3.50" data-label="B+">B+ (3.50)</option>
+                                <option value="3.00" data-label="B">B (3.00)</option>
+                                <option value="2.75" data-label="B-">B- (2.75)</option>
+                                <option value="2.50" data-label="C+">C+ (2.50)</option>
+                                <option value="2.00" data-label="C">C (2.00)</option>
+                                <option value="1.75" data-label="C-">C- (1.75)</option>
+                                <option value="1.50" data-label="D+">D+ (1.50)</option>
+                                <option value="1.00" data-label="D">D (1.00)</option>
+                                <option value="0.00" data-label="E">E (0.00)</option>
+                            </select>
+                        </div>
+                        <div class="form-field hero-field">
+                            <label for="heroCredits">Credits</label>
+                            <input type="number" id="heroCredits" placeholder="3" min="1" max="6" step="1" value="3">
+                        </div>
+                        <button class="btn-primary hero-add-btn" id="heroAddBtn" onclick="heroAddCourse()">
+                            <i data-lucide="plus" style="width:18px;height:18px;"></i>
+                            Add
+                        </button>
+                    </div>
+                    <div class="hero-calc-err" id="heroCalcErr"></div>
+
+                    <!-- Course list + Result -->
+                    <div class="hero-calc-main">
+                        <div class="hero-courses-panel">
+                            <div class="hero-courses-header">
+                                <span>Courses Added</span>
+                                <span id="heroCourseCount" class="hero-course-count">0 courses</span>
+                            </div>
+                            <div id="heroCourseList" class="hero-course-list">
+                                <div class="hero-empty-state">
+                                    <i data-lucide="edit-3" style="width:36px;height:36px;opacity:0.3;"></i>
+                                    <p>Add courses above to see your GPA</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live GPA Result -->
+                        <div class="hero-result-panel">
+                            <div class="hero-gpa-ring-wrapper">
+                                <canvas id="heroGpaRing" width="130" height="130"></canvas>
+                                <div class="hero-gpa-ring-center">
+                                    <div class="hero-gpa-number" id="heroGpaValue">0.00</div>
+                                    <div class="hero-gpa-label">GPA</div>
+                                </div>
+                            </div>
+                            <div class="hero-result-class" id="heroResultClass">
+                                <span class="classification-badge badge-nodata">Add courses</span>
+                            </div>
+                            <div class="hero-result-stats">
+                                <div class="hero-stat">
+                                    <span class="hero-stat-val" id="heroTotalCredits">0</span>
+                                    <span class="hero-stat-lbl">Credits</span>
+                                </div>
+                                <div class="hero-stat">
+                                    <span class="hero-stat-val" id="heroTotalCourses">0</span>
+                                    <span class="hero-stat-lbl">Courses</span>
+                                </div>
+                            </div>
+                            <button class="btn-secondary hero-reset-btn" id="heroResetBtn" onclick="heroReset()" style="display:none;">
+                                <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i> Reset
+                            </button>
+                            <div class="hero-save-promo" id="heroSavePromo" style="display:none;">
+                                <i data-lucide="save" style="width:14px;height:14px;"></i>
+                                <span>Want to save &amp; track CGPA?</span>
+                                <button onclick="navigateTo('gpacalc')" class="hero-save-btn">Open Full Calculator →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Profile Setup (shown if no data, collapsed by default for new users) -->
             <div class="welcome-banner" id="welcomeBanner">
                 <div class="welcome-content">
                     <div class="welcome-icon"
@@ -174,26 +347,19 @@
                         <img src="app_icon.ico" alt="SmartGPA Logo"
                             style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
                     </div>
-                    <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Welcome to SmartGPA</h2>
-                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Your intelligent academic
-                        companion. Let's get your profile set up!</p>
+                    <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Track Your CGPA</h2>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Create a free profile to unlock CGPA tracking, analytics, predictions &amp; more!</p>
 
                     <!-- Site Description for new users -->
                     <div class="site-description-box" style="margin: 0; padding: 1.25rem;">
-                        <h3><i data-lucide="book-open" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>What is SmartGPA?</h3>
-                        <p>SmartGPA is a free academic management tool for university students. Here's what you can do:
-                        </p>
+                        <h3><i data-lucide="book-open" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Unlock More Features</h3>
                         <div class="feature-pills">
                             <span class="feat-pill"><i data-lucide="bar-chart" style="width:16px;height:16px;"></i>
                                 Track your CGPA every semester</span>
-                            <span class="feat-pill"><i data-lucide="calendar" style="width:16px;height:16px;"></i>
-                                Manage & edit semester records</span>
                             <span class="feat-pill"><i data-lucide="trending-up" style="width:16px;height:16px;"></i>
                                 Visualize your GPA trend over time</span>
                             <span class="feat-pill"><i data-lucide="target" style="width:16px;height:16px;"></i> Predict
                                 what GPA you need to hit First Class</span>
-                            <span class="feat-pill"><i data-lucide="calculator" style="width:16px;height:16px;"></i>
-                                Calculate semester GPA course-by-course</span>
                             <span class="feat-pill"><i data-lucide="file-text" style="width:16px;height:16px;"></i>
                                 Export your academic report as PDF</span>
                         </div>
@@ -202,8 +368,9 @@
                 </div>
 
                 <div class="welcome-form-container">
-                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; font-weight: 700; text-align: center;">Create
+                    <h3 style="font-size: 1.3rem; margin-bottom: 4px; font-weight: 700; text-align: center;">Create
                         Profile</h3>
+                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);text-align:center;margin-bottom:16px;">Optional — unlock CGPA tracking &amp; more</p>
                     <div class="profile-setup" style="margin: 0; max-width: 100%;">
                         <div class="form-field" style="margin-bottom: 10px; text-align: left;">
                             <label for="studentNameInput"
@@ -1870,7 +2037,7 @@
         </svg>
     </button>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>

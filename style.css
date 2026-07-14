@@ -4636,6 +4636,7 @@ img, svg, canvas { max-width: 100%; height: auto; }
     .sg-range { width: 52px; }
     .settings-action-bar { flex-direction: column; }
     .settings-preview-pill { font-size: 0.78rem; padding: 5px 10px; }
+    .profile-2col { grid-template-columns: 1fr; }
 }
 
 /* ===============================================================
@@ -5148,7 +5149,6 @@ button, a, select { touch-action: manipulation; }
     .stat-card { padding: 14px 12px; }
     .cgpa-value { font-size: 2rem; }
     .big-number { font-size: 2rem; }
-    .profile-2col { grid-template-columns: 1fr; }
     .performance-grid { grid-template-columns: 1fr; }
     .class-guide-row { grid-template-columns: 1fr; }
     .addgpa-two-col { grid-template-columns: 1fr; }
@@ -5173,8 +5173,501 @@ button, a, select { touch-action: manipulation; }
     .gpacalc-right { position: static; }
 }
 
+
 @media print {
     .sidebar, .topbar, .mobile-bottom-nav, .fab-export { display: none !important; }
     .main-content { margin-left: 0 !important; }
     .card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
 }
+
+/* ============================================================
+   NEW: Hero GPA Calculator + Nav Badge + Skip Button
+   ============================================================ */
+
+/* ── Nav: GPA Calculator Hero Item ── */
+.nav-item-hero {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(99, 102, 241, 0.10));
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    position: relative;
+}
+.nav-item-hero i { color: #818cf8 !important; }
+.nav-item-hero span { color: #c7d2fe !important; font-weight: 600; }
+.nav-item-hero:hover,
+.nav-item-hero.active {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.35), rgba(99, 102, 241, 0.25)) !important;
+}
+
+.nav-free-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    font-style: normal;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 99px;
+    margin-left: 6px;
+    letter-spacing: 0.03em;
+    vertical-align: middle;
+    text-transform: uppercase;
+    animation: pulse-green 2.5s infinite;
+}
+@media (max-width: 768px) {
+    .nav-free-badge { display: none; }
+}
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+}
+
+/* ── Skip Profile Button ── */
+.btn-skip-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.btn-skip-profile:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border-color: rgba(255,255,255,0.35);
+}
+
+/* ── Hero GPA Calculator ── */
+.hero-gpa-calc {
+    background: linear-gradient(135deg,
+        rgba(79, 70, 229, 0.06) 0%,
+        rgba(99, 102, 241, 0.04) 50%,
+        rgba(16, 185, 129, 0.04) 100%);
+    border: 1.5px solid rgba(79, 70, 229, 0.18);
+    border-radius: 24px;
+    padding: 28px 28px 24px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+        0 4px 24px rgba(79, 70, 229, 0.08),
+        0 1px 0 rgba(255,255,255,0.6) inset;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-gpa-calc::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4f46e5, #10b981, #f59e0b);
+    border-radius: 24px 24px 0 0;
+}
+
+[data-theme="dark"] .hero-gpa-calc {
+    background: linear-gradient(135deg,
+        rgba(79, 70, 229, 0.12) 0%,
+        rgba(30, 41, 59, 0.6) 50%,
+        rgba(16, 185, 129, 0.06) 100%);
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.hero-calc-header {
+    margin-bottom: 20px;
+}
+
+.hero-calc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(16, 185, 129, 0.10));
+    border: 1px solid rgba(79, 70, 229, 0.2);
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 99px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+[data-theme="dark"] .hero-calc-badge {
+    background: rgba(79, 70, 229, 0.18);
+    border-color: rgba(99, 102, 241, 0.35);
+    color: #a5b4fc;
+}
+
+.hero-calc-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.hero-calc-sub {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.hero-calc-body {}
+
+.hero-calc-inputs {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 8px;
+}
+
+.hero-field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.optional-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--border);
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+.hero-add-btn {
+    height: 42px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.hero-add-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+}
+
+.hero-calc-err {
+    font-size: 0.8rem;
+    color: var(--danger);
+    min-height: 20px;
+    margin-bottom: 4px;
+}
+
+.hero-calc-main {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+/* ── Course List Panel ── */
+.hero-courses-panel {
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-page);
+}
+
+.hero-course-count {
+    font-size: 0.72rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 700;
+}
+
+.hero-course-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.hero-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    color: var(--text-muted);
+    text-align: center;
+    gap: 8px;
+}
+
+.hero-empty-state p {
+    font-size: 0.82rem;
+    margin: 0;
+}
+
+.hero-course-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    transition: background var(--transition);
+    animation: slideInRow 0.2s ease;
+}
+
+@keyframes slideInRow {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-course-row:hover { background: var(--bg-page); }
+.hero-course-row:last-child { border-bottom: none; }
+
+.hero-row-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hero-row-grade {
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 42px;
+    text-align: center;
+    background: var(--primary-light);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+}
+
+.hero-row-credits {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    min-width: 48px;
+    text-align: right;
+}
+
+.hero-row-del {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 3px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+}
+.hero-row-del:hover { color: var(--danger); }
+
+/* ── GPA Result Panel ── */
+.hero-result-panel {
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.hero-gpa-ring-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+}
+
+.hero-gpa-ring-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.hero-gpa-number {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.hero-gpa-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+}
+
+.hero-result-class {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-result-stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+.hero-stat-val {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.hero-stat-lbl {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hero-reset-btn {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ── Hero Save Promo ── */
+.hero-save-promo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.07), rgba(16, 185, 129, 0.05));
+    border: 1px dashed rgba(79, 70, 229, 0.25);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    width: 100%;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    animation: fadeInUp 0.3s ease;
+}
+
+.hero-save-promo i { color: var(--primary); }
+.hero-save-promo span { font-weight: 500; }
+
+.hero-save-btn {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    width: 100%;
+}
+.hero-save-btn:hover {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    transform: translateY(-1px);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive: Hero Calc ── */
+@media (max-width: 900px) {
+    .hero-calc-inputs {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+    }
+    .hero-calc-inputs .hero-field:first-child {
+        grid-column: 1 / -1;
+    }
+    .hero-add-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-content: center;
+        height: 44px;
+    }
+    .hero-calc-main {
+        grid-template-columns: 1fr;
+    }
+    .hero-result-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 14px;
+    }
+    .hero-gpa-ring-wrapper { width: 100px; height: 100px; }
+    .hero-gpa-number { font-size: 1.5rem; }
+}
+
+@media (max-width: 600px) {
+    .hero-gpa-calc {
+        padding: 18px 16px 16px;
+        border-radius: 18px;
+    }
+    .hero-calc-title { font-size: 1.4rem; }
+    .hero-calc-inputs {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+

@@ -251,7 +251,7 @@
                         No signup &middot; Instant &middot; Free
                     </div>
                     <h2 class="hero-calc-title">GPA Calculator</h2>
-                    <p class="hero-calc-sub">Enter your courses and grades — your GPA updates instantly</p>
+                    <p class="hero-calc-sub">Enter your courses and grades — you can save this semester GPA for your CGPA calculation.</p>
                 </div>
 
                 <div class="hero-calc-body">
@@ -331,96 +331,44 @@
                             </button>
                             <div class="hero-save-promo" id="heroSavePromo" style="display:none;">
                                 <i data-lucide="save" style="width:14px;height:14px;"></i>
-                                <span>Want to save &amp; track CGPA?</span>
-                                <button onclick="navigateTo('gpacalc')" class="hero-save-btn">Open Full Calculator →</button>
+                                <span>Save this for CGPA calculation</span>
+                                <button onclick="startQuickCgpa()" class="hero-save-btn">Save to Record →</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Student Profile Setup (shown if no data, collapsed by default for new users) -->
-            <div class="welcome-banner" id="welcomeBanner">
-                <div class="welcome-content">
-                    <div class="welcome-icon"
-                        style="overflow: hidden; border-radius: 25%; width: 80px; height: 80px; margin-bottom: 20px;">
-                        <img src="app_icon.ico" alt="SmartGPA Logo"
-                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 25%; transform: scale(1.1);">
-                    </div>
-                    <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Track Your CGPA</h2>
-                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px;">Create a free profile to unlock CGPA tracking, analytics, predictions &amp; more!</p>
-
-                    <!-- Site Description for new users -->
-                    <div class="site-description-box" style="margin: 0; padding: 1.25rem;">
-                        <h3><i data-lucide="book-open" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Unlock More Features</h3>
-                        <div class="feature-pills">
-                            <span class="feat-pill"><i data-lucide="bar-chart" style="width:16px;height:16px;"></i>
-                                Track your CGPA every semester</span>
-                            <span class="feat-pill"><i data-lucide="trending-up" style="width:16px;height:16px;"></i>
-                                Visualize your GPA trend over time</span>
-                            <span class="feat-pill"><i data-lucide="target" style="width:16px;height:16px;"></i> Predict
-                                what GPA you need to hit First Class</span>
-                            <span class="feat-pill"><i data-lucide="file-text" style="width:16px;height:16px;"></i>
-                                Export your academic report as PDF</span>
-                        </div>
-                        <p class="desc-note">All data is saved locally on your device — no login required.</p>
+            <!-- Quick CGPA Options Banner (shown if no data) -->
+            <div class="dash-quickcalc-banner" id="welcomeBanner" style="margin-bottom: 24px; padding: 24px;">
+                <div class="dash-qc-left" style="align-items: center;">
+                    <span class="dash-qc-icon" style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(79, 70, 229, 0.2); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px;">
+                        <i data-lucide="activity" style="width:24px;height:24px;color:var(--primary);"></i>
+                    </span>
+                    <div>
+                        <div class="dash-qc-title" style="font-size: 1.3rem;">Quick CGPA Calculator</div>
+                        <div class="dash-qc-sub" style="font-size: 0.95rem; opacity: 0.85;">Check your Cumulative GPA, analyze your performance, and get future predictions instantly.</div>
                     </div>
                 </div>
-
-                <div class="welcome-form-container">
-                    <h3 style="font-size: 1.3rem; margin-bottom: 4px; font-weight: 700; text-align: center;">Create
-                        Profile</h3>
-                    <p style="font-size:0.8rem;color:rgba(255,255,255,0.65);text-align:center;margin-bottom:16px;">Optional — unlock CGPA tracking &amp; more</p>
-                    <div class="profile-setup" style="margin: 0; max-width: 100%;">
-                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="studentNameInput"
-                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Student Name</label>
-                            <input type="text" id="studentNameInput" placeholder="Your Name" maxlength="50">
-                        </div>
-                        <div class="profile-2col">
-                            <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                                <label for="totalCreditsInput"
-                                    style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Program Credits</label>
-                                <input type="number" id="totalCreditsInput" placeholder="e.g. 120" min="30" max="300"
-                                    step="1">
-                            </div>
-                            <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                                <label for="totalSemestersInput"
-                                    style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Total Semesters</label>
-                                <input type="number" id="totalSemestersInput" placeholder="e.g. 8" min="1" max="20"
-                                    step="1">
-                            </div>
-                        </div>
-                        <div class="form-field" style="margin-bottom: 10px; text-align: left;">
-                            <label for="completedSemestersInput"
-                                style="color: rgba(255,255,255,0.9); margin-bottom: 2px;">Completed Semesters</label>
-                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 4px;">How many
-                                semesters have you already finished?</span>
-                            <input type="number" id="completedSemestersInput" placeholder="e.g. 0" min="0" max="20"
-                                step="1">
-                        </div>
-                        <button class="btn-primary" id="setupProfileBtn"
-                            style="margin-top: 10px; padding: 14px; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);">Get
-                            Started →</button>
-                    </div>
-                </div>
+                <button class="btn-primary dash-qc-btn" onclick="startQuickCgpa()" style="padding: 12px 20px; font-size: 1rem;">
+                    Calculate CGPA →
+                </button>
             </div>
 
             <!-- Main Dashboard Grid (hidden until profile setup) -->
             <div class="dashboard-grid" id="dashboardGrid" style="display:none;">
 
-                <!-- Quick GPA Calc Banner (top of dashboard) -->
+                <!-- Quick CGPA Calc Banner (top of dashboard) -->
                 <div class="dash-quickcalc-banner">
                     <div class="dash-qc-left">
-                        <span class="dash-qc-icon"><i data-lucide="calculator" style="width:20px;height:20px;color:var(--primary);"></i></span>
+                        <span class="dash-qc-icon"><i data-lucide="plus-circle" style="width:20px;height:20px;color:var(--primary);"></i></span>
                         <div>
-                            <div class="dash-qc-title">Quick GPA Calculator</div>
-                            <div class="dash-qc-sub">Calculate your semester GPA course-by-course and save it to your
-                                record</div>
+                            <div class="dash-qc-title">Quick CGPA Calculator</div>
+                            <div class="dash-qc-sub">Add your past semester GPAs to instantly calculate your cumulative GPA</div>
                         </div>
                     </div>
-                    <button class="btn-primary dash-qc-btn" onclick="navigateTo('gpacalc')">
-                        Open GPA Calculator →
+                    <button class="btn-primary dash-qc-btn" onclick="navigateTo('addgpa')">
+                        Open CGPA Calculator →
                     </button>
                 </div>
 
@@ -893,6 +841,27 @@
 
             <div class="pred-engine-grid">
                 <div class="pred-config-col">
+
+                    <!-- Program Details (Shown if not set) -->
+                    <div class="card" id="predProgramSettingsCard" style="border: 2px dashed var(--primary); margin-bottom: 20px; display: none;">
+                        <div class="card-header">
+                            <h3><i data-lucide="info" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;color:var(--primary);"></i>Program Details Needed</h3>
+                        </div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom: 12px;">
+                            Please enter your degree details to unlock accurate future predictions and semester roadmaps.
+                        </div>
+                        <div class="profile-2col" style="margin-bottom: 12px;">
+                            <div class="form-field">
+                                <label for="predTotalCredits">Total Program Credits</label>
+                                <input type="number" id="predTotalCredits" placeholder="e.g. 120" min="30" max="300" step="1">
+                            </div>
+                            <div class="form-field">
+                                <label for="predTotalSemesters">Total Semesters</label>
+                                <input type="number" id="predTotalSemesters" placeholder="e.g. 8" min="1" max="20" step="1">
+                            </div>
+                        </div>
+                        <button class="btn-primary btn-full" onclick="savePredProgramSettings()">Save & Unlock Predictions</button>
+                    </div>
 
                     <!-- Target Class Selector -->
                     <div class="card pred-target-selector-card">

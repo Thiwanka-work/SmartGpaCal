@@ -273,12 +273,7 @@ function bindEvents() {
     }
 
     // ---- Profile Setup ----
-    const setupProfileBtn = $('setupProfileBtn');
-    if (setupProfileBtn) setupProfileBtn.addEventListener('click', handleProfileSetup);
-
-    [$('studentNameInput'), $('totalCreditsInput'), $('totalSemestersInput'), $('completedSemestersInput')].forEach(el => {
-        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleProfileSetup(); });
-    });
+    // (Old profile setup removed, replaced with quick start logic)
 
     // ---- Add Semester (Add GPA page) ----
     const addSemesterBtn = $('addSemesterBtn');
@@ -443,48 +438,16 @@ function navigateTo(sectionId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── 8. PROFILE SETUP ───────────────────────────────────────────
+// ── 8. QUICK CGPA SETUP ────────────────────────────────────────
 
-function handleProfileSetup() {
-    const name     = $('studentNameInput').value.trim();
-    const credits  = parseInt($('totalCreditsInput').value, 10);
-    const totalSem = parseInt($('totalSemestersInput').value, 10);
-    const compSem  = parseInt($('completedSemestersInput').value, 10);
-
-    // Reset styles
-    $('studentNameInput').style.borderColor        = '';
-    $('totalCreditsInput').style.borderColor       = '';
-    $('totalSemestersInput').style.borderColor     = '';
-    $('completedSemestersInput').style.borderColor = '';
-
-    if (!name) {
-        $('studentNameInput').style.borderColor = 'var(--danger)';
-        return;
+function startQuickCgpa() {
+    appState.profileSetup = true;
+    if (!appState.studentName) {
+        appState.studentName = 'Student'; // Default generic name
     }
-    if (!credits || credits < 30 || credits > 300) {
-        $('totalCreditsInput').style.borderColor = 'var(--danger)';
-        return;
-    }
-    if (!totalSem || totalSem < 1 || totalSem > 20) {
-        $('totalSemestersInput').style.borderColor = 'var(--danger)';
-        return;
-    }
-    if (isNaN(compSem) || compSem < 0 || compSem > totalSem) {
-        $('completedSemestersInput').style.borderColor = 'var(--danger)';
-        return;
-    }
-
-    appState.studentName        = name;
-    appState.totalCredits       = credits;
-    appState.totalSemesters     = totalSem;
-    appState.completedSemesters = compSem;
-    appState.profileSetup       = true;
-
     saveToStorage();
     renderAll();
-
-    // After setup, navigate to Add GPA for quick first entry
-    setTimeout(() => navigateTo('addgpa'), 300);
+    navigateTo('addgpa');
 }
 
 // ── 9. SEMESTER CRUD ───────────────────────────────────────────
@@ -1484,9 +1447,49 @@ function updatePredictionStanding() {
     const remEl = $('predRemainingCredits');
     if (remEl) remEl.textContent = remaining > 0 ? remaining + ' cr.' : '0 cr.';
     
+    // Check if Program Settings are needed
+    const pCard = $('predProgramSettingsCard');
+    const bCard = $('runPredictionBtn');
+    if (appState.totalCredits === 0 || !appState.totalCredits) {
+        if (pCard) pCard.style.display = 'block';
+        if (bCard) bCard.disabled = true;
+    } else {
+        if (pCard) pCard.style.display = 'none';
+        if (bCard) bCard.disabled = false;
+    }
+
     if ($('predTimeframe') && $('predTimeframe').value === 'end' && $('predCalcMode') && $('predCalcMode').value === 'exact') {
         renderExactCreditInputs();
     }
+}
+
+function savePredProgramSettings() {
+    const cr = parseInt($('predTotalCredits').value, 10);
+    const sem = parseInt($('predTotalSemesters').value, 10);
+    
+    if (isNaN(cr) || cr < 30 || cr > 300) {
+        alert('Please enter valid total credits (30-300).');
+        return;
+    }
+    if (isNaN(sem) || sem < 1 || sem > 20) {
+        alert('Please enter valid total semesters (1-20).');
+        return;
+    }
+    
+    appState.totalCredits = cr;
+    appState.totalSemesters = sem;
+    saveToStorage();
+    renderAll();
+    
+    // Flash button success
+    const btn = document.querySelector('#predProgramSettingsCard .btn-primary');
+    const og = btn.innerHTML;
+    btn.innerHTML = 'Saved Successfully!';
+    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    setTimeout(() => {
+        btn.innerHTML = og;
+        btn.style.background = '';
+    }, 1500);
 }
 
 function renderPrediction() {
